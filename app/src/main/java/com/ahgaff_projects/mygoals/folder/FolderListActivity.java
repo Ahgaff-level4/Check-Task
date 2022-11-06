@@ -29,7 +29,7 @@ public class FolderListActivity extends AppCompatActivity {
         folders.add( new Folder("dksjfls"));
         folders.add( new Folder("cnkvx,v"));
         folders.add( new Folder("werrerw"));
-        adapter.setFolders(folders);
+//        adapter.setFolders(folders);
 
     }
 }

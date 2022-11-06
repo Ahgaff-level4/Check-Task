@@ -27,6 +27,15 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".folder.FolderListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_folder_list"
+            android:theme="@style/Theme.Design.NoActionBar" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
     </application>
 
 </manifest>
