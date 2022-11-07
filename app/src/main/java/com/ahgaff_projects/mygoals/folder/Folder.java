@@ -12,18 +12,11 @@ public class Folder {
     private LocalDateTime dateTime;
 
     public Folder(String name) {
-        this.id = -1;//last id +1
+        this.id = -1;//TODO: last id++
         this.name = name;
         this.goals = new ArrayList<>();
+        dateTime = LocalDateTime.now();
     }
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
 
     public int getId() {
         return id;

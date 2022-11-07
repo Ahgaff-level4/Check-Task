@@ -13,23 +13,35 @@ import java.util.ArrayList;
 
 public class FolderListActivity extends AppCompatActivity {
 
-    private RecyclerView foldersRecyclerView;
+    private RecyclerView recyclerView;
     private FolderRecyclerViewAdapter adapter;
-
+    private ArrayList<Folder> folders = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new FolderRecyclerViewAdapter(this);
-        foldersRecyclerView = findViewById(R.id.folderListRecyclerView);
-        foldersRecyclerView.setAdapter(adapter);
-        foldersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setContentView(R.layout.activity_folder_list);
 
-        //create a garbage list for testing
-        ArrayList<Folder> folders = new ArrayList<>();
-        folders.add( new Folder("dksjfls"));
-        folders.add( new Folder("cnkvx,v"));
-        folders.add( new Folder("werrerw"));
+        setUpRecyclerView();
 //        adapter.setFolders(folders);
 
+//        foldersRecyclerView.
+
+
+
+
+    }
+    private void setUpRecyclerView() {
+        //create garbage list for testing
+        folders.add( new Folder("First Folder"));
+        folders.add( new Folder("Second Category"));
+        folders.add( new Folder("Third Group. Name it whatever you want"));
+        adapter = new FolderRecyclerViewAdapter(folders,this);
+        recyclerView = findViewById(R.id.folderListRecyclerView);
+        recyclerView.setAdapter(adapter);
+
+        //set up how each folder will be arrange
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 }
