@@ -9,18 +9,28 @@
     app:cardElevation="4dp"
     app:cardBackgroundColor="@color/white"
     android:layout_margin="4dp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="7dp">
 
+        <ImageView
+            android:id="@+id/folderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/sym_contact_card"
+            />
         <TextView
             android:id="@+id/folderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:layout_toEndOf="@+id/folderImageView"
+            android:text="folder name..."
             android:layout_marginStart="7dp"/>
 
 <!--        <Button-->

@@ -20,7 +20,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <include layout="@layout/activity_folder_list" />-->
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="This is Main Activity"
+    android:textSize="40sp"
+    android:layout_marginTop="50dp"
+    />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

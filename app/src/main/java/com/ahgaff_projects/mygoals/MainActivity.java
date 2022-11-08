@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Intent i = new Intent(this, FolderListActivity.class);
         startActivity(i);
-        finish();
+//        finish();
     }
 
     @Override
