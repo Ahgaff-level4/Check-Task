@@ -1,16 +1,20 @@
 <resources>
-    <string name="app_name">MyGoals</string>
+    <!--General names-->
+    <string name="app_name">Check Goal</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
     <string name="title_activity_folder_list">Folders</string>
-    <string name="add_folder_title">Add Folder</string>
-    <string name="add_folder_dialog_edittext_hint">Name</string>
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="error">Error</string>
-    <string name="invalid_folder_name">Invalid Folder Name</string>
     <string name="ok">OK</string>
+
+    <!--Folder-->
+    <string name="add_folder_dialog_edittext_hint">Name</string>
+    <string name="invalid_folder_name">Invalid Folder Name</string>
+    <string name="add_folder_title">Add Folder</string>
+
+    <!--File-->
+
+    <!--Goal-->
 
 </resources>
