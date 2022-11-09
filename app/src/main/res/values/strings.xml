@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MyGoals</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
+    
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="title_activity_folder_list">Folders</string>
