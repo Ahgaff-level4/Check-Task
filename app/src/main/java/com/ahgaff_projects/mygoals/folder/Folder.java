@@ -1,21 +1,22 @@
 package com.ahgaff_projects.mygoals.folder;
 
+import com.ahgaff_projects.mygoals.file.File;
 import com.ahgaff_projects.mygoals.goal.Goal;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Folder {
+public class Folder implements Cloneable {
     private int id;
     private String name;
-    private ArrayList<Goal> goals;
-    private LocalDateTime dateTime;
+    private ArrayList<File> files;
+    private LocalDateTime created;
 
     public Folder(String name) {
         this.id = -1;//TODO: last id++
         this.name = name;
-        this.goals = new ArrayList<>();
-        dateTime = LocalDateTime.now();
+        this.files = new ArrayList<>();
+        created = LocalDateTime.now();
     }
 
     public int getId() {
@@ -30,8 +31,18 @@ public class Folder {
         this.name = name;
     }
 
-    public ArrayList<Goal> getGoals() {
-        return goals;
+    public ArrayList<File> getFiles() {
+        return files;
+    }
+
+    @Override
+    public Folder clone() {
+        Folder clone = new Folder(this.name);
+        clone.id = this.id;
+        for (File file : this.files)
+            clone.files.add(file.clone());
+        clone.created = this.created;
+        return clone;
     }
 //
 //    public void addGoal(Goal goal) {

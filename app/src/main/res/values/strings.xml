@@ -11,8 +11,8 @@
     <!--Folder-->
     <string name="add_folder_dialog_edittext_hint">Name</string>
     <string name="invalid_folder_name">Invalid Folder Name</string>
+    <string name="invalid_folder_name_exist">There is a Folder With Same Name</string>
     <string name="add_folder_title">Add Folder</string>
-
     <!--File-->
 
     <!--Goal-->

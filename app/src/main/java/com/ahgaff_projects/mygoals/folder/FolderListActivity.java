@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class FolderListActivity extends AppCompatActivity {
 
     private FolderRecyclerViewAdapter adapter;
-    private final ArrayList<Folder> folders = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,19 +28,15 @@ public class FolderListActivity extends AppCompatActivity {
 
         setUpRecyclerView();
         setUpFabButton();
-//        adapter.setFolders(folders);
-
-//        foldersRecyclerView.
-
 
     }
 
     private void setUpRecyclerView() {
         //create garbage list for testing
-        folders.add(new Folder("First Folder"));
-        folders.add(new Folder("Second Category"));
-        folders.add(new Folder("Third Group. Name it whatever you want"));
-        adapter = new FolderRecyclerViewAdapter(folders, this);
+        adapter = new FolderRecyclerViewAdapter(null, this);
+        adapter.addFolder(new Folder("First Folder"));
+        adapter.addFolder(new Folder("Second Category"));
+        adapter.addFolder(new Folder("Third Group. Name it whatever you want"));
         RecyclerView recyclerView = findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
 
@@ -51,7 +46,6 @@ public class FolderListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void setUpFabButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
@@ -62,21 +56,34 @@ public class FolderListActivity extends AppCompatActivity {
             View inflater = getLayoutInflater().inflate(R.layout.add_folder_dialog, null);
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
-                EditText input = inflater.findViewById(R.id.folderNameEditText);
+                EditText input = inflater.findViewById(R.id.folderNameEditText);//input from dialog
                 String newFolderName = input.getText().toString().trim();
                 if (newFolderName.equals(""))
-                    new AlertDialog.Builder(this)
+                    new AlertDialog.Builder(this)//show error dialog
                             .setTitle(R.string.error)
                             .setMessage(R.string.invalid_folder_name)
                             .setPositiveButton(R.string.ok, null)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
-                else {
-                    folders.add(new Folder(input.getText().toString()));
-                    adapter.notifyDataSetChanged();
-                }
+                else if(existFolderName(newFolderName))
+                    new AlertDialog.Builder(this)//show error dialog
+                            .setTitle(R.string.error)
+                            .setMessage(R.string.invalid_folder_name_exist)
+                            .setPositiveButton(R.string.ok, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                else
+                    adapter.addFolder(new Folder(newFolderName));
+
             });
             dialog.show();
         });
+    }
+
+    private boolean existFolderName(String newName){
+        for (Folder f: adapter.getCopyFolders())//foreach
+            if(f.getName().equals(newName))
+                return true;
+        return false;
     }
 }
