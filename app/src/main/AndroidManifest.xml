@@ -13,6 +13,14 @@
         android:theme="@style/Theme.MyGoals"
         tools:targetApi="31">
         <activity
+            android:name=".file.FileListActivity"
+            android:label="@string/title_activity_file_list"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -31,7 +39,7 @@
             android:name=".folder.FolderListActivity"
             android:exported="true"
             android:label="@string/title_activity_folder_list"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
