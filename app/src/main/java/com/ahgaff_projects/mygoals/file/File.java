@@ -4,10 +4,11 @@ import androidx.annotation.Nullable;
 
 import com.ahgaff_projects.mygoals.goal.Goal;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class File implements Cloneable{
+public class File implements Cloneable, Serializable {
     private int id;
     private String name;
     private ArrayList<Goal> goals = new ArrayList<>();

@@ -1,8 +1,9 @@
 package com.ahgaff_projects.mygoals.goal;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Goal implements Cloneable{
+public class Goal implements Cloneable, Serializable {
     private int id;
     private String name;
     private boolean completed;
