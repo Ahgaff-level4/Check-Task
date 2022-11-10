@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Folder implements Cloneable, Serializable {
-    private int id;
+    private final int id;
     private String name;
     private ArrayList<File> files;
     private LocalDateTime created;
 
-    public Folder(String name) {
-        this.id = -1;//TODO: last id++
+    public Folder(int id,String name) {
+        this.id = id;
         this.name = name;
         this.files = new ArrayList<>();
         created = LocalDateTime.now();
@@ -38,8 +38,7 @@ public class Folder implements Cloneable, Serializable {
 
     @Override
     public Folder clone() {
-        Folder clone = new Folder(this.name);
-        clone.id = this.id;
+        Folder clone = new Folder(this.id,this.name);
         for (File file : this.files)
             clone.files.add(file.clone());
         clone.created = this.created;

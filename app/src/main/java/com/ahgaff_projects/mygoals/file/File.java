@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class File implements Cloneable, Serializable {
-    private int id;
+    private final int id;
     private String name;
     private ArrayList<Goal> goals = new ArrayList<>();
     private LocalDateTime created;
@@ -19,21 +19,45 @@ public class File implements Cloneable, Serializable {
     @Nullable
     private LocalDateTime remindPeriodic;
 
-    public File(String name){
-        this.id = -1;
+    public File(int id,String name,LocalDateTime remindStart,LocalDateTime remindPeriodic){
+        this.id = id;
         this.name = name;
         created = LocalDateTime.now();
+        this.remindStart = remindStart;
+        this.remindPeriodic = remindPeriodic;
+    }
+    public int getId(){
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Goal> getGoals() {
+        return goals;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    @Nullable
+    public LocalDateTime getRemindStart() {
+        return remindStart;
+    }
+
+    @Nullable
+    public LocalDateTime getRemindPeriodic() {
+        return remindPeriodic;
     }
 
     @Override
     public File clone() {
-        File clone = new File(this.name);
-        clone.id = id;
+        File clone = new File(this.id,this.name,this.remindStart,this.remindPeriodic);
         for(Goal goal:goals)
             clone.goals.add(goal.clone());
         clone.created = created;
-        clone.remindStart = remindStart;
-        clone.remindPeriodic = remindPeriodic;
         return clone;
     }
 }

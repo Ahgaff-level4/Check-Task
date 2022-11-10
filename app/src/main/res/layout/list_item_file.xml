@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/folderParentCard"
+    android:id="@+id/fileParentCard"
     app:cardCornerRadius="7dp"
     app:cardElevation="4dp"
     app:cardBackgroundColor="@color/white"
@@ -17,28 +17,27 @@
         android:padding="7dp">
 
         <ImageView
-            android:id="@+id/folderImageView"
+            android:id="@+id/fileImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@android:drawable/sym_contact_card"
-            app:tint="@color/purple_500"
-            />
+            android:src="?attr/actionModePasteDrawable"
+            app:tint="@color/purple_700" />
         <TextView
-            android:id="@+id/folderName"
+            android:id="@+id/fileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_toEndOf="@+id/folderImageView"
-            android:text="folder name..."
+            android:layout_toEndOf="@+id/fileImageView"
+            android:text="file name..."
             android:layout_marginStart="7dp"/>
 
-<!--        <Button-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:image/>-->
+        <!--        <Button-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_alignParentRight="true"-->
+        <!--            android:image/>-->
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

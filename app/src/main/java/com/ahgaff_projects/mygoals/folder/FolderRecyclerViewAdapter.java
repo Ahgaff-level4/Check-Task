@@ -1,6 +1,8 @@
 package com.ahgaff_projects.mygoals.folder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DATA;
 import com.ahgaff_projects.mygoals.R;
+import com.ahgaff_projects.mygoals.file.FileListActivity;
 
 import java.util.ArrayList;
 
@@ -39,45 +42,30 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         }
     }
 
-    public ArrayList<Folder> getCopyFolders(){//return clone because folders should not be changed outside adapter
-        ArrayList<Folder> clone = new ArrayList<>();
-        for(Folder f : this.folders)
-            clone.add(f.clone());
-        return clone;
-    }
 
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
 
-    public void addFolder(Folder folder) {
-        this.folders.add(folder);
-        notifyDataSetChanged();//refresh the list
-    }
 
-    public void setFolders(ArrayList<Folder> folders){
-        this.folders = folders;
-        notifyDataSetChanged();//refresh the list
-    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_folder,parent,false);
-//        return new ViewHolder(view);
         return new ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.list_item_folder, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        Log.d("FolderRecyclerView","onBindViewHolder called");
-        holder.folderName.setText(folders.get(position).getName());
-        holder.folderParent.setOnClickListener(v -> Toast.makeText(context, folders.get(holder.getAbsoluteAdapterPosition()).getName() + " Selected", Toast.LENGTH_LONG).show());
-//        ViewHolder viewHolder = (ViewHolder) holder;
-//here you can set your own conditions based on your arraylist using position parameter
-//        viewHolder. .itemNameTextView.setText(locationsArrayList.get(position).getName());
-
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {//each item
+        Folder f = folders.get(position);
+        String name = f.getId()+"- "+f.getName();
+        holder.folderName.setText(name);
+        holder.folderParent.setOnClickListener(v -> {
+            Intent i = new Intent(context, FileListActivity.class);
+            i.putExtra("folderObj",f);
+            context.startActivity(i);
+        });
     }
 
     @Override
@@ -85,5 +73,24 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         return folders.size();
     }
 
+    public ArrayList<Folder> getCopyFolders(){//return clone because folders should not be changed outside adapter
+        ArrayList<Folder> clone = new ArrayList<>();
+        for(Folder f : this.folders)
+            clone.add(f.clone());
+        return clone;
+    }
+
+
+    public void addFolder(Folder folder) {
+        this.folders.add(folder);
+        notifyDataSetChanged();//refresh the list
+        DATA.save(folders,context);
+    }
+
+    public void deleteFolder(Folder folder){
+        this.folders.remove(folder);
+        notifyDataSetChanged();
+        DATA.save(folders,context);
+    }
 
 }
