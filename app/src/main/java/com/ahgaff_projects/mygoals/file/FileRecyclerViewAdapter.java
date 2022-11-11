@@ -15,6 +15,7 @@ import com.ahgaff_projects.mygoals.DATA;
 import com.ahgaff_projects.mygoals.R;
 import com.ahgaff_projects.mygoals.folder.Folder;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerViewAdapter.ViewHolder> {
@@ -28,11 +29,13 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     public class ViewHolder extends RecyclerView.ViewHolder {
         private CardView fileParent;
         private TextView fileName;
+        private TextView fileStartTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             fileParent = itemView.findViewById(R.id.fileParentCard);
             fileName = itemView.findViewById(R.id.fileName);
+            fileStartTime = itemView.findViewById(R.id.fileStartReminder);
         }
     }
 
@@ -54,7 +57,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.fileName.setText(folder.getFiles().get(position).getName());
+        File thisFile = folder.getFiles().get(position);
+        holder.fileName.setText(thisFile.getName());
+        if(thisFile.getStartReminder() != null)
+            holder.fileStartTime.setText(thisFile.getStartReminder().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
         holder.fileParent.setOnClickListener(v -> Toast.makeText(context, folder.getFiles().get(holder.getAbsoluteAdapterPosition()).getName() + " Selected", Toast.LENGTH_LONG).show());
 //        ViewHolder viewHolder = (ViewHolder) holder;
 //here you can set your own conditions based on your arraylist using position parameter

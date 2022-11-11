@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="15dp"
     android:elevation="24dp"
-    >
-
+    android:outlineSpotShadowColor="#24646A">
 
 
     <EditText
         android:id="@+id/fileNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="@string/add_file_dialog_edittext_hint"
         android:layout_marginHorizontal="20dp"
-        android:autofillHints="name" />
+        android:autofillHints="name"
+        android:hint="@string/add_file_dialog_edittext_hint"
+        android:inputType="text" />
 
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/startReminderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/fileNameEditText"
+        android:layout_marginHorizontal="20dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        >
+
+        <TextView
+            android:id="@+id/startReminderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/start_reminder"
+            android:textColor="#323232"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/startReminderContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="24dp"
+            android:text="@string/start_reminder_none"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/startReminderArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="@string/arrow"
+            android:textColor="#4F323232"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

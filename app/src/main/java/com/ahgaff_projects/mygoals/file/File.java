@@ -15,15 +15,15 @@ public class File implements Cloneable, Serializable {
     private LocalDateTime created;
     //remindStart instead of remindBefore because LocalDateTime store the date not the period. So, if user enter before 3 days you should calculate when it start because LocalDateTime can't store 3 days period.
     @Nullable
-    private LocalDateTime remindStart;
+    private LocalDateTime startReminder;
     @Nullable
     private LocalDateTime remindPeriodic;
 
-    public File(int id,String name,LocalDateTime remindStart,LocalDateTime remindPeriodic){
+    public File(int id,String name,LocalDateTime startReminder,LocalDateTime remindPeriodic){
         this.id = id;
         this.name = name;
         created = LocalDateTime.now();
-        this.remindStart = remindStart;
+        this.startReminder = startReminder;
         this.remindPeriodic = remindPeriodic;
     }
     public int getId(){
@@ -43,8 +43,8 @@ public class File implements Cloneable, Serializable {
     }
 
     @Nullable
-    public LocalDateTime getRemindStart() {
-        return remindStart;
+    public LocalDateTime getStartReminder() {
+        return startReminder;
     }
 
     @Nullable
@@ -54,7 +54,7 @@ public class File implements Cloneable, Serializable {
 
     @Override
     public File clone() {
-        File clone = new File(this.id,this.name,this.remindStart,this.remindPeriodic);
+        File clone = new File(this.id,this.name,this.startReminder,this.remindPeriodic);
         for(Goal goal:goals)
             clone.goals.add(goal.clone());
         clone.created = created;

@@ -8,6 +8,7 @@
     <string name="delete">Delete</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>
+    <string name="arrow">></string>
 
     <!--Folder-->
     <string name="title_activity_folder_list">Folders</string>
@@ -26,6 +27,8 @@
     <string name="add_file_title">Add File</string>
     <string name="edit_file_title">Edit File</string>
     <string name="delete_file_title">Delete File</string>
+    <string name="start_reminder">Start Reminder At</string>
+    <string name="start_reminder_none">None</string>
 
     <!--Goal-->
 
