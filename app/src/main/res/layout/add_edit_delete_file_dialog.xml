@@ -34,8 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/start_reminder"
-            android:textColor="#323232"
+            android:text="@string/start_reminder_title"
+            android:textColor="@color/black_800"
             android:textSize="18sp" />
 
         <TextView
@@ -45,6 +45,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="24dp"
+            android:textColor="@color/black_700"
             android:text="@string/start_reminder_none"
             android:textSize="18sp" />
 
@@ -55,8 +56,38 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="@string/arrow"
-            android:textColor="#4F323232"
+            android:textColor="@color/black_300"
             android:textSize="30sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/repeatEveryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/startReminderLayout"
+        android:layout_marginHorizontal="20dp"
+        >
+
+        <TextView
+            android:id="@+id/repeatEveryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/reminder_periodic"
+            android:textColor="@color/black_800"
+            android:textSize="18sp"
+             />
+
+        <Spinner
+            android:id="@+id/repeatEverySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:entries="@array/repeat_every_options"
+            android:spinnerMode="dropdown"
+            android:textSize="18sp" />
+
 
     </RelativeLayout>
 

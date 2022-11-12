@@ -32,12 +32,13 @@
             android:layout_toEndOf="@+id/fileImageView"
             android:text="file name..."
             android:layout_marginStart="7dp"/>
+
+        <!--If file has startReminder date it will be shown below-->
         <TextView
             android:id="@+id/fileStartReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="2002/5/5"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="7dp"/>

@@ -27,8 +27,18 @@
     <string name="add_file_title">Add File</string>
     <string name="edit_file_title">Edit File</string>
     <string name="delete_file_title">Delete File</string>
-    <string name="start_reminder">Start Reminder At</string>
+    <string name="start_reminder_title">Start Reminder At</string>
     <string name="start_reminder_none">None</string>
+    <string name="reminder_periodic">Repeat</string>
+    <string-array name="repeat_every_options">
+        <item>Never</item>
+        <item>Every Day</item>
+        <item>Every 2 Days</item>
+        <item>Every 3 Days</item>
+        <item>Every Week</item>
+        <item>Every 2 Weeks</item>
+        <item>Every Month</item>
+    </string-array>
 
     <!--Goal-->
 
