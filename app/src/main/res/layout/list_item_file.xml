@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="7dp">
+        android:padding="2dp">
 
         <ImageView
             android:id="@+id/fileImageView"
@@ -25,10 +25,11 @@
             app:tint="@color/purple_700" />
         <TextView
             android:id="@+id/fileName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/fileImageView"
             android:text="file name..."
             android:layout_marginStart="7dp"/>
@@ -38,10 +39,10 @@
             android:id="@+id/fileStartReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="14sp"
+            android:text="Tomorrow"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"/>
+            android:layout_alignParentBottom="true"/>
 
 
         <!--        <Button-->

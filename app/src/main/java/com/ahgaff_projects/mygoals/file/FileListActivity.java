@@ -13,6 +13,7 @@ import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.method.DateKeyListener;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.MainActivity;
 import com.ahgaff_projects.mygoals.R;
 import com.ahgaff_projects.mygoals.folder.Folder;
@@ -65,25 +67,15 @@ public class FileListActivity extends AppCompatActivity {
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.add_edit_delete_file_dialog, null);
             StartReminder.setUp(inflater, this);
-
+            RepeatEvery.setUp(inflater, this);
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
                 String newFileName = input.getText().toString().trim();
                 if (newFileName.equals(""))
-                    new AlertDialog.Builder(this)//show error dialog
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.invalid_file_name)
-                            .setPositiveButton(R.string.ok, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    FACTORY.showErrorDialog(null,getString(R.string.invalid_file_name),this);
                 else if (existFileName(newFileName))
-                    new AlertDialog.Builder(this)//show error dialog
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.invalid_file_name_exist)
-                            .setPositiveButton(R.string.ok, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    FACTORY.showErrorDialog(null,getString(R.string.invalid_file_name_exist),this);
                 else {
                     LocalDateTime startReminder = StartReminder.getChosen(inflater);
                     int repeatEvery = RepeatEvery.getChosen(inflater, this);
@@ -130,10 +122,48 @@ public class FileListActivity extends AppCompatActivity {
 
     //Functions for repeat notification every Never, day...
     public static class RepeatEvery {
+        static void setUp(View dialogView, FileListActivity context) {
+            Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0)
+                        return;
+                    TextView startReminder = dialogView.findViewById(R.id.startReminderContent);
+                    if (startReminder.getText().toString().equals(context.getString(R.string.start_reminder_none))) {
+                        String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                        startReminder.setText(nowDate);
+                    }
+
+                    String[] arr = context.getResources().getStringArray(R.array.repeat_every_options);
+                    if(context.getString(R.string.custom).equals(arr[position])){//todo when type num of days set it into spinner
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                        dialog.setTitle(R.string.add_file_title);
+                        dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
+                        View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_delete_file_custom_repeat_dialog, null);
+                        dialog.setView(inflater);
+                        dialog.setPositiveButton(R.string.set, (_dialog, blah)->{
+                            EditText editText = inflater.findViewById(R.id.fileCustomDays);
+                            try {
+                            customDay = Integer.parseInt(editText.getText().toString());
+                            }catch(Exception e){
+                                FACTORY.showErrorDialog(null,context.getString(R.string.invalid_custom_days),context);
+                            }
+                        });
+                        dialog.show();
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
+        private static int customDay =-1;
         static int getChosen(View dialogView, Context context) {
             Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
+
             switch (spinner.getSelectedItemPosition()) {
-                /**
+                /*
                  * position base on:
                  *   0- Never
                  *   1- Every Day
@@ -142,6 +172,7 @@ public class FileListActivity extends AppCompatActivity {
                  *   4- Every Week
                  *   5- Every 2 Weeks
                  *   6- Every Month
+                 *   7- Custom
                  */
                 case 0:
                     return -1;
@@ -157,8 +188,9 @@ public class FileListActivity extends AppCompatActivity {
                     return 14;
                 case 6:
                     return 30;
+                case 7: return customDay;
                 default:
-                    Toast.makeText(context, "Repeat Every: Unexpected Chosen got=" + spinner.getSelectedItemPosition(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, "Repeat Every: Unexpected Chosen got=" + spinner.getSelectedItemPosition(), Toast.LENGTH_LONG).show();
                     return -1;
             }
         }

@@ -9,6 +9,7 @@
     <string name="error">Error</string>
     <string name="ok">OK</string>
     <string name="arrow">></string>
+    <string name="set">Set</string>
 
     <!--Folder-->
     <string name="title_activity_folder_list">Folders</string>
@@ -29,7 +30,11 @@
     <string name="delete_file_title">Delete File</string>
     <string name="start_reminder_title">Start Reminder At</string>
     <string name="start_reminder_none">None</string>
+    <string name="repeat_reminder_every">Repeat Reminder Every</string>
     <string name="reminder_periodic">Repeat</string>
+    <string name="custom_days">Days</string>
+    <string name="custom">Custom</string>
+    <string name="invalid_custom_days">Invalid number of days</string>
     <string-array name="repeat_every_options">
         <item>Never</item>
         <item>Every Day</item>
@@ -38,6 +43,7 @@
         <item>Every Week</item>
         <item>Every 2 Weeks</item>
         <item>Every Month</item>
+        <item>@string/custom</item>
     </string-array>
 
     <!--Goal-->
