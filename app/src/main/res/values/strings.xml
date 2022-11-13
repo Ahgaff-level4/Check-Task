@@ -35,6 +35,13 @@
     <string name="custom_days">Days</string>
     <string name="custom">Custom</string>
     <string name="invalid_custom_days">Invalid number of days</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="after_tomorrow">After Tomorrow</string>
+    <string name="after">After</string>
+    <string name="days">Days</string>
+    <!--in arabic will be (يوم) for 11 and more days-->
+    <string name="arabic_days">Days</string>
     <string-array name="repeat_every_options">
         <item>Never</item>
         <item>Every Day</item>
