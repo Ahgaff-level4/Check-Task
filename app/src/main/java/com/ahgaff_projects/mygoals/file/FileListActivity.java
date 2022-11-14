@@ -74,9 +74,9 @@ public class FileListActivity extends AppCompatActivity {
                 EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
                 String newFileName = input.getText().toString().trim();
                 if (newFileName.equals(""))
-                    FACTORY.showErrorDialog(null,getString(R.string.invalid_file_name),this);
+                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name),this);
                 else if (existFileName(newFileName))
-                    FACTORY.showErrorDialog(null,getString(R.string.invalid_file_name_exist),this);
+                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist),this);
                 else {
                     LocalDateTime startReminder = StartReminder.getChosen(inflater);
                     int repeatEvery = RepeatEvery.getChosen(inflater, this);
@@ -165,7 +165,7 @@ public class FileListActivity extends AppCompatActivity {
 //                                Log.d("MyTag","set selection in the spinner");
                             }catch(Exception e){
 //                                Log.d("MyTag","Entered exception block");
-                                FACTORY.showErrorDialog(null,context.getString(R.string.invalid_custom_days),context);
+                                FACTORY.showErrorDialog(context.getString(R.string.invalid_custom_days),context);
                             }
                         });
                         dialog.show();

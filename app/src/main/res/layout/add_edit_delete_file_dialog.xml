@@ -56,8 +56,9 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="@string/arrow"
+            android:layout_marginEnd="-8dp"
             android:textColor="@color/black_300"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
     <RelativeLayout

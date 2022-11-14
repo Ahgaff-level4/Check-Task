@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -57,19 +58,9 @@ public class FolderListActivity extends AppCompatActivity {
                 EditText input = inflater.findViewById(R.id.folderNameEditText);//input from dialog
                 String newFolderName = input.getText().toString().trim();
                 if (newFolderName.equals(""))
-                    new AlertDialog.Builder(this)//show error dialog
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.invalid_folder_name)
-                            .setPositiveButton(R.string.ok, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    FACTORY.showErrorDialog(R.string.invalid_folder_name,this);
                 else if(existFolderName(newFolderName))
-                    new AlertDialog.Builder(this)//show error dialog
-                            .setTitle(R.string.error)
-                            .setMessage(R.string.invalid_folder_name_exist)
-                            .setPositiveButton(R.string.ok, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    FACTORY.showErrorDialog(R.string.invalid_folder_name_exist,this);
                 else
                     adapter.addFolder(new Folder(DATA.generateId(adapter.getCopyFolders()),newFolderName));
 
