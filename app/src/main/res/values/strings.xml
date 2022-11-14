@@ -42,6 +42,7 @@
     <string name="days">Days</string>
     <!--in arabic will be (يوم) for 11 and more days-->
     <string name="arabic_days">Days</string>
+    <string name="every">Every</string>
     <string-array name="repeat_every_options">
         <item>Never</item>
         <item>Every Day</item>

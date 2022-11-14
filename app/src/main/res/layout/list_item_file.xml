@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fileParentCard"
-    app:cardCornerRadius="7dp"
+    app:cardCornerRadius="50dp"
     app:cardElevation="4dp"
     app:cardBackgroundColor="@color/white"
     android:layout_margin="4dp"
@@ -14,13 +14,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp">
+        >
 
         <ImageView
             android:id="@+id/fileImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+android:layout_centerVertical="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="7dp"
             android:src="?attr/actionModePasteDrawable"
             app:tint="@color/purple_700" />
         <TextView
@@ -29,10 +31,12 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:layout_marginEnd="10dp"
+        android:paddingVertical="7dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/fileImageView"
-            android:text="file name..."
-            android:layout_marginStart="7dp"/>
+            android:text="File name..."
+            />
 
         <!--If file has startReminder date it will be shown below-->
         <TextView
@@ -41,6 +45,8 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="Tomorrow"
+            android:layout_marginEnd="14dp"
+            android:paddingBottom="3dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"/>
 

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.method.DateKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -143,10 +144,27 @@ public class FileListActivity extends AppCompatActivity {
                         View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_delete_file_custom_repeat_dialog, null);
                         dialog.setView(inflater);
                         dialog.setPositiveButton(R.string.set, (_dialog, blah)->{
-                            EditText editText = inflater.findViewById(R.id.fileCustomDays);
+                            EditText editText = inflater.findViewById(R.id.fileCustomDaysEditText);
                             try {
-                            customDay = Integer.parseInt(editText.getText().toString());
+                                Log.d("MyTag","Enter try block");
+
+                                customDay = Integer.parseInt(editText.getText().toString());
+                                Log.d("MyTag","Set customDay");
+//                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(context)
+//                                Log.d("MyTag","created new arrayAdapter");
+//                                CharSequence custom = context.getString(R.string.custom);
+//                                Log.d("MyTag","created custom charSequence var");
+//                                adapter.remove(custom);
+//                                Log.d("MyTag","remove custom item from arr adapter");
+//                                adapter.add(FACTORY.toEveryDay(customDay,context));
+//                                adapter.add(context.getString(R.string.custom));
+//                                Log.d("MyTag","added two items in adapter");
+//                                spinner.setAdapter(adapter);
+//                                Log.d("MyTag","set adapter in the spinner");
+//                                spinner.setSelection(adapter.getCount()-2);
+//                                Log.d("MyTag","set selection in the spinner");
                             }catch(Exception e){
+//                                Log.d("MyTag","Entered exception block");
                                 FACTORY.showErrorDialog(null,context.getString(R.string.invalid_custom_days),context);
                             }
                         });

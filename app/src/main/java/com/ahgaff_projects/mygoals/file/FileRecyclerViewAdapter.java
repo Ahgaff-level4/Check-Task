@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.ahgaff_projects.mygoals.folder.Folder;
 
@@ -113,19 +114,6 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             // So, remain days = (now date - old date) % repeatDays
             days =(-days) % thisFile.getRepeatEvery();//old date is negative
         }
-            switch ((int) days){
-                case 0: return context.getString(R.string.today);
-                case 1: return context.getString(R.string.tomorrow);
-                case 2: return context.getString(R.string.after_tomorrow);
-                case 3://empty case will fall to below case. So all empty cases will execute case 10 code.
-                case 4:// 10 ايام
-                case 5:// 11 يوم
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                case 10:return context.getString(R.string.after)+" "+days+" "+context.getString(R.string.days);
-                default:return context.getString(R.string.after)+" "+days+" "+context.getString(R.string.arabic_days);
-            }
+            return FACTORY.toEveryDay((int)days,context);
     }
 }
