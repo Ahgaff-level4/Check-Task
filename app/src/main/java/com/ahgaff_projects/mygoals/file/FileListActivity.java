@@ -8,49 +8,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.text.method.DateKeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
-import com.ahgaff_projects.mygoals.MainActivity;
 import com.ahgaff_projects.mygoals.R;
-import com.ahgaff_projects.mygoals.folder.Folder;
-import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class FileListActivity extends AppCompatActivity {
     private FileRecyclerViewAdapter adapter;
-
+    private DB db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_list);
-
+        db = new DB(this);
         setUpRecyclerView();
         setUpFabButton();
     }
 
     private void setUpRecyclerView() {
         //the folder that has this files list
-        Folder folder = (Folder) getIntent().getSerializableExtra("folderObj");
-        adapter = new FileRecyclerViewAdapter(folder, this);
+        int folderId = getIntent().getIntExtra("folderId",-1);
+        adapter = new FileRecyclerViewAdapter(folderId,this,db);
         RecyclerView recyclerView = findViewById(R.id.fileListRecyclerView);
         recyclerView.setAdapter(adapter);
 
@@ -74,14 +64,15 @@ public class FileListActivity extends AppCompatActivity {
                 EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
                 String newFileName = input.getText().toString().trim();
                 if (newFileName.equals(""))
-                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name),this);
-                else if (existFileName(newFileName))
-                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist),this);
+                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name), this);
+                else if (adapter.getFilesNames().contains(newFileName))
+                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist), this);
                 else {
                     LocalDateTime startReminder = StartReminder.getChosen(inflater);
                     int repeatEvery = RepeatEvery.getChosen(inflater, this);
-                    Toast.makeText(this, "repeat every:" + repeatEvery, Toast.LENGTH_LONG).show();
-                    adapter.addFile(new File(DATA.generateId(adapter.getCopyFolder()), newFileName, startReminder, repeatEvery));
+                    if(!db.insertFile(adapter.folderId,newFileName,startReminder,repeatEvery))
+                        FACTORY.showErrorDialog(R.string.error,this);
+                    adapter.updateFiles();
                 }
             });
             dialog.show();
@@ -89,12 +80,7 @@ public class FileListActivity extends AppCompatActivity {
     }
 
 
-    private boolean existFileName(String newName) {
-        for (File f : adapter.getCopyFolder().getFiles())//foreach
-            if (f.getName().equals(newName))
-                return true;
-        return false;
-    }
+
 
     //class made to divide the factions to its purpose
     private static class StartReminder {
@@ -114,9 +100,8 @@ public class FileListActivity extends AppCompatActivity {
         @Nullable
         private static LocalDateTime getChosen(View dialogView) {
             String startReminderTxt = ((TextView) dialogView.findViewById(R.id.startReminderContent)).getText().toString();
-            String[] arr = startReminderTxt.split("/");
-            if (arr.length > 1)
-                return LocalDateTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), 6, 0);
+            if (startReminderTxt.contains("/"))
+                return FACTORY.getDateFrom(startReminderTxt);
             else return null;
         }
     }
@@ -137,19 +122,19 @@ public class FileListActivity extends AppCompatActivity {
                     }
 
                     String[] arr = context.getResources().getStringArray(R.array.repeat_every_options);
-                    if(context.getString(R.string.custom).equals(arr[position])){//todo when type num of days set it into spinner
+                    if (context.getString(R.string.custom).equals(arr[position])) {//todo when type num of days set it into spinner
                         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                         dialog.setTitle(R.string.add_file_title);
                         dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
                         View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_delete_file_custom_repeat_dialog, null);
                         dialog.setView(inflater);
-                        dialog.setPositiveButton(R.string.set, (_dialog, blah)->{
+                        dialog.setPositiveButton(R.string.set, (_dialog, blah) -> {
                             EditText editText = inflater.findViewById(R.id.fileCustomDaysEditText);
                             try {
-                                Log.d("MyTag","Enter try block");
+                                Log.d("MyTag", "Enter try block");
 
                                 customDay = Integer.parseInt(editText.getText().toString());
-                                Log.d("MyTag","Set customDay");
+                                Log.d("MyTag", "Set customDay");
 //                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(context)
 //                                Log.d("MyTag","created new arrayAdapter");
 //                                CharSequence custom = context.getString(R.string.custom);
@@ -163,20 +148,23 @@ public class FileListActivity extends AppCompatActivity {
 //                                Log.d("MyTag","set adapter in the spinner");
 //                                spinner.setSelection(adapter.getCount()-2);
 //                                Log.d("MyTag","set selection in the spinner");
-                            }catch(Exception e){
+                            } catch (Exception e) {
 //                                Log.d("MyTag","Entered exception block");
-                                FACTORY.showErrorDialog(context.getString(R.string.invalid_custom_days),context);
+                                FACTORY.showErrorDialog(context.getString(R.string.invalid_custom_days), context);
                             }
                         });
                         dialog.show();
                     }
                 }
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
         }
-        private static int customDay =-1;
+
+        private static int customDay = -1;
+
         static int getChosen(View dialogView, Context context) {
             Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
 
@@ -206,7 +194,8 @@ public class FileListActivity extends AppCompatActivity {
                     return 14;
                 case 6:
                     return 30;
-                case 7: return customDay;
+                case 7:
+                    return customDay;
                 default:
 //                    Toast.makeText(context, "Repeat Every: Unexpected Chosen got=" + spinner.getSelectedItemPosition(), Toast.LENGTH_LONG).show();
                     return -1;

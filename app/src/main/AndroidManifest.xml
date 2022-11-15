@@ -15,7 +15,8 @@
         <activity
             android:name=".file.FileListActivity"
             android:label="@string/title_activity_file_list"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".folder.FolderListActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

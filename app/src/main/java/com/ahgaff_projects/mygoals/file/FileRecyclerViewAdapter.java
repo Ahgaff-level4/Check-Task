@@ -1,6 +1,5 @@
 package com.ahgaff_projects.mygoals.file;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,27 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
-import com.ahgaff_projects.mygoals.folder.Folder;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerViewAdapter.ViewHolder> {
     private final FileListActivity context;
-    private final Folder folder;
+    public final int folderId;
+    private ArrayList<File> files;
+    private final DB db;
 
-    public FileRecyclerViewAdapter(Folder folder, FileListActivity context) {
-        this.folder = folder;
+    public FileRecyclerViewAdapter(int folderId, FileListActivity context, DB db) {
+        this.folderId = folderId;
         this.context = context;
+        this.db = db;
+        this.files = db.getFilesOf(folderId);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,18 +54,16 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_folder,parent,false);
-//        return new ViewHolder(view);
         return new ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.list_item_file, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        File thisFile = folder.getFiles().get(position);
+        File thisFile = files.get(position);
         holder.fileName.setText(thisFile.getId() + "- " + thisFile.getName());
         holder.fileStartTime.setText(nearestReminder(thisFile));
-        holder.fileParent.setOnClickListener(v -> Toast.makeText(context, folder.getFiles().get(holder.getAbsoluteAdapterPosition()).getName() + " Selected", Toast.LENGTH_LONG).show());
+        holder.fileParent.setOnClickListener(v -> Toast.makeText(context, files.get(holder.getAbsoluteAdapterPosition()).getName() + " Selected", Toast.LENGTH_LONG).show());
 //        ViewHolder viewHolder = (ViewHolder) holder;
 //here you can set your own conditions based on your arraylist using position parameter
 //        viewHolder. .itemNameTextView.setText(locationsArrayList.get(position).getName());
@@ -77,24 +72,23 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
 
     @Override
     public int getItemCount() {
-        return folder.getFiles().size();
+        return files.size();
     }
 
-    public Folder getCopyFolder() {//return clone because this.folder should not be changed outside adapter(Encapsulation)
-        return folder.clone();
+    /**
+     *
+     * @return array of string of all files name
+     */
+    public ArrayList<String> getFilesNames(){
+        ArrayList<String> arr = new ArrayList<>();
+        for(File f: files)
+            arr.add(f.getName());
+        return arr;
     }
 
-
-    public void addFile(File file) {
-        this.folder.getFiles().add(file);
+    public void updateFiles() {
+        this.files = db.getFilesOf(folderId);
         notifyDataSetChanged();//refresh the list
-        DATA.save(this.folder, context);
-    }
-
-    public void deleteFile(File file) {
-        this.folder.getFiles().remove(file);
-        notifyDataSetChanged();
-        DATA.save(folder, context);
     }
 
     private String nearestReminder(File thisFile) {

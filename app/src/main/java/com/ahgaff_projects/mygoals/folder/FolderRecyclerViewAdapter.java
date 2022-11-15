@@ -1,10 +1,7 @@
 package com.ahgaff_projects.mygoals.folder;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -17,7 +14,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.ahgaff_projects.mygoals.file.FileListActivity;
@@ -27,13 +24,12 @@ import java.util.ArrayList;
 public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Folder> folders;
     private final FolderListActivity context;
+    private final DB db;
 
-    public FolderRecyclerViewAdapter(ArrayList<Folder> folders, FolderListActivity context) {
+    public FolderRecyclerViewAdapter(FolderListActivity context, DB db) {
         this.context = context;
-        if (folders == null)
-            this.folders = new ArrayList<>();
-        else
-            this.folders = folders;
+        this.folders = db.getAllFolders();
+        this.db = db;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -92,9 +88,13 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
                         return true;
                     case R.id.delete_crud_folder_file_item:
                         //handle menu2 click
-                        FACTORY.showAreYouSureDialog(context.getString(R.string.folder) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFiles().size() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
-                            deleteFolder(f);
-                            Toast.makeText(context, context.getString(R.string.deleted_successfully), Toast.LENGTH_LONG).show();
+                        FACTORY.showAreYouSureDialog(context.getString(R.string.folder) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
+                            if (!db.deleteFolder(f.getId()))
+                                FACTORY.showErrorDialog(R.string.something_went_wrong, context);
+                            else {
+                                this.updateFolders();
+                                Toast.makeText(context, context.getString(R.string.deleted_successfully), Toast.LENGTH_LONG).show();
+                            }
                         });
                         return true;
                     default:
@@ -119,11 +119,14 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
             String newFolderName = input.getText().toString().trim();
             if (newFolderName.equals(""))
                 FACTORY.showErrorDialog(R.string.invalid_folder_name, context);
-            else if (existFolderName(newFolderName))
+            else if (getAllFolderNames().contains(newFolderName))
                 FACTORY.showErrorDialog(R.string.invalid_folder_name_exist, context);
-            else {
-                editFolder(new Folder(f.getId(),newFolderName));
-            }
+            else if(!db.updateFolder(f.getId(),newFolderName))
+                    FACTORY.showErrorDialog(R.string.something_went_wrong,context);
+                else{
+                    this.updateFolders();
+                }
+
         });
         dialog.show();
 
@@ -132,50 +135,24 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     private View.OnClickListener handleOnFolderClick(Folder f) {
         return v -> {
             Intent i = new Intent(context, FileListActivity.class);
-            i.putExtra("folderObj", f);
+            i.putExtra("folderId", f.getId());
             context.startActivity(i);
         };
     }
 
-    public ArrayList<Folder> getCopyFolders() {//return clone because folders should not be changed outside adapter
-        ArrayList<Folder> clone = new ArrayList<>();
-        for (Folder f : this.folders)
-            clone.add(f.clone());
-        return clone;
-    }
-
-
-    public void addFolder(Folder folder) {
-        this.folders.add(folder);
-        DATA.save(folders, context);
+    /**
+     * assign adapter folders from database and notifyDataSetChanged()
+     */
+    public void updateFolders() {
+        this.folders = db.getAllFolders();
         notifyDataSetChanged();//refresh the list
     }
 
-    public void deleteFolder(Folder folder) {
-        this.folders.remove(folder);
-        DATA.save(folders, context);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * @param folder update folder name in folders that has same @param folder's id
-     */
-    public void editFolder(Folder folder) {
-        for (int i = 0; i < folders.size(); i++)
-            if (folders.get(i).getId() == folder.getId()) {
-                folders.get(i).setName(folder.getName());
-                DATA.save(folders, context);
-                notifyDataSetChanged();
-                return;
-            }
-        Toast.makeText(context,"You are asshole! providing folder with not exist id folder!",Toast.LENGTH_LONG).show();
-    }
-
-    private boolean existFolderName(String newName) {
+    public ArrayList<String> getAllFolderNames() {
+        ArrayList<String> arr = new ArrayList<>();
         for (Folder f : folders)
-            if (f.getName().equals(newName))
-                return true;
-        return false;
+            arr.add(f.getName());
+        return arr;
     }
 
 }

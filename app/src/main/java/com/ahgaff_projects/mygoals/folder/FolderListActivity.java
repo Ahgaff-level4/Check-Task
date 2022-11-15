@@ -3,7 +3,6 @@ package com.ahgaff_projects.mygoals.folder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -11,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ahgaff_projects.mygoals.DATA;
+import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,6 +18,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class FolderListActivity extends AppCompatActivity {
 
     private FolderRecyclerViewAdapter adapter;
+    private DB db = new DB(this);
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class FolderListActivity extends AppCompatActivity {
 
     private void setUpRecyclerView() {
         //create garbage list for testing
-        adapter = new FolderRecyclerViewAdapter(DATA.retrieveFolders(this), this);
+        adapter = new FolderRecyclerViewAdapter( this,db);
         RecyclerView recyclerView = findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
 
@@ -48,7 +49,6 @@ public class FolderListActivity extends AppCompatActivity {
     private void setUpFabButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            Toast.makeText(this, "hello fab", Toast.LENGTH_LONG).show();
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.add_folder_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
@@ -59,22 +59,20 @@ public class FolderListActivity extends AppCompatActivity {
                 String newFolderName = input.getText().toString().trim();
                 if (newFolderName.equals(""))
                     FACTORY.showErrorDialog(R.string.invalid_folder_name,this);
-                else if(existFolderName(newFolderName))
+                else if(adapter.getAllFolderNames().contains(newFolderName))
                     FACTORY.showErrorDialog(R.string.invalid_folder_name_exist,this);
-                else
-                    adapter.addFolder(new Folder(DATA.generateId(adapter.getCopyFolders()),newFolderName));
+                else {
+                    if(!db.insertFolder(newFolderName))
+                        FACTORY.showErrorDialog(R.string.error,this);
+                    adapter.updateFolders();
+                }
 
             });
             dialog.show();
         });
     }
 
-    private boolean existFolderName(String newName){
-        for (Folder f: adapter.getCopyFolders())//foreach
-            if(f.getName().equals(newName))
-                return true;
-        return false;
-    }
+
 
 
 }

@@ -7,17 +7,17 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Folder implements Cloneable, Serializable {
+public class Folder {
     private final int id;
     private String name;
-    private ArrayList<File> files;
-    private LocalDateTime created;
+    private final LocalDateTime created;
+    private final int filesCount;
 
-    public Folder(int id,String name) {
+    public Folder(int id,String name, LocalDateTime created,int filesCount){
         this.id = id;
         this.name = name;
-        this.files = new ArrayList<>();
-        created = LocalDateTime.now();
+        this.created = created;
+        this.filesCount=filesCount;
     }
 
     public int getId() {
@@ -32,26 +32,8 @@ public class Folder implements Cloneable, Serializable {
         this.name = name;
     }
 
-    public ArrayList<File> getFiles() {
-        return files;
-    }
+    public int getFilesCount(){return filesCount;}
 
-    @Override
-    public Folder clone() {
-        Folder clone = new Folder(this.id,this.name);
-        for (File file : this.files)
-            clone.files.add(file.clone());
-        clone.created = this.created;
-        return clone;
-    }
-//
-//    public void addGoal(Goal goal) {
-//        this.goals.add(goal);
-//    }
-//    public void removeGoal(Goal goal){
-//        this.goals.remove(goal);
-//    }
-//    public void removeGoal(int index){
-//        this.goals.remove(index);
-//    }
+
+    public LocalDateTime getCreated(){return created;}
 }

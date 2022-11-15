@@ -14,6 +14,7 @@
     <string name="it_has">It has</string>
     <string name="are_you_sure">Are You Sure?</string>
     <string name="deleted_successfully">Deleted Successfully!</string>
+    <string name="something_went_wrong">Something Went Wrong!</string>
 
     <!--Folder-->
     <string name="folder">Folder</string>
