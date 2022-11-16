@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fileListRecyclerView"
+        android:id="@+id/taskListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
@@ -19,5 +19,5 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         android:src="@android:drawable/ic_input_add"
-        tools:ignore="ContentDescription" />
+        tools:ignore="contentDescription" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 package com.ahgaff_projects.mygoals.folder;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +33,10 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         this.db = db;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView folderParent;
-        private TextView folderName;
-        private View optionBtn;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final CardView folderParent;
+        private final TextView folderName;
+        private final View optionBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,25 +82,25 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
             popup.inflate(R.menu.menu_crud_folder_file);
             //adding click listener
             popup.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.edit_crud_folder_file_item:
-                        //handle menu1 click
-                        handleEditFolder(f);
-                        return true;
-                    case R.id.delete_crud_folder_file_item:
-                        //handle menu2 click
-                        FACTORY.showAreYouSureDialog(context.getString(R.string.folder) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
-                            if (!db.deleteFolder(f.getId()))
-                                FACTORY.showErrorDialog(R.string.something_went_wrong, context);
-                            else {
-                                this.updateFolders();
-                                Toast.makeText(context, context.getString(R.string.deleted_successfully), Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        return true;
-                    default:
-                        return false;
+                if (item.getItemId() == R.id.edit_crud_folder_file_item) {
+                    //handle menu1 click
+                    handleEditFolder(f);
+                    return true;
                 }
+                if (item.getItemId() == R.id.delete_crud_folder_file_item) {
+                    //handle menu2 click
+                    FACTORY.showAreYouSureDialog(context.getString(R.string.folder) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
+                        if (!db.deleteFolder(f.getId()))
+                            FACTORY.showErrorDialog(R.string.something_went_wrong, context);
+                        else {
+                            this.updateFolders();
+                            Toast.makeText(context, context.getString(R.string.deleted_successfully), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    return true;
+                } else
+                    return false;
+
             });
             //displaying the popup
             popup.show();
@@ -110,7 +111,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(R.string.edit_folder_title);
         dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-        View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_delete_folder_dialog, null);
+        View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_folder_dialog, null);
         dialog.setView(inflater);
         EditText input = inflater.findViewById(R.id.folderNameEditText);//input from dialog
         input.setText(f.getName());//set existing folder name to be changed by user
@@ -121,11 +122,11 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
                 FACTORY.showErrorDialog(R.string.invalid_folder_name, context);
             else if (getAllFolderNames().contains(newFolderName))
                 FACTORY.showErrorDialog(R.string.invalid_folder_name_exist, context);
-            else if(!db.updateFolder(f.getId(),newFolderName))
-                    FACTORY.showErrorDialog(R.string.something_went_wrong,context);
-                else{
-                    this.updateFolders();
-                }
+            else if (!db.updateFolder(f.getId(), newFolderName))
+                FACTORY.showErrorDialog(R.string.something_went_wrong, context);
+            else {
+                this.updateFolders();
+            }
 
         });
         dialog.show();
@@ -143,6 +144,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     /**
      * assign adapter folders from database and notifyDataSetChanged()
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void updateFolders() {
         this.folders = db.getAllFolders();
         notifyDataSetChanged();//refresh the list

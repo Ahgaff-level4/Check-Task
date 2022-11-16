@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class FolderListActivity extends AppCompatActivity {
 
     private FolderRecyclerViewAdapter adapter;
-    private DB db = new DB(this);
+    private final DB db = new DB(this);
 
 
     @Override
@@ -52,7 +52,7 @@ public class FolderListActivity extends AppCompatActivity {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.add_folder_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-            View inflater = getLayoutInflater().inflate(R.layout.add_edit_delete_folder_dialog, null);
+            View inflater = getLayoutInflater().inflate(R.layout.add_edit_folder_dialog, null);
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.folderNameEditText);//input from dialog

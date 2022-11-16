@@ -62,6 +62,12 @@
         <item>@string/custom</item>
     </string-array>
 
-    <!--Goal-->
+    <!--Task-->
+    <string name="task">Task</string>
+    <string name="title_activity_task_list">Tasks</string>
+    <string name="add_task_dialog_edittext_hint">…</string>
+    <string name="add_task_title">Add Task</string>
+    <string name="edit_task_title">Edit Task</string>
+    <string name="delete_task_title">Delete Task</string>
 
 </resources>

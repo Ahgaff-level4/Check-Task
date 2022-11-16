@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/taskParentCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="50dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/taskCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:checked="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="7dp"
+            android:textColorHighlight="#279F34"
+            android:textColorHint="@color/purple_500"
+            android:textColorLink="#D0DF3D"
+            app:tint="@color/purple_700" />
+
+        <TextView
+            android:id="@+id/taskText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@+id/taskCheckBox"
+            android:paddingVertical="7dp"
+            android:text="Task text..."
+            android:textIsSelectable="true"
+            android:textSize="20sp"
+
+            tools:ignore="HardCodedText" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

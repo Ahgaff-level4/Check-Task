@@ -2,13 +2,9 @@ package com.ahgaff_projects.mygoals.file;
 
 import androidx.annotation.Nullable;
 
-import com.ahgaff_projects.mygoals.goal.Goal;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
-public class File implements Cloneable, Serializable {
+public class File {
     private final int id;
     private String name;
     private final LocalDateTime created;
@@ -22,14 +18,16 @@ public class File implements Cloneable, Serializable {
      */
     private int repeatEvery;
     private final int folderId;
+    private final int tasksCount;
 
-    public File(int id,String name,@Nullable LocalDateTime startReminder,int repeatEveryDay,LocalDateTime created,int folderId){
+    public File(int id,String name,@Nullable LocalDateTime startReminder,int repeatEveryDay,LocalDateTime created,int folderId,int tasksCount){
         this.id = id;
         this.name = name;
         this.startReminder = startReminder;
         this.repeatEvery = repeatEveryDay;
         this.created = created;
         this.folderId = folderId;
+        this.tasksCount = tasksCount;
     }
     public int getId(){
         return id;
@@ -50,8 +48,8 @@ public class File implements Cloneable, Serializable {
     public LocalDateTime getStartReminder() {
         return startReminder;
     }
-    @Nullable
-    public void setStartReminder(LocalDateTime startReminder){
+
+    public void setStartReminder(@Nullable LocalDateTime startReminder){
         this.startReminder = startReminder;
     }
 
@@ -62,6 +60,7 @@ public class File implements Cloneable, Serializable {
     public int getFolderId() {
         return folderId;
     }
+    public int getTasksCount(){return tasksCount;}
 
 
 }

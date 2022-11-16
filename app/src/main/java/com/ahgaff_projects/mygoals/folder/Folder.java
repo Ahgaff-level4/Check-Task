@@ -1,11 +1,6 @@
 package com.ahgaff_projects.mygoals.folder;
 
-import com.ahgaff_projects.mygoals.file.File;
-import com.ahgaff_projects.mygoals.goal.Goal;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Folder {
     private final int id;

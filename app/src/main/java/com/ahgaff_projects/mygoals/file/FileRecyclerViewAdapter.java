@@ -1,5 +1,7 @@
 package com.ahgaff_projects.mygoals.file;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
+import com.ahgaff_projects.mygoals.task.TaskListActivity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -31,10 +34,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         this.files = db.getFilesOf(folderId);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView fileParent;
-        private TextView fileName;
-        private TextView fileStartTime;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final CardView fileParent;
+        private final TextView fileName;
+        private final TextView fileStartTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,9 +64,14 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         File thisFile = files.get(position);
-        holder.fileName.setText(thisFile.getId() + "- " + thisFile.getName());
+        String fileName = thisFile.getId() + "- " + thisFile.getName();
+        holder.fileName.setText(fileName);
         holder.fileStartTime.setText(nearestReminder(thisFile));
-        holder.fileParent.setOnClickListener(v -> Toast.makeText(context, files.get(holder.getAbsoluteAdapterPosition()).getName() + " Selected", Toast.LENGTH_LONG).show());
+        holder.fileParent.setOnClickListener(v -> {
+            Intent i = new Intent(context, TaskListActivity.class);
+            i.putExtra("fileId", thisFile.getId());
+            context.startActivity(i);
+        });
 //        ViewHolder viewHolder = (ViewHolder) holder;
 //here you can set your own conditions based on your arraylist using position parameter
 //        viewHolder. .itemNameTextView.setText(locationsArrayList.get(position).getName());
@@ -86,6 +94,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         return arr;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateFiles() {
         this.files = db.getFilesOf(folderId);
         notifyDataSetChanged();//refresh the list
