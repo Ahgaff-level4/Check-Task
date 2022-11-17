@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskListRecyclerView"
         android:layout_width="match_parent"
