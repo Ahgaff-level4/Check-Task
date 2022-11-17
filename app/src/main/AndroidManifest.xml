@@ -10,21 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyGoals"
+        android:theme="@style/Theme.MyGoals.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".file.FileListActivity"
-            android:label="@string/title_activity_file_list"
-            android:exported="false"
-            android:parentActivityName=".folder.FolderListActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MyGoals.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,12 +29,35 @@
             android:name=".folder.FolderListActivity"
             android:exported="true"
             android:label="@string/title_activity_folder_list"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.MyGoals.NoActionBar">
+            <!-- ParentActivity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".file.FileListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_file_list"
+            android:theme="@style/Theme.MyGoals.NoActionBar"
+            android:parentActivityName=".folder.FolderListActivity">
+            <!-- ParentActivity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".folder.FolderListActivity" />
+        </activity>
         <activity
             android:name=".task.TaskListActivity"
             android:exported="true"
             android:label="@string/title_activity_task_list"
-            android:parentActivityName=".file.FileListActivity" />
+            android:theme="@style/Theme.MyGoals.NoActionBar"
+            android:parentActivityName=".file.FileListActivity" >
+            <!-- ParentActivity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".file.FileListActivity" />
+        </activity>
     </application>
 
 </manifest>
