@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DB;
@@ -24,10 +25,10 @@ import java.util.ArrayList;
 
 public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Folder> folders;
-    private final FolderListActivity context;
+    private final FragmentActivity context;
     private final DB db;
 
-    public FolderRecyclerViewAdapter(FolderListActivity context, DB db) {
+    public FolderRecyclerViewAdapter(FragmentActivity context, DB db) {
         this.context = context;
         this.folders = db.getAllFolders();
         this.db = db;
@@ -57,7 +58,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.list_item_folder, parent, false));
+                .inflate(R.layout.item_list_folder, parent, false));
     }
 
     @Override
@@ -111,7 +112,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(R.string.edit_folder_title);
         dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-        View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_folder_dialog, null);
+        View inflater = context.getLayoutInflater().inflate(R.layout.dialog_add_edit_folder, null);
         dialog.setView(inflater);
         EditText input = inflater.findViewById(R.id.folderNameEditText);//input from dialog
         input.setText(f.getName());//set existing folder name to be changed by user

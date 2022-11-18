@@ -18,6 +18,7 @@
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
     <string name="nav_header_description">TODO</string>
+    <string name="title_home">Home</string>
 
     <!--Folder-->
     <string name="folder">Folder</string>

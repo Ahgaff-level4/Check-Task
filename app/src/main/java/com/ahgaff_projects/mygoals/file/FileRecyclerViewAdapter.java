@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
-import com.ahgaff_projects.mygoals.task.TaskListActivity;
+import com.ahgaff_projects.mygoals.task.TaskListFragment;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -58,7 +57,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.list_item_file, parent, false));
+                .inflate(R.layout.item_list_file, parent, false));
     }
 
     @Override
@@ -68,7 +67,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         holder.fileName.setText(fileName);
         holder.fileStartTime.setText(nearestReminder(thisFile));
         holder.fileParent.setOnClickListener(v -> {
-            Intent i = new Intent(context, TaskListActivity.class);
+            Intent i = new Intent(context, TaskListFragment.class);
             i.putExtra("fileId", thisFile.getId());
             context.startActivity(i);
         });

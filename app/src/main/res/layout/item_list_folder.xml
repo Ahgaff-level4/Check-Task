@@ -46,7 +46,7 @@
             android:layout_alignParentTop="true"
             android:clickable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/more_vert_48px" />
+            android:src="@drawable/more_vert" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

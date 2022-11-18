@@ -2,7 +2,6 @@ package com.ahgaff_projects.mygoals.task;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,9 +15,10 @@ import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class TaskListActivity extends AppCompatActivity {
+public class TaskListFragment extends AppCompatActivity {
     private TaskRecyclerViewAdapter adapter;
     private DB db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class TaskListActivity extends AppCompatActivity {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.add_task_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-            View inflater = getLayoutInflater().inflate(R.layout.add_edit_task_dialog, null);
+            View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_task, null);
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.taskTextEditText);//input from dialog

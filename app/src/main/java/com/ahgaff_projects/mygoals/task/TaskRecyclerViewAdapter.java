@@ -5,12 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DB;
@@ -20,12 +17,12 @@ import com.ahgaff_projects.mygoals.R;
 import java.util.ArrayList;
 
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder> {
-    private final TaskListActivity context;
+    private final TaskListFragment context;
     public final int fileId;
     private ArrayList<Task> tasks;
     private final DB db;
 
-    public TaskRecyclerViewAdapter(int fileId, TaskListActivity context, DB db) {
+    public TaskRecyclerViewAdapter(int fileId, TaskListFragment context, DB db) {
         this.fileId = fileId;
         this.context = context;
         this.db = db;
@@ -56,7 +53,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.list_item_task, parent, false));
+                .inflate(R.layout.item_list_task, parent, false));
     }
 
     @Override

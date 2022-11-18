@@ -61,7 +61,7 @@ public class FileListActivity extends AppCompatActivity {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.add_file_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-            View inflater = getLayoutInflater().inflate(R.layout.add_edit_file_dialog, null);
+            View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
             StartReminder.setUp(inflater, this);
             RepeatEvery.setUp(inflater, this);
             dialog.setView(inflater);
@@ -131,7 +131,7 @@ public class FileListActivity extends AppCompatActivity {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                         dialog.setTitle(R.string.add_file_title);
                         dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-                        View inflater = context.getLayoutInflater().inflate(R.layout.add_edit_file_custom_repeat_dialog, null);
+                        View inflater = context.getLayoutInflater().inflate(R.layout.dialog_add_edit_file_custom_repeat, null);
                         dialog.setView(inflater);
                         dialog.setPositiveButton(R.string.set, (_dialog, blah) -> {
                             EditText editText = inflater.findViewById(R.id.fileCustomDaysEditText);
