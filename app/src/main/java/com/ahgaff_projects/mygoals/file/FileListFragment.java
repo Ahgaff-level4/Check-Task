@@ -68,7 +68,7 @@ public class FileListFragment extends Fragment {
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
             StartReminder.setUp(inflater, getActivity(), null);
-            RepeatEvery.setUp(inflater, getActivity(),null);
+            RepeatEvery.setUp(inflater, getActivity(), null);
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
@@ -95,23 +95,19 @@ public class FileListFragment extends Fragment {
         public static void setUp(View dialogView, Context context, @Nullable String startedReminder) {
             RelativeLayout startReminder = dialogView.findViewById(R.id.startReminderLayout);
             TextView startReminderContent = dialogView.findViewById(R.id.startReminderContent);
-            String[] ymd;//["year","month","day"]
-            if (startedReminder != null) {
+            if (startedReminder != null)
                 startReminderContent.setText(startedReminder);
-                ymd= startedReminder.split("/");
-            }else
-                ymd = LocalDateTime.now().format(FACTORY.dateFormat).split("/");
-            int year,month,day;
-            year = Integer.parseInt(ymd[0]);
-            month = Integer.parseInt(ymd[1])-1;
-            day = Integer.parseInt(ymd[2]);
+
             startReminder.setOnClickListener(v -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context,(view, yearChosen, monthOfYear, dayOfMonth) -> {
+                LocalDateTime defaultSelectedDate = FACTORY.getDateFrom(startReminderContent.getText().toString());
+                if (defaultSelectedDate == null)
+                    defaultSelectedDate = LocalDateTime.now();
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context, (view, yearChosen, monthOfYear, dayOfMonth) -> {
                     String chosenDate = yearChosen + "/" + (monthOfYear + 1) + "/" + dayOfMonth;//this date format is used every where, be careful
                     startReminderContent.setText(chosenDate);
-                },year,month,day);
+                }, defaultSelectedDate.getYear(), defaultSelectedDate.getMonthValue()-1, defaultSelectedDate.getDayOfMonth());
 
-//                datePickerDialog.setOnDateSetListener();
                 datePickerDialog.show();
             });
         }

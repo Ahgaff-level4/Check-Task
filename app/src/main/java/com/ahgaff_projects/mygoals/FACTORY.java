@@ -17,20 +17,15 @@ public final class FACTORY {
 
     /**
      * @param date expected: yyyy/MM/dd
-     * @return
+     * @return date or null if there is format error
      */
     public static LocalDateTime getDateFrom(String date) {
         String[] s = date.split("/");
         if (s.length == 3)
             return LocalDateTime.of(Integer.parseInt(s[0]),Integer.parseInt(s[1]),Integer.parseInt(s[2]),6,0);
-        Log.d("MyTag FACTORY", "error: getDateFrom param:" + date + " expected:yyyy/MM/dd");
         return null;
     }
 
-    /**
-     * @param message
-     * @param context
-     */
     public static void showErrorDialog(String message, Context context) {
         new AlertDialog.Builder(context)//show error dialog
                 .setTitle(R.string.error)
@@ -45,11 +40,8 @@ public final class FACTORY {
     }
 
     /**
-     * in short it will return "Every "+days+" Day/s";
-     *
-     * @param days
-     * @param context
-     * @return
+     * @param days number of days
+     * @return string formatted as "Every "+days+" Day/s"
      */
     public static String toEveryDay(int days, Context context) {
         switch (days) {
