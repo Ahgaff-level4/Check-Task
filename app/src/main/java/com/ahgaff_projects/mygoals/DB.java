@@ -183,6 +183,21 @@ GROUP BY books.id;
         return true;
     }
 
+    public boolean deleteFile(int fileId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete(FILE_TABLE_NAME, ID + "=" + fileId, null) > 0;
+    }
+
+    public boolean updateFile(int fileId, String fileName, LocalDateTime startReminder, int repeatEvery) {
+        SQLiteDatabase db = getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(NAME, fileName);
+        if (startReminder != null)
+            cv.put(START_REMINDER, startReminder.format(FACTORY.dateFormat));
+        cv.put(REPEAT_EVERY, repeatEvery);
+        return db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
+    }
+
     public ArrayList<Task> getTasksOf(int fileId) {
         ArrayList<Task> arr = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -223,6 +238,7 @@ GROUP BY books.id;
         cv.put(CHECKED,isChecked);
         return db.update(TASK_TABLE_NAME, cv, ID + "=" + taskId, null) > 0;
     }
+
 }
 
 

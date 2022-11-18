@@ -1,14 +1,5 @@
 package com.ahgaff_projects.mygoals.file;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +12,14 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
@@ -37,7 +36,7 @@ public class FileListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_file_list,container,false);
+        return inflater.inflate(R.layout.fragment_file_list, container, false);
     }
 
     @Override
@@ -51,8 +50,8 @@ public class FileListFragment extends Fragment {
     private void setUpRecyclerView() {
         //the folderId that has this files list
         int folderId = requireArguments().getInt("folderId");
-        adapter = new FileRecyclerViewAdapter(folderId,getActivity(),db);
-        RecyclerView recyclerView = getView().findViewById(R.id.fileListRecyclerView);
+        adapter = new FileRecyclerViewAdapter(folderId, getActivity(), db);
+        RecyclerView recyclerView = requireView().findViewById(R.id.fileListRecyclerView);
         recyclerView.setAdapter(adapter);
 
         //set up how each file will be arrange
@@ -62,14 +61,14 @@ public class FileListFragment extends Fragment {
     }
 
     private void setUpFabButton() {
-        FloatingActionButton fab = getView().findViewById(R.id.fab);
+        FloatingActionButton fab = requireView().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
             dialog.setTitle(R.string.add_file_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
-            StartReminder.setUp(inflater, getActivity());
-            RepeatEvery.setUp(inflater, getActivity());
+            StartReminder.setUp(inflater, getActivity(), null);
+            RepeatEvery.setUp(inflater, getActivity(),null);
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
@@ -80,9 +79,9 @@ public class FileListFragment extends Fragment {
                     FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist), getActivity());
                 else {
                     LocalDateTime startReminder = StartReminder.getChosen(inflater);
-                    int repeatEvery = RepeatEvery.getChosen(inflater, getActivity());
-                    if(!db.insertFile(adapter.folderId,newFileName,startReminder,repeatEvery))
-                        FACTORY.showErrorDialog(R.string.error,getActivity());
+                    int repeatEvery = RepeatEvery.getChosen(inflater);
+                    if (!db.insertFile(adapter.folderId, newFileName, startReminder, repeatEvery))
+                        FACTORY.showErrorDialog(R.string.error, getActivity());
                     adapter.updateFiles();
                 }
             });
@@ -91,25 +90,34 @@ public class FileListFragment extends Fragment {
     }
 
 
-
-
     //class made to divide the functions to its purpose
-    private static class StartReminder {
-        private static void setUp(View dialogView, Context context) {
+    public static class StartReminder {
+        public static void setUp(View dialogView, Context context, @Nullable String startedReminder) {
             RelativeLayout startReminder = dialogView.findViewById(R.id.startReminderLayout);
             TextView startReminderContent = dialogView.findViewById(R.id.startReminderContent);
+            String[] ymd;//["year","month","day"]
+            if (startedReminder != null) {
+                startReminderContent.setText(startedReminder);
+                ymd= startedReminder.split("/");
+            }else
+                ymd = LocalDateTime.now().format(FACTORY.dateFormat).split("/");
+            int year,month,day;
+            year = Integer.parseInt(ymd[0]);
+            month = Integer.parseInt(ymd[1])-1;
+            day = Integer.parseInt(ymd[2]);
             startReminder.setOnClickListener(v -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context);
-                datePickerDialog.setOnDateSetListener((view, year, monthOfYear, dayOfMonth) -> {
-                    String chosenDate = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context,(view, yearChosen, monthOfYear, dayOfMonth) -> {
+                    String chosenDate = yearChosen + "/" + (monthOfYear + 1) + "/" + dayOfMonth;//this date format is used every where, be careful
                     startReminderContent.setText(chosenDate);
-                });
+                },year,month,day);
+
+//                datePickerDialog.setOnDateSetListener();
                 datePickerDialog.show();
             });
         }
 
         @Nullable
-        private static LocalDateTime getChosen(View dialogView) {
+        public static LocalDateTime getChosen(View dialogView) {
             String startReminderTxt = ((TextView) dialogView.findViewById(R.id.startReminderContent)).getText().toString();
             if (startReminderTxt.contains("/"))
                 return FACTORY.getDateFrom(startReminderTxt);
@@ -119,8 +127,10 @@ public class FileListFragment extends Fragment {
 
     //Functions for repeat notification every Never, day...
     public static class RepeatEvery {
-        static void setUp(View dialogView, FragmentActivity context) {
+        public static void setUp(View dialogView, FragmentActivity context, @Nullable String repeatEveryStr) {
             Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
+            if (repeatEveryStr != null)
+                spinner.setSelection(getSpinnerPosition(repeatEveryStr));
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -135,7 +145,7 @@ public class FileListFragment extends Fragment {
                     String[] arr = context.getResources().getStringArray(R.array.repeat_every_options);
                     if (context.getString(R.string.custom).equals(arr[position])) {//todo when type num of days set it into spinner
                         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                        dialog.setTitle(R.string.add_file_title);
+                        dialog.setTitle(R.string.repeat_custom_dialog_title);
                         dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
                         View inflater = context.getLayoutInflater().inflate(R.layout.dialog_add_edit_file_custom_repeat, null);
                         dialog.setView(inflater);
@@ -146,7 +156,7 @@ public class FileListFragment extends Fragment {
 
                                 customDay = Integer.parseInt(editText.getText().toString());
                                 Log.d("MyTag", "Set customDay");
-//                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(context)
+//todo set selected custom somehow                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(context)
 //                                Log.d("MyTag","created new arrayAdapter");
 //                                CharSequence custom = context.getString(R.string.custom);
 //                                Log.d("MyTag","created custom charSequence var");
@@ -176,7 +186,40 @@ public class FileListFragment extends Fragment {
 
         private static int customDay = -1;
 
-        static int getChosen(View dialogView, Context context) {
+        private static int getSpinnerPosition(String repeatEveryStr) {
+            int repeatEvery = Integer.parseInt(repeatEveryStr);
+            /*
+             * position base on:
+             *   0- Never
+             *   1- Every Day
+             *   2- Every 2 Days
+             *   3- Every 3 Days
+             *   4- Every Week
+             *   5- Every 2 Weeks
+             *   6- Every Month
+             *   7- Custom
+             */
+            switch (repeatEvery) {
+                case -1:
+                    return 0;
+                case 1:
+                    return 1;
+                case 2:
+                    return 2;
+                case 3:
+                    return 3;
+                case 7:
+                    return 4;
+                case 14:
+                    return 5;
+                case 30:
+                    return 6;
+                default:
+                    return 7;//todo custom show the custom days
+            }
+        }
+
+        public static int getChosen(View dialogView) {
             Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
 
             switch (spinner.getSelectedItemPosition()) {

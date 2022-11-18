@@ -1,7 +1,6 @@
 package com.ahgaff_projects.mygoals.folder;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,15 +80,15 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
             //creating a popup menu
             PopupMenu popup = new PopupMenu(context, optionBtn);
             //inflating menu from xml resource
-            popup.inflate(R.menu.menu_crud_folder_file);
+            popup.inflate(R.menu.edit_delete_menu);
             //adding click listener
             popup.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.edit_crud_folder_file_item) {
+                if (item.getItemId() == R.id.edit_item) {
                     //handle menu1 click
                     handleEditFolder(f);
                     return true;
                 }
-                if (item.getItemId() == R.id.delete_crud_folder_file_item) {
+                if (item.getItemId() == R.id.delete_item) {
                     //handle menu2 click
                     FACTORY.showAreYouSureDialog(context.getString(R.string.folder) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
                         if (!db.deleteFolder(f.getId()))
@@ -122,8 +121,6 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
             String newFolderName = input.getText().toString().trim();
             if (newFolderName.equals(""))
                 FACTORY.showErrorDialog(R.string.invalid_folder_name, context);
-            else if (getAllFolderNames().contains(newFolderName))
-                FACTORY.showErrorDialog(R.string.invalid_folder_name_exist, context);
             else if (!db.updateFolder(f.getId(), newFolderName))
                 FACTORY.showErrorDialog(R.string.something_went_wrong, context);
             else {

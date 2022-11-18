@@ -13,5 +13,6 @@
         android:textSize="30sp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="Home Fragment"/>
+        android:text="Home Fragment"
+        tools:ignore="HardcodedText" />
 </RelativeLayout>

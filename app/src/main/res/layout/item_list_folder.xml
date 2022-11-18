@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,18 +26,19 @@
             app:tint="@color/purple_500"
             android:paddingStart="10dp"
             android:paddingEnd="7dp"
-            />
+            android:contentDescription="@string/content_description_folder_image" />
         <TextView
             android:id="@+id/folderName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="@dimen/item_text_size"
             android:layout_toEndOf="@+id/folderImageView"
             android:text="Folder name..."
             android:layout_centerVertical="true"
             android:layout_marginEnd="35dp"
-            android:paddingVertical="7dp"/>
+            android:paddingVertical="7dp"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/folderItemOptionMenuBtn"
@@ -46,7 +48,8 @@
             android:layout_alignParentTop="true"
             android:clickable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/more_vert" />
+            android:src="@drawable/more_vert"
+            android:contentDescription="@string/content_description_more_option" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

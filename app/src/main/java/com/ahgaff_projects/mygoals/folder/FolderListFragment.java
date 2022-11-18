@@ -1,12 +1,8 @@
 package com.ahgaff_projects.mygoals.folder;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
-import com.ahgaff_projects.mygoals.databinding.FragmentFolderListBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FolderListFragment extends Fragment {
@@ -41,7 +36,7 @@ public class FolderListFragment extends Fragment {
 
     private void setUpRecyclerView() {
         adapter = new FolderRecyclerViewAdapter(getActivity(), db);
-        RecyclerView recyclerView = getView().findViewById(R.id.folderListRecyclerView);
+        RecyclerView recyclerView = requireView().findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
 //        if(adapter.getItemCount()<=0)
 //            getView().findViewById(R.id.emptyListTextview).setVisibility(View.INVISIBLE);
@@ -51,9 +46,9 @@ public class FolderListFragment extends Fragment {
     }
 
     private void setUpFabButton() {
-        FloatingActionButton fab = getView().findViewById(R.id.fab);
+        FloatingActionButton fab = requireView().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder dialog = new AlertDialog.Builder(requireContext());
             dialog.setTitle(R.string.add_folder_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_folder, null);

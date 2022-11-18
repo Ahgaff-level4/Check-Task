@@ -57,6 +57,7 @@
     <string name="arabic_days">Days</string>
     <string name="every">Every</string>
     <string name="all_files">All Files</string>
+    <string name="repeat_custom_dialog_title">Custom Repeat</string>
     <string-array name="repeat_every_options">
         <item>Never</item>
         <item>Every Day</item>
@@ -70,7 +71,7 @@
 
     <!--Task-->
     <string name="task">Task</string>
-    <string name="tasks">Tasks</string>
+    <string name="tasks">tasks</string>
     <string name="title_activity_task_list">Tasks</string>
     <string name="add_task_dialog_edittext_hint">…</string>
     <string name="add_task_title">Add Task</string>
@@ -78,7 +79,10 @@
     <string name="delete_task_title">Delete Task</string>
 
     <!--Content Description-->
-    <string name="content_description_fab_folder">Add Folder</string>
-    <string name="content_description_fab_file">Add File</string>
-    <string name="content_description_fab_task">Add Task</string>
+    <string name="content_description_fab_folder">Add Folder Button</string>
+    <string name="content_description_fab_file">Add File Button</string>
+    <string name="content_description_fab_task">Add Task Button</string>
+    <string name="content_description_file_image">File image</string>
+    <string name="content_description_folder_image">Folder image</string>
+    <string name="content_description_more_option">More option button to show edit and delete buttons</string>
 </resources>

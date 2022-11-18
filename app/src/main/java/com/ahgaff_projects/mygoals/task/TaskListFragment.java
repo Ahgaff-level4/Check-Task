@@ -19,6 +19,8 @@ import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 public class TaskListFragment extends Fragment {
     private TaskRecyclerViewAdapter adapter;
     private DB db;
@@ -41,7 +43,7 @@ public class TaskListFragment extends Fragment {
     private void setUpRecyclerView() {
         int fileId = requireArguments().getInt("fileId");
         adapter = new TaskRecyclerViewAdapter(fileId,getActivity(),db);
-        RecyclerView recyclerView = getView().findViewById(R.id.taskListRecyclerView);
+        RecyclerView recyclerView = requireView().findViewById(R.id.taskListRecyclerView);
         recyclerView.setAdapter(adapter);
 
         //set up how each task will be arrange
@@ -51,9 +53,9 @@ public class TaskListFragment extends Fragment {
     }
 
     private void setUpFabButton() {
-        FloatingActionButton fab = getView().findViewById(R.id.fab);
+        FloatingActionButton fab = requireView().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
             dialog.setTitle(R.string.add_task_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_task, null);

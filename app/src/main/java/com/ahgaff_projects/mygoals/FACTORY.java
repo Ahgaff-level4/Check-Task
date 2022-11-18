@@ -36,7 +36,7 @@ public final class FACTORY {
                 .setTitle(R.string.error)
                 .setMessage(message)
                 .setPositiveButton(R.string.ok, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.drawable.warning)
                 .show();
     }
 

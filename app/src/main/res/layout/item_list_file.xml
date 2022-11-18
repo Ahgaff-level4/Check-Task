@@ -1,61 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fileParentCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fileParentCard"
-    app:cardCornerRadius="50dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white"
     android:layout_margin="4dp"
+    android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:clickable="true">
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="50dp"
+    app:cardElevation="4dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/fileImageView"
             android:layout_width="@dimen/item_image_size"
             android:layout_height="@dimen/item_image_size"
-android:layout_centerVertical="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/content_description_file_image"
             android:paddingStart="10dp"
             android:paddingEnd="7dp"
             android:src="@drawable/draft"
             app:tint="@color/purple_700" />
+
         <TextView
             android:id="@+id/fileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginEnd="10dp"
-        android:paddingVertical="7dp"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="35dp"
             android:layout_toEndOf="@+id/fileImageView"
+            android:paddingVertical="7dp"
             android:text="File name..."
-            />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
 
         <!--If file has startReminder date it will be shown below-->
         <TextView
             android:id="@+id/fileStartReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Tomorrow"
-            android:layout_marginEnd="14dp"
-            android:paddingBottom="3dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="26dp"
+            android:paddingBottom="3dp"
+            android:text="Tomorrow"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
 
-
-        <!--        <Button-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_alignParentRight="true"-->
-        <!--            android:image/>-->
+        <ImageView
+            android:id="@+id/fileItemOptionMenuBtn"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="7dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/content_description_more_option"
+            android:src="@drawable/more_vert" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
