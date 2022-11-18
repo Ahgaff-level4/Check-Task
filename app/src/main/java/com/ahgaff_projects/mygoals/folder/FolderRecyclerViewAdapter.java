@@ -2,6 +2,7 @@ package com.ahgaff_projects.mygoals.folder;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
-import com.ahgaff_projects.mygoals.file.FileListActivity;
+import com.ahgaff_projects.mygoals.file.FileListFragment;
 
 import java.util.ArrayList;
 
@@ -136,9 +137,17 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
 
     private View.OnClickListener handleOnFolderClick(Folder f) {
         return v -> {
-            Intent i = new Intent(context, FileListActivity.class);
-            i.putExtra("folderId", f.getId());
-            context.startActivity(i);
+            Bundle bundle = new Bundle();
+            bundle.putInt("folderId",f.getId());
+
+            context.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_main,FileListFragment.class,bundle)
+                    .commit();
+
+//            Intent i = new Intent(context, FileListFragment.class);
+//            i.putExtra("folderId", f.getId());
+//            context.startActivity(i);
         };
     }
 

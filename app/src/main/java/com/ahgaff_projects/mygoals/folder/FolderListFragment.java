@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,40 +25,26 @@ public class FolderListFragment extends Fragment {
 
     private FolderRecyclerViewAdapter adapter;
     private DB db;
-    private FragmentFolderListBinding binding;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentFolderListBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-        db = new DB(getActivity());
-        Toast.makeText(getActivity(), "folder createView", Toast.LENGTH_SHORT).show();
-        return root;
+    public FolderListFragment(){
+        super(R.layout.fragment_folder_list);
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db = new DB(getActivity());
         setUpRecyclerView();
-//        setUpFabButton();
+        setUpFabButton();
     }
 
 
     private void setUpRecyclerView() {
-        //create garbage list for testing
         adapter = new FolderRecyclerViewAdapter(getActivity(), db);
         RecyclerView recyclerView = getView().findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
-
-        //set up how each folder will be arrange
+//        if(adapter.getItemCount()<=0)
+//            getView().findViewById(R.id.emptyListTextview).setVisibility(View.INVISIBLE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);

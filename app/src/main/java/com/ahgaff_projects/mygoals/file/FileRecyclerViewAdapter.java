@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DB;
@@ -21,12 +22,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerViewAdapter.ViewHolder> {
-    private final FileListActivity context;
+    private final FragmentActivity context;
     public final int folderId;
     private ArrayList<File> files;
     private final DB db;
 
-    public FileRecyclerViewAdapter(int folderId, FileListActivity context, DB db) {
+    public FileRecyclerViewAdapter(int folderId, FragmentActivity context, DB db) {
         this.folderId = folderId;
         this.context = context;
         this.db = db;

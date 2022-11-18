@@ -1,8 +1,11 @@
 package com.ahgaff_projects.mygoals.file;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,7 +13,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -25,58 +30,59 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class FileListActivity extends AppCompatActivity {
+public class FileListFragment extends Fragment {
     private FileRecyclerViewAdapter adapter;
     private DB db;
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_list);
-        db = new DB(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_file_list,container,false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        db = new DB(getActivity());
+        setUpRecyclerView();
         setUpFabButton();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setUpRecyclerView();
-    }
-
     private void setUpRecyclerView() {
-        //the folder that has this files list
-        int folderId = getIntent().getIntExtra("folderId",-1);
-        adapter = new FileRecyclerViewAdapter(folderId,this,db);
-        RecyclerView recyclerView = findViewById(R.id.fileListRecyclerView);
+        //the folderId that has this files list
+        int folderId = requireArguments().getInt("folderId");
+        adapter = new FileRecyclerViewAdapter(folderId,getActivity(),db);
+        RecyclerView recyclerView = getView().findViewById(R.id.fileListRecyclerView);
         recyclerView.setAdapter(adapter);
 
         //set up how each file will be arrange
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     private void setUpFabButton() {
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = getView().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
             dialog.setTitle(R.string.add_file_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
-            StartReminder.setUp(inflater, this);
-            RepeatEvery.setUp(inflater, this);
+            StartReminder.setUp(inflater, getActivity());
+            RepeatEvery.setUp(inflater, getActivity());
             dialog.setView(inflater);
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
                 String newFileName = input.getText().toString().trim();
                 if (newFileName.equals(""))
-                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name), this);
+                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name), getActivity());
                 else if (adapter.getFilesNames().contains(newFileName))
-                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist), this);
+                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist), getActivity());
                 else {
                     LocalDateTime startReminder = StartReminder.getChosen(inflater);
-                    int repeatEvery = RepeatEvery.getChosen(inflater, this);
+                    int repeatEvery = RepeatEvery.getChosen(inflater, getActivity());
                     if(!db.insertFile(adapter.folderId,newFileName,startReminder,repeatEvery))
-                        FACTORY.showErrorDialog(R.string.error,this);
+                        FACTORY.showErrorDialog(R.string.error,getActivity());
                     adapter.updateFiles();
                 }
             });
@@ -87,7 +93,7 @@ public class FileListActivity extends AppCompatActivity {
 
 
 
-    //class made to divide the factions to its purpose
+    //class made to divide the functions to its purpose
     private static class StartReminder {
         private static void setUp(View dialogView, Context context) {
             RelativeLayout startReminder = dialogView.findViewById(R.id.startReminderLayout);
@@ -113,7 +119,7 @@ public class FileListActivity extends AppCompatActivity {
 
     //Functions for repeat notification every Never, day...
     public static class RepeatEvery {
-        static void setUp(View dialogView, FileListActivity context) {
+        static void setUp(View dialogView, FragmentActivity context) {
             Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override

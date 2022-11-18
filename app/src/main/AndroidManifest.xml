@@ -38,7 +38,7 @@
 <!--                android:value=".MainActivity" />-->
 <!--        </activity>-->
         <activity
-            android:name=".file.FileListActivity"
+            android:name=".file.FileListFragment"
             android:exported="false"
             android:label="@string/title_activity_file_list"
             android:theme="@style/Theme.MyGoals.NoActionBar"
@@ -53,11 +53,11 @@
             android:exported="true"
             android:label="@string/title_activity_task_list"
             android:theme="@style/Theme.MyGoals.NoActionBar"
-            android:parentActivityName=".file.FileListActivity" >
+            android:parentActivityName=".file.FileListFragment" >
             <!-- ParentActivity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".file.FileListActivity" />
+                android:value=".file.FileListFragment" />
         </activity>
     </application>
 

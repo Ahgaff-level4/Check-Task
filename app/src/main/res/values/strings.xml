@@ -29,6 +29,7 @@
     <string name="add_folder_title">Add Folder</string>
     <string name="edit_folder_title">Edit Folder</string>
     <string name="delete_folder_title">Delete Folder</string>
+    <string name="empty_list_folder">Empty Folder List</string>
 
     <!--File-->
     <string name="file">File</string>
@@ -75,4 +76,8 @@
     <string name="edit_task_title">Edit Task</string>
     <string name="delete_task_title">Delete Task</string>
 
+    <!--Content Description-->
+    <string name="content_description_fab_folder">Add Folder</string>
+    <string name="content_description_fab_file">Add File</string>
+    <string name="content_description_fab_task">Add Task</string>
 </resources>
