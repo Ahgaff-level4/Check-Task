@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.ahgaff_projects.mygoals.file.FileListFragment;
 import com.ahgaff_projects.mygoals.folder.FolderListFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -53,9 +54,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))//if drawer navigation is open then just close it
             drawerLayout.closeDrawer(GravityCompat.START);
-        else
+        else if (getSupportFragmentManager().getFragments().get(0) instanceof FileListFragment)//if user inside a folder then get back to folders list
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_main, new FolderListFragment())
+                    .commit();
+        else//close the app (default behavior)
             super.onBackPressed();
     }
 

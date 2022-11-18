@@ -1,12 +1,16 @@
 package com.ahgaff_projects.mygoals.task;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,42 +19,41 @@ import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class TaskListFragment extends AppCompatActivity {
+public class TaskListFragment extends Fragment {
     private TaskRecyclerViewAdapter adapter;
     private DB db;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_list);
-        db = new DB(this);
-        setUpFabButton();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_task_list,container,false);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        db = new DB(getActivity());
+        setUpFabButton();
         setUpRecyclerView();
     }
 
+
     private void setUpRecyclerView() {
-        int fileId = getIntent().getIntExtra("fileId",-1);
-        if(fileId==-1)
-            Toast.makeText(this,"ERROR: fileId==-1",Toast.LENGTH_LONG).show();
-        adapter = new TaskRecyclerViewAdapter(fileId,this,db);
-        RecyclerView recyclerView = findViewById(R.id.taskListRecyclerView);
+        int fileId = requireArguments().getInt("fileId");
+        adapter = new TaskRecyclerViewAdapter(fileId,getActivity(),db);
+        RecyclerView recyclerView = getView().findViewById(R.id.taskListRecyclerView);
         recyclerView.setAdapter(adapter);
 
         //set up how each task will be arrange
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     private void setUpFabButton() {
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = getView().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
             dialog.setTitle(R.string.add_task_title);
             dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
             View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_task, null);
@@ -58,9 +61,8 @@ public class TaskListFragment extends AppCompatActivity {
             dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
                 EditText input = inflater.findViewById(R.id.taskTextEditText);//input from dialog
                 String newTaskName = input.getText().toString().trim();
-
                     if(!db.insertTask(adapter.fileId,newTaskName,false))
-                        FACTORY.showErrorDialog(R.string.something_went_wrong,this);
+                        FACTORY.showErrorDialog(R.string.something_went_wrong,getActivity());
                     adapter.updateTasks();
 
             });

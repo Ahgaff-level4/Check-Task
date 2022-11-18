@@ -144,10 +144,6 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main,FileListFragment.class,bundle)
                     .commit();
-
-//            Intent i = new Intent(context, FileListFragment.class);
-//            i.putExtra("folderId", f.getId());
-//            context.startActivity(i);
         };
     }
 

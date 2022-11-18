@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.ahgaff_projects.mygoals.file.File;
 import com.ahgaff_projects.mygoals.folder.Folder;
@@ -195,7 +197,7 @@ GROUP BY books.id;
             LocalDateTime created = null;
             if (createdStr.contains("/"))
                 created = FACTORY.getDateFrom(createdStr);
-            boolean checked = Boolean.parseBoolean(checkedStr);
+            boolean checked = checkedStr.equals("1");//"1"->true, "0"->false
             arr.add(new Task(id, text, checked, created));
             res.moveToNext();
         }

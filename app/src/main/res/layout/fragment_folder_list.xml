@@ -32,6 +32,6 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         app:srcCompat="@drawable/add"
-        app:maxImageSize="28dp"
+        app:maxImageSize="@dimen/fab_size"
         android:contentDescription="@string/content_description_fab_folder"/>
 </RelativeLayout>

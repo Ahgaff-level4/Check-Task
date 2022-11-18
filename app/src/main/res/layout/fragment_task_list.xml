@@ -9,7 +9,7 @@
         android:id="@+id/taskText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tasks"
+        android:text="@string/tasks"
         android:textColor="@android:color/black"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
@@ -34,6 +34,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/add"
+        app:maxImageSize="@dimen/fab_size"
         tools:ignore="contentDescription" />
 </RelativeLayout>

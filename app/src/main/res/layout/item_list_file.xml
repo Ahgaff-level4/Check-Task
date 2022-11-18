@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/fileImageView"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="@dimen/item_image_size"
+            android:layout_height="@dimen/item_image_size"
 android:layout_centerVertical="true"
             android:paddingStart="10dp"
             android:paddingEnd="7dp"

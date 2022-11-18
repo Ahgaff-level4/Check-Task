@@ -70,6 +70,7 @@
 
     <!--Task-->
     <string name="task">Task</string>
+    <string name="tasks">Tasks</string>
     <string name="title_activity_task_list">Tasks</string>
     <string name="add_task_dialog_edittext_hint">…</string>
     <string name="add_task_title">Add Task</string>

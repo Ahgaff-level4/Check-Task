@@ -2,6 +2,7 @@ package com.ahgaff_projects.mygoals.file;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,14 +69,13 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         holder.fileName.setText(fileName);
         holder.fileStartTime.setText(nearestReminder(thisFile));
         holder.fileParent.setOnClickListener(v -> {
-            Intent i = new Intent(context, TaskListFragment.class);
-            i.putExtra("fileId", thisFile.getId());
-            context.startActivity(i);
+            Bundle bundle = new Bundle();
+            bundle.putInt("fileId",thisFile.getId());
+            context.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_main,TaskListFragment.class,bundle)
+                    .commit();
         });
-//        ViewHolder viewHolder = (ViewHolder) holder;
-//here you can set your own conditions based on your arraylist using position parameter
-//        viewHolder. .itemNameTextView.setText(locationsArrayList.get(position).getName());
-
     }
 
     @Override

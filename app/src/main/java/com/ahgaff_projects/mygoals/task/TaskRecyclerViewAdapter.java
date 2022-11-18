@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DB;
@@ -17,12 +19,12 @@ import com.ahgaff_projects.mygoals.R;
 import java.util.ArrayList;
 
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder> {
-    private final TaskListFragment context;
+    private final FragmentActivity context;
     public final int fileId;
     private ArrayList<Task> tasks;
     private final DB db;
 
-    public TaskRecyclerViewAdapter(int fileId, TaskListFragment context, DB db) {
+    public TaskRecyclerViewAdapter(int fileId, FragmentActivity context, DB db) {
         this.fileId = fileId;
         this.context = context;
         this.db = db;
@@ -63,6 +65,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         holder.taskText.setText(text);
         holder.taskCheckBox.setChecked(thisTask.isChecked());
         holder.taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Toast.makeText(context, "checkedChanged ID="+thisTask.getId(), Toast.LENGTH_SHORT).show();
             holder.taskText.setAllCaps(isChecked);
             thisTask.setChecked(isChecked);
             if (!db.updateTask(thisTask.getId(), thisTask.getText(), isChecked))

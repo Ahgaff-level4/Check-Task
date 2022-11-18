@@ -22,10 +22,7 @@
             android:checked="true"
             android:paddingStart="10dp"
             android:paddingEnd="7dp"
-            android:textColorHighlight="#279F34"
-            android:textColorHint="@color/purple_500"
-            android:textColorLink="#D0DF3D"
-            app:tint="@color/purple_700" />
+            />
 
         <TextView
             android:id="@+id/taskText"
