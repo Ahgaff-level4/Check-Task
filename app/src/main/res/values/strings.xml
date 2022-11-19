@@ -85,4 +85,5 @@
     <string name="content_description_file_image">File image</string>
     <string name="content_description_folder_image">Folder image</string>
     <string name="content_description_more_option">More option button to show edit and delete buttons</string>
+    <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
 </resources>

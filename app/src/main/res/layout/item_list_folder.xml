@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="@dimen/item_text_size"
+            android:textSize="@dimen/text_large_size"
             android:layout_toEndOf="@+id/folderImageView"
             android:text="Folder name..."
             android:layout_centerVertical="true"

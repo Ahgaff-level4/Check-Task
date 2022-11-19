@@ -1,26 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/home"
             android:checked="true"
+            android:icon="@drawable/home"
             android:title="@string/title_home" />
         <item
             android:id="@+id/nav_folders"
+            android:icon="@drawable/expand_more"
+            android:title="@string/title_activity_folder_list"
+            android:menuCategory="container"
+             />
+
+
+        <item
+            android:id="@+id/nav_folder1"
             android:icon="@drawable/folder"
-            android:title="@string/title_activity_folder_list" />
-<!--        <item-->
-<!--            android:id="@+id/nav_all_files"-->
-<!--            android:icon="@drawable/file_description"-->
-<!--            android:title="@string/all_files" />-->
-<!--        <item-->
-<!--            android:id="@+id/nav_tasks"-->
-<!--            android:icon="@drawable/task_alt_48px"-->
-<!--            android:title="@string/title_activity_task_list" />-->
+            android:title="string/folder"
+
+            />
+        <item
+            android:id="@+id/nav_folder2"
+            android:icon="@drawable/folder"
+            android:title="@string/folder" />
+        <item
+            android:id="@+id/nav_folder3"
+            android:icon="@drawable/folder"
+            android:title="@string/folder" />
+
+
+
+
+        <!--        <item-->
+        <!--            android:id="@+id/nav_all_files"-->
+        <!--            android:icon="@drawable/file_description"-->
+        <!--            android:title="@string/all_files" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_tasks"-->
+        <!--            android:icon="@drawable/task_alt_48px"-->
+        <!--            android:title="@string/title_activity_task_list" />-->
     </group>
 </menu>
