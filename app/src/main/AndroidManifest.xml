@@ -40,7 +40,7 @@
         <activity
             android:name=".file.FileListFragment"
             android:exported="false"
-            android:label="@string/title_activity_file_list"
+            android:label="@string/files_title"
             android:theme="@style/Theme.MyGoals.NoActionBar"
             android:parentActivityName=".folder.FolderListFragment">
             <!-- ParentActivity meta-data to support 4.0 and lower -->
@@ -51,7 +51,7 @@
         <activity
             android:name=".task.TaskListFragment"
             android:exported="true"
-            android:label="@string/title_activity_task_list"
+            android:label="@string/tasks_title"
             android:theme="@style/Theme.MyGoals.NoActionBar"
             android:parentActivityName=".file.FileListFragment" >
             <!-- ParentActivity meta-data to support 4.0 and lower -->

@@ -18,10 +18,10 @@
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
     <string name="nav_header_description">TODO</string>
-    <string name="title_home">Home</string>
+    <string name="home_title">Home</string>
 
     <!--Folder-->
-    <string name="folder">Folder</string>
+    <string name="folder_title">Folder</string>
     <string name="folders_title">Folders</string>
     <string name="add_folder_dialog_edittext_hint">Name</string>
     <string name="invalid_folder_name">Invalid Folder Name</string>
@@ -86,5 +86,4 @@
     <string name="content_description_folder_image">Folder image</string>
     <string name="content_description_more_option">More option button to show edit and delete buttons</string>
     <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
-    <string name="home">Home</string>
 </resources>

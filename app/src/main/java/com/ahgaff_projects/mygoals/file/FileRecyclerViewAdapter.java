@@ -35,10 +35,13 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         this.folderId = folderId;
         this.context = context;
         this.db = db;
-        if (folderId == -1)
+        if (folderId == -1) {//all files
             this.files = db.getAllFiles();
-        else
+            context.setTitle(R.string.all_files);
+        } else {
             this.files = db.getFilesOf(folderId);
+            context.setTitle(context.getString(R.string.folder_title)+" "+db.getFolderName(folderId));
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

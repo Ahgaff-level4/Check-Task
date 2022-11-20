@@ -32,6 +32,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         this.context = context;
         this.folders = db.getAllFolders();
         this.db = db;
+        context.setTitle(R.string.folders_title);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +91,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
                 }
                 if (item.getItemId() == R.id.delete_item) {
                     //handle menu2 click
-                    FACTORY.showAreYouSureDialog(context.getString(R.string.folder) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
+                    FACTORY.showAreYouSureDialog(context.getString(R.string.folder_title) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
                         if (!db.deleteFolder(f.getId()))
                             FACTORY.showErrorDialog(R.string.something_went_wrong, context);
                         else {
@@ -151,6 +152,18 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     public void updateFolders() {
         this.folders = db.getAllFolders();
         notifyDataSetChanged();//refresh the list
+        foldersChangedCallback.onFoldersChanged(folders);
+    }
+    public static EventFoldersChanged foldersChangedCallback;
+
+    /**
+     * we made this event to pass updated folders from FolderRecyclerViewAdapter to MainActivity
+     */
+    public interface EventFoldersChanged {
+        /**
+         * called when updateFolders() in FolderRecyclerViewAdapter called
+         */
+        void onFoldersChanged(ArrayList<Folder> folders);
     }
 
     public ArrayList<String> getAllFolderNames() {

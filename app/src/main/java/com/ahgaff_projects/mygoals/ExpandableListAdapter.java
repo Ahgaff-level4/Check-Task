@@ -1,6 +1,7 @@
 package com.ahgaff_projects.mygoals;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -13,22 +14,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ahgaff_projects.mygoals.folder.Folder;
+import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private Context mContext;
-    private List<ExpandedMenuModel> mListDataHeader; // header titles
+    private final Context mContext;
+    private final List<ExpandedMenuModel> mListDataHeader; // header titles
     public static final int FoldersPos = 1;
     // child data in format of header title, child title
-    private HashMap<ExpandedMenuModel, List<String>> mListDataChild;
+    private final HashMap<ExpandedMenuModel, List<String>> mListDataChild;
     ExpandableListView expandList;
 
-    public ExpandableListAdapter(Context context, List<ExpandedMenuModel> listDataHeader, HashMap<ExpandedMenuModel, List<String>> listChildData, ExpandableListView mView) {
+    public ExpandableListAdapter(Context context, ExpandableListView mView, FolderRecyclerViewAdapter.EventFoldersChanged handler) {
         this.mContext = context;
-        this.mListDataHeader = listDataHeader;
-        this.mListDataChild = listChildData;
+        this.mListDataHeader = new ArrayList<>();
+        this.mListDataChild = new HashMap<>();
+        mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.home_title), R.drawable.home));
+        mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.folders_title), R.drawable.folder));//NOTE: changing the order REQUIRE change ExpandableListAdapter.FoldersPos value!!!
+        mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.all_files), R.drawable.file_description));
+        update();
+
+        FolderRecyclerViewAdapter.foldersChangedCallback = handler;
         this.expandList = mView;
     }
 
@@ -40,10 +51,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         if (groupPosition == FoldersPos) {
-            return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
+            return Objects.requireNonNull(this.mListDataChild.get(this.mListDataHeader.get(groupPosition)))
                     .size();
         }
         return 0;
+    }
+
+    /**
+     * update child of Folders with user's folders retrieved from DB
+     */
+    public void update(){
+        List<String> headerFolders = new ArrayList<>();
+        List<Folder> folders = new DB(mContext).getAllFolders();
+        for (Folder f : folders)
+            headerFolders.add(f.getName());
+        mListDataChild.put(mListDataHeader.get(ExpandableListAdapter.FoldersPos), headerFolders);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -53,9 +76,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        Log.d("CHILD", mListDataChild.get(this.mListDataHeader.get(groupPosition))
-                .get(childPosition).toString());
-        return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
+        return Objects.requireNonNull(this.mListDataChild.get(this.mListDataHeader.get(groupPosition)))
                 .get(childPosition);
     }
 
@@ -74,6 +95,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ExpandedMenuModel headerTitle = (ExpandedMenuModel) getGroup(groupPosition);
@@ -98,6 +120,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final String childText = (String) getChild(groupPosition, childPosition);
@@ -122,5 +145,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
 
+}
+
+class ExpandedMenuModel {
+    private final String iconName;
+    private final int iconImg; // menu icon resource id
+
+
+    public ExpandedMenuModel(String iconName, int iconImg) {
+        this.iconName = iconName;
+        this.iconImg = iconImg;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public int getIconImg() {
+        return iconImg;
+    }
 }
 

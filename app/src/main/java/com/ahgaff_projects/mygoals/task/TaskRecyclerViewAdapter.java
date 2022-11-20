@@ -29,6 +29,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         this.context = context;
         this.db = db;
         this.tasks = db.getTasksOf(fileId);
+        context.setTitle(R.string.tasks_title);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -87,6 +87,7 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TASK_TABLE_NAME);
         onCreate(db);
     }
+    /*********************************** Folder **********************************************/
 
     public ArrayList<Folder> getAllFolders() {
         ArrayList<Folder> arr = new ArrayList<>();
@@ -139,6 +140,45 @@ GROUP BY books.id;
         ContentValues cv = new ContentValues();
         cv.put(NAME, name);
         return db.update(FOLDER_TABLE_NAME, cv, ID + "=" + folderId, null) > 0;
+    }
+    @SuppressLint("Range")
+    public String getFolderName(int folderId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT " + FOLDER_NAME +" FROM " + FOLDER_TABLE_NAME+" WHERE "+FOLDER_ID+"="+folderId, null);
+        res.moveToFirst();
+        String name = "";
+        if(!res.isAfterLast())
+            name = res.getString(res.getColumnIndex(DB.NAME));
+        res.close();
+        return name;
+    }
+    /*********************************** File **********************************************/
+    public ArrayList<File> getAllFiles() {
+        ArrayList<File> arr = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT " + FILE_ID + "," + FILE_NAME + "," + FILE_START_REMINDER + "," +
+                FILE_REPEAT_EVERY + "," + FILE_CREATED + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
+                " FROM " + FILE_TABLE_NAME + " LEFT JOIN " + TASK_TABLE_NAME + " ON " + FILE_ID + " = " + TASK_REFERENCE_FILE +
+                " GROUP BY " + FILE_ID, null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
+            @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
+            @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+            @SuppressLint("Range") String startReminderStr = res.getString(res.getColumnIndex(START_REMINDER));
+            @SuppressLint("Range") int repeatEvery = res.getInt(res.getColumnIndex(DB.REPEAT_EVERY));
+            @SuppressLint("Range") int tasksCount = res.getInt(res.getColumnIndex("tasksCount"));
+
+            LocalDateTime created = null, startReminder = null;
+            if (createdStr.contains("/"))
+                created = FACTORY.getDateFrom(createdStr);
+            if (startReminderStr != null && startReminderStr.contains("/"))
+                startReminder = FACTORY.getDateFrom(startReminderStr);
+            arr.add(new File(id, name, startReminder, repeatEvery, created, -1, tasksCount));
+            res.moveToNext();
+        }
+        res.close();
+        return arr;
     }
 
     public ArrayList<File> getFilesOf(int folderId) {
@@ -198,6 +238,7 @@ GROUP BY books.id;
         return db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
     }
 
+    /*********************************** Task **********************************************/
     public ArrayList<Task> getTasksOf(int fileId) {
         ArrayList<Task> arr = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -239,33 +280,6 @@ GROUP BY books.id;
         return db.update(TASK_TABLE_NAME, cv, ID + "=" + taskId, null) > 0;
     }
 
-    public ArrayList<File> getAllFiles() {
-        ArrayList<File> arr = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + FILE_ID + "," + FILE_NAME + "," + FILE_START_REMINDER + "," +
-                FILE_REPEAT_EVERY + "," + FILE_CREATED + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
-                " FROM " + FILE_TABLE_NAME + " LEFT JOIN " + TASK_TABLE_NAME + " ON " + FILE_ID + " = " + TASK_REFERENCE_FILE +
-                " GROUP BY " + FILE_ID, null);
-        res.moveToFirst();
-        while (!res.isAfterLast()) {
-            @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
-            @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
-            @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
-            @SuppressLint("Range") String startReminderStr = res.getString(res.getColumnIndex(START_REMINDER));
-            @SuppressLint("Range") int repeatEvery = res.getInt(res.getColumnIndex(DB.REPEAT_EVERY));
-            @SuppressLint("Range") int tasksCount = res.getInt(res.getColumnIndex("tasksCount"));
-
-            LocalDateTime created = null, startReminder = null;
-            if (createdStr.contains("/"))
-                created = FACTORY.getDateFrom(createdStr);
-            if (startReminderStr != null && startReminderStr.contains("/"))
-                startReminder = FACTORY.getDateFrom(startReminderStr);
-            arr.add(new File(id, name, startReminder, repeatEvery, created, -1, tasksCount));
-            res.moveToNext();
-        }
-        res.close();
-        return arr;
-    }
 }
 
 
