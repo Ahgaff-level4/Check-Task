@@ -57,6 +57,11 @@ public class File {
         return repeatEvery;
     }
     public void setRepeatEvery(int repeatEvery){this.repeatEvery = repeatEvery;}
+
+    /**
+     *
+     * @return may returns -1 for files comes from DB.getAllFiles()
+     */
     public int getFolderId() {
         return folderId;
     }

@@ -35,7 +35,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         this.folderId = folderId;
         this.context = context;
         this.db = db;
-        this.files = db.getFilesOf(folderId);
+        if (folderId == -1)
+            this.files = db.getAllFiles();
+        else
+            this.files = db.getFilesOf(folderId);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -101,7 +104,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateFiles() {
-        this.files = db.getFilesOf(folderId);
+        if (folderId == -1)
+            this.files = db.getAllFiles();
+        else
+            this.files = db.getFilesOf(folderId);
         notifyDataSetChanged();//refresh the list
     }
 
@@ -140,7 +146,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
                 }
                 if (item.getItemId() == R.id.delete_item) {
                     //handle menu2 click
-                    FACTORY.showAreYouSureDialog(context.getString(R.string.file) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getTasksCount() + " " + context.getString(R.string.tasks), context, (_dialog, which) -> {
+                    FACTORY.showAreYouSureDialog(context.getString(R.string.file_title) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getTasksCount() + " " + context.getString(R.string.tasks), context, (_dialog, which) -> {
                         if (!db.deleteFile(f.getId()))
                             FACTORY.showErrorDialog(R.string.something_went_wrong, context);
                         else {
@@ -165,7 +171,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         View inflater = context.getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
         if (f.getStartReminder() != null)
             FileListFragment.StartReminder.setUp(inflater, context, f.getStartReminder().format(FACTORY.dateFormat));
-        else FileListFragment.StartReminder.setUp(inflater,context,null);
+        else FileListFragment.StartReminder.setUp(inflater, context, null);
         FileListFragment.RepeatEvery.setUp(inflater, context, String.valueOf(f.getRepeatEvery()));
         dialog.setView(inflater);
         EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog

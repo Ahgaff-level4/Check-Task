@@ -22,19 +22,19 @@
 
     <!--Folder-->
     <string name="folder">Folder</string>
-    <string name="title_activity_folder_list">Folders</string>
+    <string name="folders_title">Folders</string>
     <string name="add_folder_dialog_edittext_hint">Name</string>
     <string name="invalid_folder_name">Invalid Folder Name</string>
     <string name="invalid_folder_name_exist">There is a Folder With Same Name</string>
     <string name="add_folder_title">Add Folder</string>
     <string name="edit_folder_title">Edit Folder</string>
     <string name="delete_folder_title">Delete Folder</string>
-    <string name="empty_list_folder">Empty Folder List</string>
+    <string name="empty_folder_list">Empty Folder List</string>
 
     <!--File-->
-    <string name="file">File</string>
+    <string name="file_title">File</string>
     <string name="files">files</string>
-    <string name="title_activity_file_list">Files</string>
+    <string name="files_title">Files</string>
     <string name="add_file_dialog_edittext_hint">Name</string>
     <string name="invalid_file_name">Invalid File Name</string>
     <string name="invalid_file_name_exist">There is a File With Same Name</string>
@@ -70,9 +70,9 @@
     </string-array>
 
     <!--Task-->
-    <string name="task">Task</string>
+    <string name="task_title">Task</string>
     <string name="tasks">tasks</string>
-    <string name="title_activity_task_list">Tasks</string>
+    <string name="tasks_title">Tasks</string>
     <string name="add_task_dialog_edittext_hint">…</string>
     <string name="add_task_title">Add Task</string>
     <string name="edit_task_title">Edit Task</string>
@@ -86,4 +86,5 @@
     <string name="content_description_folder_image">Folder image</string>
     <string name="content_description_more_option">More option button to show edit and delete buttons</string>
     <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
+    <string name="home">Home</string>
 </resources>

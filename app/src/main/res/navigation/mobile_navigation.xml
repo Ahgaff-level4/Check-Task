@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/nav_folders"
         android:name="com.ahgaff_projects.mygoals.folder.FolderListFragment"
-        android:label="@string/title_activity_folder_list"
+        android:label="@string/folders_title"
         tools:layout="@layout/fragment_folder_list" >
     </fragment>
 
