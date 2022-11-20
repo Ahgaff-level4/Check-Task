@@ -35,12 +35,12 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         this.folderId = folderId;
         this.context = context;
         this.db = db;
-        if (folderId == -1) {//all files
+        if (folderId == -1) {//-1 means all files
             this.files = db.getAllFiles();
             context.setTitle(R.string.all_files);
         } else {
             this.files = db.getFilesOf(folderId);
-            context.setTitle(context.getString(R.string.folder_title)+" "+db.getFolderName(folderId));
+            context.setTitle(context.getString(R.string.folder_title)+" "+db.getFolder(folderId).getName());
         }
     }
 
@@ -81,7 +81,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         holder.fileStartTime.setText(nearestReminder(thisFile));
         holder.fileParent.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
+//            if(folderId == -1)
             bundle.putInt("fileId", thisFile.getId());
+            if(folderId==-1)
+                bundle.putBoolean("isFromAllTasks",true);
             context.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, TaskListFragment.class, bundle)

@@ -23,13 +23,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
+import com.ahgaff_projects.mygoals.MainActivity;
 import com.ahgaff_projects.mygoals.R;
+import com.ahgaff_projects.mygoals.folder.FolderListFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class FileListFragment extends Fragment {
+public class FileListFragment extends Fragment implements MainActivity.MyOnBackPressed {
     private FileRecyclerViewAdapter adapter;
     private DB db;
 
@@ -87,6 +89,15 @@ public class FileListFragment extends Fragment {
             });
             dialog.show();
         });
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main,new FolderListFragment())
+                .commit();
+        return true;
     }
 
 
@@ -247,7 +258,6 @@ public class FileListFragment extends Fragment {
                 case 7:
                     return customDay;
                 default:
-//                    Toast.makeText(context, "Repeat Every: Unexpected Chosen got=" + spinner.getSelectedItemPosition(), Toast.LENGTH_LONG).show();
                     return -1;
             }
         }

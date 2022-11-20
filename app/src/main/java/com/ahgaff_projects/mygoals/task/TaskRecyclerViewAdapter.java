@@ -29,17 +29,15 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         this.context = context;
         this.db = db;
         this.tasks = db.getTasksOf(fileId);
-        context.setTitle(R.string.tasks_title);
+        context.setTitle(context.getString(R.string.file_title)+" "+db.getFile(fileId).getName());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        //        private final CardView taskParent;
         private final TextView taskText;
         private final CheckBox taskCheckBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-//            taskParent = itemView.findViewById(R.id.taskParentCard);
             taskText = itemView.findViewById(R.id.taskText);
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
         }

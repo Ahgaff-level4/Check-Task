@@ -50,10 +50,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (groupPosition == FoldersPos) {
+        if (groupPosition == FoldersPos)
             return Objects.requireNonNull(this.mListDataChild.get(this.mListDataHeader.get(groupPosition)))
                     .size();
-        }
         return 0;
     }
 

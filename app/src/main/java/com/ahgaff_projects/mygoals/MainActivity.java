@@ -3,7 +3,9 @@ package com.ahgaff_projects.mygoals;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,9 +30,9 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupNavigationDrawer();
-        if (savedInstanceState == null) {//app first open
-            openFragment(new HomeFragment());
-        }
+        if (savedInstanceState == null) //app first open
+            openFragment(HomeFragment.class, null);
+
     }
 
     private void setupNavigationDrawer() {
@@ -41,32 +43,25 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-//        prepareListData();
-        menuFoldersAdapter = new ExpandableListAdapter(this, expandableList,this);
+        menuFoldersAdapter = new ExpandableListAdapter(this, expandableList, this);
         //setting list adapter
         expandableList.setAdapter(menuFoldersAdapter);
         expandableList.setOnChildClickListener((parent, v, groupPosition, childPosition, folderPos) -> {
             int folderId = new DB(this).getAllFolders().get((int) folderPos).getId();
-            openFragment(FileListFragment.class,"folderId", (int) folderId);
+            openFragment(FileListFragment.class, "folderId", (int) folderId);
             return false;
         });
 
         expandableList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
             if (id == 0) //home fragment item
-                openFragment(new HomeFragment());
-            else if(id == 2)
-                openFragment(FileListFragment.class,"folderId",-1);//-1 means files of all folders(all files)
+                openFragment(HomeFragment.class, null);
+            else if (id == 2)
+                openFragment(FileListFragment.class, "folderId", -1);//-1 means files of all folders(all files)
             else return false;
             return true;
         });
 
     }
-
-//    private void prepareListData() {
-//
-//    }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,15 +69,14 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         return true;
     }
 
-
     @Override
     public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().getFragments().get(0);
         if (drawerLayout.isDrawerOpen(GravityCompat.START))//if drawer navigation is open then just close it
             drawerLayout.closeDrawer(GravityCompat.START);
-        else if (getSupportFragmentManager().getFragments().get(0) instanceof FileListFragment)//if user inside a folder then get back to folders list
-            openFragment(new FolderListFragment());
-        else//close the app (default behavior)
+        else if (!(fragment instanceof MyOnBackPressed) || !((MyOnBackPressed) fragment).onBackPressed()) //if user inside a tasks than backPress will be handle in TaskListFragment
             super.onBackPressed();
+
     }
 
     /**
@@ -96,34 +90,32 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
      * </li>
      * </ul>
      */
-    public void openFragment(Class<? extends androidx.fragment.app.Fragment> fragmentClass, Bundle bundle) {
+    public void openFragment(Class<? extends androidx.fragment.app.Fragment> fragmentClass, @Nullable Bundle bundle) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.nav_host_fragment_content_main, fragmentClass, bundle)
                 .commit();
-        _openCommonStuff();
-    }
-    private void _openCommonStuff(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
     }
 
-    public void openFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main,fragment)
-                .commit();
-        _openCommonStuff();
-    }
-
-    public void openFragment(Class<? extends androidx.fragment.app.Fragment> fragmentClass, String key,int value){
+    public void openFragment(Class<? extends androidx.fragment.app.Fragment> fragmentClass, String key, int value) {
         Bundle b = new Bundle();
-        b.putInt(key,value);
-        openFragment(fragmentClass,b);
+        b.putInt(key, value);
+        openFragment(fragmentClass, b);
     }
 
     @Override
     public void onFoldersChanged(ArrayList<Folder> folders) {
         menuFoldersAdapter.update();
     }
+
+    public interface MyOnBackPressed {
+        /**
+         * @return true if handled. false to make MainActivity handle it.
+         */
+        boolean onBackPressed();
+    }
 }
+
+

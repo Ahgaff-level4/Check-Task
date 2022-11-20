@@ -87,6 +87,7 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TASK_TABLE_NAME);
         onCreate(db);
     }
+
     /*********************************** Folder **********************************************/
 
     public ArrayList<Folder> getAllFolders() {
@@ -141,23 +142,33 @@ GROUP BY books.id;
         cv.put(NAME, name);
         return db.update(FOLDER_TABLE_NAME, cv, ID + "=" + folderId, null) > 0;
     }
+
     @SuppressLint("Range")
-    public String getFolderName(int folderId){
+    public Folder getFolder(int folderId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + FOLDER_NAME +" FROM " + FOLDER_TABLE_NAME+" WHERE "+FOLDER_ID+"="+folderId, null);
+        Cursor res = db.rawQuery("SELECT " + FOLDER_ID + "," + FOLDER_NAME + "," + FOLDER_CREATED +
+                ", COUNT(" + FILE_REFERENCE_FOLDER + ") AS filesCount FROM " + FOLDER_TABLE_NAME +
+                " LEFT JOIN " + FILE_TABLE_NAME + " ON " + FOLDER_ID + " = " + FILE_REFERENCE_FOLDER +
+                " WHERE " + FOLDER_ID + "=" + folderId +
+                " GROUP BY " + FOLDER_ID, null);
         res.moveToFirst();
-        String name = "";
-        if(!res.isAfterLast())
-            name = res.getString(res.getColumnIndex(DB.NAME));
+        @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
+        @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
+        @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+        @SuppressLint("Range") int filesCount = res.getInt(res.getColumnIndex("filesCount"));
+        LocalDateTime created = null;
+        if (createdStr.contains("/"))
+            created = FACTORY.getDateFrom(createdStr);
         res.close();
-        return name;
+        return new Folder(id, name, created, filesCount);
     }
+
     /*********************************** File **********************************************/
     public ArrayList<File> getAllFiles() {
         ArrayList<File> arr = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT " + FILE_ID + "," + FILE_NAME + "," + FILE_START_REMINDER + "," +
-                FILE_REPEAT_EVERY + "," + FILE_CREATED + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
+                FILE_REPEAT_EVERY + "," + FILE_CREATED+","+FILE_REFERENCE_FOLDER + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
                 " FROM " + FILE_TABLE_NAME + " LEFT JOIN " + TASK_TABLE_NAME + " ON " + FILE_ID + " = " + TASK_REFERENCE_FILE +
                 " GROUP BY " + FILE_ID, null);
         res.moveToFirst();
@@ -167,6 +178,7 @@ GROUP BY books.id;
             @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
             @SuppressLint("Range") String startReminderStr = res.getString(res.getColumnIndex(START_REMINDER));
             @SuppressLint("Range") int repeatEvery = res.getInt(res.getColumnIndex(DB.REPEAT_EVERY));
+            @SuppressLint("Range") int folderId = res.getInt(res.getColumnIndex(DB.FILE_REFERENCE_FOLDER));
             @SuppressLint("Range") int tasksCount = res.getInt(res.getColumnIndex("tasksCount"));
 
             LocalDateTime created = null, startReminder = null;
@@ -174,7 +186,7 @@ GROUP BY books.id;
                 created = FACTORY.getDateFrom(createdStr);
             if (startReminderStr != null && startReminderStr.contains("/"))
                 startReminder = FACTORY.getDateFrom(startReminderStr);
-            arr.add(new File(id, name, startReminder, repeatEvery, created, -1, tasksCount));
+            arr.add(new File(id, name, startReminder, repeatEvery, created, folderId, tasksCount));
             res.moveToNext();
         }
         res.close();
@@ -238,6 +250,31 @@ GROUP BY books.id;
         return db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
     }
 
+    public File getFile(int fileId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT " + FILE_ID + "," + FILE_NAME + "," + FILE_START_REMINDER + "," +
+                FILE_REPEAT_EVERY + "," + FILE_CREATED+","+FILE_REFERENCE_FOLDER + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
+                " FROM " + FILE_TABLE_NAME + " LEFT JOIN " + TASK_TABLE_NAME + " ON " + FILE_ID + " = " + TASK_REFERENCE_FILE +
+                " WHERE " + FILE_ID + " = " + fileId +
+                " GROUP BY " + FILE_ID, null);
+        res.moveToFirst();
+        @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
+        @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
+        @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+        @SuppressLint("Range") String startReminderStr = res.getString(res.getColumnIndex(START_REMINDER));
+        @SuppressLint("Range") int repeatEvery = res.getInt(res.getColumnIndex(DB.REPEAT_EVERY));
+        @SuppressLint("Range") int folderId = res.getInt(res.getColumnIndex(DB.FILE_REFERENCE_FOLDER));
+        @SuppressLint("Range") int tasksCount = res.getInt(res.getColumnIndex("tasksCount"));
+
+        LocalDateTime created = null, startReminder = null;
+        if (createdStr.contains("/"))
+            created = FACTORY.getDateFrom(createdStr);
+        if (startReminderStr != null && startReminderStr.contains("/"))
+            startReminder = FACTORY.getDateFrom(startReminderStr);
+        res.close();
+        return new File(id, name, startReminder, repeatEvery, created, folderId, tasksCount);
+    }
+
     /*********************************** Task **********************************************/
     public ArrayList<Task> getTasksOf(int fileId) {
         ArrayList<Task> arr = new ArrayList<>();
@@ -261,7 +298,7 @@ GROUP BY books.id;
         return arr;
     }
 
-    public boolean insertTask(int fileId,String text,boolean checked){
+    public boolean insertTask(int fileId, String text, boolean checked) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TEXT, text);
@@ -276,7 +313,7 @@ GROUP BY books.id;
         SQLiteDatabase db = getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(TEXT, text);
-        cv.put(CHECKED,isChecked);
+        cv.put(CHECKED, isChecked);
         return db.update(TASK_TABLE_NAME, cv, ID + "=" + taskId, null) > 0;
     }
 
