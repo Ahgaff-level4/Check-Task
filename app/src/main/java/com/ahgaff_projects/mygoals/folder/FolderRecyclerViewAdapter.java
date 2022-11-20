@@ -65,8 +65,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {//each item
         Folder f = folders.get(position);
-        String name = f.getId() + "- " + f.getName();
-        holder.folderName.setText(name);
+        holder.folderName.setText(f.getName());
         holder.folderParent.setOnClickListener(handleOnFolderClick(f));
         holder.optionBtn.setOnClickListener(handleOnOptionClick(f, holder.optionBtn));
     }

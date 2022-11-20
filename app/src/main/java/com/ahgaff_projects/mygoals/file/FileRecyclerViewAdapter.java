@@ -76,12 +76,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         File thisFile = files.get(position);
-        String fileName = thisFile.getId() + "- " + thisFile.getName();
-        holder.fileName.setText(fileName);
+        holder.fileName.setText(thisFile.getName());
         holder.fileStartTime.setText(nearestReminder(thisFile));
         holder.fileParent.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-//            if(folderId == -1)
             bundle.putInt("fileId", thisFile.getId());
             if(folderId==-1)
                 bundle.putBoolean("isFromAllTasks",true);

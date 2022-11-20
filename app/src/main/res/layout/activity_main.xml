@@ -52,8 +52,7 @@ tools:openDrawer="start">
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
-    app:headerLayout="@layout/nav_header_main"
-    app:menu="@menu/drawer_menu">
+    app:headerLayout="@layout/nav_header_main">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -66,7 +65,7 @@ tools:openDrawer="start">
             android:groupIndicator="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="@dimen/navigation_header_height"
             android:background="@color/white">
         </ExpandableListView>
 </LinearLayout>

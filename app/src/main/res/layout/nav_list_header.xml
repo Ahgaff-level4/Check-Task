@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layoutDirection="ltr"
@@ -9,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="15dp">
+        android:layout_marginStart="15dp"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/iconimage"
@@ -18,7 +20,8 @@
             android:layout_centerVertical="true"
             android:paddingVertical="7dp"
             android:src="@drawable/folder"
-            app:tint="@color/black" />
+            app:tint="@color/black"
+            android:contentDescription="@string/content_description_folder_image" />
 
         <TextView
             android:id="@+id/submenu"
@@ -28,11 +31,12 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="@dimen/item_image_size"
             android:layout_toEndOf="@+id/iconimage"
-            android:paddingVertical="@dimen/nav_menu_item_vertical_padding"
+            android:paddingVertical="12dp"
             android:text="header menu item"
             android:textColor="@color/black"
             android:textSize="@dimen/text_xmiddle_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/arrowicon"

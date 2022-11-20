@@ -1,6 +1,7 @@
 package com.ahgaff_projects.mygoals.task;
 
 import android.annotation.SuppressLint;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            taskText = itemView.findViewById(R.id.taskText);
+            taskText = itemView.findViewById(R.id.taskTextView);
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
         }
     }
@@ -60,17 +61,24 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task thisTask = tasks.get(position);
-        String text = thisTask.getId() + "- " + thisTask.getText();
-        holder.taskText.setText(text);
+        holder.taskText.setText(thisTask.getText());
         holder.taskCheckBox.setChecked(thisTask.isChecked());
+        setStrike(holder.taskText,thisTask.isChecked());
         holder.taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Toast.makeText(context, "checkedChanged ID="+thisTask.getId(), Toast.LENGTH_SHORT).show();
-            holder.taskText.setAllCaps(isChecked);
+            setStrike(holder.taskText,isChecked);
             thisTask.setChecked(isChecked);
             if (!db.updateTask(thisTask.getId(), thisTask.getText(), isChecked))
                 FACTORY.showErrorDialog(R.string.something_went_wrong, context);
         });
-//        holder.taskParent.setOnClickListener(v -> Toast.makeText(context, tasks.get(holder.getAbsoluteAdapterPosition()).getText() + " Selected", Toast.LENGTH_LONG).show());
+    }
+
+    /**
+     * Strike the text of the TextView if isChecked. Un-strike if not isChecked
+     */
+    private void setStrike(TextView textView, boolean isChecked){
+        if(isChecked)
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        else textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
     }
 
     @Override
