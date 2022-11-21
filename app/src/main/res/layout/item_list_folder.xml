@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/folderParentCard"
-    app:cardCornerRadius="7dp"
-    app:cardElevation="4dp"
+    android:id="@+id/folderItemParent"
     app:cardBackgroundColor="@color/white"
-    android:layout_margin="4dp"
     android:foreground="?android:attr/selectableItemBackground"
+        android:padding="@dimen/item_image_vertical_padding"
     android:clickable="true">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
 
         <ImageView
             android:id="@+id/folderImageView"
@@ -24,8 +18,6 @@
             android:layout_centerVertical="true"
             android:src="@drawable/folder"
             app:tint="@color/purple_500"
-            android:paddingStart="10dp"
-            android:paddingEnd="7dp"
             android:contentDescription="@string/content_description_folder_image" />
         <TextView
             android:id="@+id/folderName"
@@ -34,22 +26,23 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_large_size"
             android:layout_toEndOf="@+id/folderImageView"
+            android:layout_toStartOf="@+id/folderItemOptionMenuBtn"
             android:text="Folder name..."
             android:layout_centerVertical="true"
-            android:layout_marginEnd="35dp"
-            android:paddingVertical="7dp"
+            android:layout_marginStart="@dimen/item_margin_image_to_text"
             tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/folderItemOptionMenuBtn"
             android:layout_width="30dp"
             android:layout_height="40dp"
+            android:layout_marginBottom="-20dp"
+            android:layout_marginTop="-8dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:clickable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/more_vert"
             android:contentDescription="@string/content_description_more_option" />
-    </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

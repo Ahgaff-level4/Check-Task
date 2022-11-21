@@ -36,13 +36,13 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView folderParent;
+        private final View folderParent;
         private final TextView folderName;
         private final View optionBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            folderParent = itemView.findViewById(R.id.folderParentCard);
+            folderParent = itemView.findViewById(R.id.folderItemParent);
             folderName = itemView.findViewById(R.id.folderName);
             optionBtn = itemView.findViewById(R.id.folderItemOptionMenuBtn);
         }

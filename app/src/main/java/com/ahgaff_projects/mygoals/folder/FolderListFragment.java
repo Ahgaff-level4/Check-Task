@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,8 @@ import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Objects;
 
 public class FolderListFragment extends Fragment {
 
@@ -35,9 +38,10 @@ public class FolderListFragment extends Fragment {
 
 
     private void setUpRecyclerView() {
-        adapter = new FolderRecyclerViewAdapter(getActivity(), db);
+        adapter = new FolderRecyclerViewAdapter(requireActivity(), db);
         RecyclerView recyclerView = requireView().findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 //        if(adapter.getItemCount()<=0)
 //            getView().findViewById(R.id.emptyListTextview).setVisibility(View.INVISIBLE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
