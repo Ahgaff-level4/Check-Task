@@ -103,10 +103,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.nav_list_header, null);
         }
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.submenu);
-        ImageView headerIcon = (ImageView) convertView.findViewById(R.id.iconimage);
-//        lblListHeader.setTypeface(null, Typeface.BOLD);
+        TextView lblListHeader = convertView.findViewById(R.id.submenu);
+        ImageView headerIcon = convertView.findViewById(R.id.iconimage);
         lblListHeader.setText(headerTitle.getIconName());
         headerIcon.setImageResource(headerTitle.getIconImg());
             ImageView arrowicon = convertView.findViewById(R.id.arrowicon);
@@ -115,7 +113,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 arrowicon.setImageResource(R.drawable.expand_less);
             else arrowicon.setImageResource(R.drawable.expand_more);
         }
-
+        if(parent.getChildAt(0)!=null)
+            convertView.setSelected(false);
         return convertView;
     }
 
@@ -130,8 +129,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.nav_list_submenu, null);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.submenu);
+        TextView txtListChild = convertView.findViewById(R.id.submenu);
 
         txtListChild.setText(childText);
 

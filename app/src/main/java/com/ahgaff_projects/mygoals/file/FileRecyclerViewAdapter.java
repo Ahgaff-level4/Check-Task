@@ -45,14 +45,14 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView fileParent;
+        private final View fileParent;
         private final TextView fileName;
         private final TextView fileStartTime;
         private final View optionBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            fileParent = itemView.findViewById(R.id.fileParentCard);
+            fileParent = itemView.findViewById(R.id.fileItemParent);
             fileName = itemView.findViewById(R.id.fileName);
             fileStartTime = itemView.findViewById(R.id.fileStartReminder);
             optionBtn = itemView.findViewById(R.id.fileItemOptionMenuBtn);

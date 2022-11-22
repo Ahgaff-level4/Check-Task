@@ -38,12 +38,14 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final View folderParent;
         private final TextView folderName;
+        private final TextView filesCount;
         private final View optionBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             folderParent = itemView.findViewById(R.id.folderItemParent);
             folderName = itemView.findViewById(R.id.folderName);
+            filesCount = itemView.findViewById(R.id.folderFilesCount);
             optionBtn = itemView.findViewById(R.id.folderItemOptionMenuBtn);
         }
     }
@@ -66,10 +68,26 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {//each item
         Folder f = folders.get(position);
         holder.folderName.setText(f.getName());
+        holder.filesCount.setText(numberOfFilesToString(f.getFilesCount()));
         holder.folderParent.setOnClickListener(handleOnFolderClick(f));
         holder.optionBtn.setOnClickListener(handleOnOptionClick(f, holder.optionBtn));
     }
 
+    private String numberOfFilesToString(int n){
+        switch (n){
+            case 1:return n+" "+ context.getString(R.string.file);
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:return n+" "+ context.getString(R.string.files);
+            default:return n+" "+ context.getString(R.string.arabic_files);
+        }
+    }
     @Override
     public int getItemCount() {
         return folders.size();

@@ -37,28 +37,28 @@
 <!--                android:name="android.support.PARENT_ACTIVITY"-->
 <!--                android:value=".MainActivity" />-->
 <!--        </activity>-->
-        <activity
-            android:name=".file.FileListFragment"
-            android:exported="false"
-            android:label="@string/files_title"
-            android:theme="@style/Theme.MyGoals.NoActionBar"
-            android:parentActivityName=".folder.FolderListFragment">
-            <!-- ParentActivity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".folder.FolderListFragment" />
-        </activity>
-        <activity
-            android:name=".task.TaskListFragment"
-            android:exported="true"
-            android:label="@string/tasks_title"
-            android:theme="@style/Theme.MyGoals.NoActionBar"
-            android:parentActivityName=".file.FileListFragment" >
-            <!-- ParentActivity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".file.FileListFragment" />
-        </activity>
+<!--        <activity-->
+<!--            android:name=".file.FileListFragment"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/files_title"-->
+<!--            android:theme="@style/Theme.MyGoals.NoActionBar"-->
+<!--            android:parentActivityName=".folder.FolderListFragment">-->
+<!--            &lt;!&ndash; ParentActivity meta-data to support 4.0 and lower &ndash;&gt;-->
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".folder.FolderListFragment" />-->
+<!--        </activity>-->
+<!--        <activity-->
+<!--            android:name=".task.TaskListFragment"-->
+<!--            android:exported="true"-->
+<!--            android:label="@string/tasks_title"-->
+<!--            android:theme="@style/Theme.MyGoals.NoActionBar"-->
+<!--            android:parentActivityName=".file.FileListFragment" >-->
+<!--            &lt;!&ndash; ParentActivity meta-data to support 4.0 and lower &ndash;&gt;-->
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".file.FileListFragment" />-->
+<!--        </activity>-->
     </application>
 
 </manifest>
