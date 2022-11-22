@@ -13,7 +13,7 @@
         android:theme="@style/Theme.MyGoals.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".Splash"
             android:theme="@style/Theme.MyGoals.NoActionBar"
             android:exported="true">
             <intent-filter>
@@ -59,6 +59,12 @@
 <!--                android:name="android.support.PARENT_ACTIVITY"-->
 <!--                android:value=".file.FileListFragment" />-->
 <!--        </activity>-->
+        <activity android:name=".MainActivity" >
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
     </application>
 
 </manifest>
