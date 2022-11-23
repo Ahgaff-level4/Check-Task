@@ -1,6 +1,8 @@
 package com.ahgaff_projects.mygoals.task;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,11 +39,13 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView taskText;
         private final CheckBox taskCheckBox;
+        private final CardView card;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             taskText = itemView.findViewById(R.id.taskTextView);
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
+            card = itemView.findViewById(R.id.taskParentCard);
         }
     }
 
@@ -64,9 +69,11 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         holder.taskText.setText(thisTask.getText());
         holder.taskCheckBox.setChecked(thisTask.isChecked());
         setStrike(holder.taskText,thisTask.isChecked());
+        setBackgroundColor(holder.card,thisTask.isChecked());
         holder.taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setStrike(holder.taskText,isChecked);
             thisTask.setChecked(isChecked);
+            setBackgroundColor(holder.card,thisTask.isChecked());
             if (!db.updateTask(thisTask.getId(), thisTask.getText(), isChecked))
                 FACTORY.showErrorDialog(R.string.something_went_wrong, context);
         });
@@ -75,6 +82,11 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     /**
      * Strike the text of the TextView if isChecked. Un-strike if not isChecked
      */
+    private void setBackgroundColor (CardView cardView, boolean isChecked) {
+        if(isChecked)
+            cardView.setCardBackgroundColor(context.getColor(R.color.LightGrey));
+        else cardView.setCardBackgroundColor(context.getColor(R.color.white));
+    }
     private void setStrike(TextView textView, boolean isChecked){
         if(isChecked)
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
