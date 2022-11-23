@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
     android:layoutDirection="ltr"
-    android:paddingVertical="3dp"
-    android:paddingHorizontal="6dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
+        android:layout_height="56dp"
+        android:paddingHorizontal="16dp"
         tools:ignore="UselessParent">
 
         <ImageView
@@ -20,32 +19,33 @@
             android:layout_width="@dimen/item_image_size"
             android:layout_height="@dimen/item_image_size"
             android:layout_centerVertical="true"
+            android:contentDescription="@string/content_description_folder_image"
             android:src="@drawable/folder"
-            app:tint="@color/black"
-            android:contentDescription="@string/content_description_folder_image" />
+            app:tint="?android:textColorPrimary" />
 
         <TextView
             android:id="@+id/submenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/item_margin_image_to_text"
-            android:layout_toEndOf="@+id/iconimage"
+            android:layout_marginStart="32dp"
             android:layout_toStartOf="@+id/arrowicon"
+            android:layout_toEndOf="@+id/iconimage"
             android:text="Header menu item"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_middle_size"
+            android:textColor="?android:textColorPrimary"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_xmiddle_size"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/arrowicon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/content_description_arrow_icon_nav"
-            app:tint="@color/black_600" />
+            app:tint="?android:textColorTertiary" />
     </RelativeLayout>
 
 </LinearLayout>

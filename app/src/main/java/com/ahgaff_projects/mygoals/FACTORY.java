@@ -22,7 +22,7 @@ public final class FACTORY {
     public static LocalDateTime getDateFrom(String date) {
         String[] s = date.split("/");
         if (s.length == 3)
-            return LocalDateTime.of(Integer.parseInt(s[0]),Integer.parseInt(s[1]),Integer.parseInt(s[2]),6,0);
+            return LocalDateTime.of(Integer.parseInt(s[0]),Integer.parseInt(s[1]),Integer.parseInt(s[2]),1,0);
         return null;
     }
 

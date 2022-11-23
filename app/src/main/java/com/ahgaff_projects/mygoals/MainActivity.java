@@ -1,9 +1,13 @@
 package com.ahgaff_projects.mygoals;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import com.ahgaff_projects.mygoals.file.FileListFragment;
 import com.ahgaff_projects.mygoals.folder.Folder;
-import com.ahgaff_projects.mygoals.folder.FolderListFragment;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -51,12 +54,13 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             openFragment(FileListFragment.class, "folderId", (int) folderId);
             return false;
         });
-
         expandableList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
             if (id == 0) //home fragment item
                 openFragment(HomeFragment.class, null);
             else if (id == 2)
                 openFragment(FileListFragment.class, "folderId", -1);//-1 means files of all folders(all files)
+            else if(id ==3)//todo delete me
+                createNotification();
             else return false;
             return true;
         });
@@ -76,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             drawerLayout.closeDrawer(GravityCompat.START);
         else if (!(fragment instanceof MyOnBackPressed) || !((MyOnBackPressed) fragment).onBackPressed()) //if user inside a tasks than backPress will be handle in TaskListFragment
             super.onBackPressed();
-
     }
 
     /**
@@ -116,6 +119,27 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
          */
         boolean onBackPressed();
     }
+
+    public void createNotification(/*todo*/){
+        Intent notificationIntent = new Intent(this, NotificationService.class);
+        PendingIntent contentIntent = PendingIntent.getService(this, 12354, notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT );
+
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.cancel(contentIntent);
+
+        am.setRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis(),
+                60000, contentIntent);
+    }
 }
+
+
+
+
+
+
+
+
 
 

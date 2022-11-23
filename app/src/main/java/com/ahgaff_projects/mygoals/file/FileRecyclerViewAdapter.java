@@ -40,7 +40,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             context.setTitle(R.string.all_files);
         } else {
             this.files = db.getFilesOf(folderId);
-            context.setTitle(context.getString(R.string.folder_title)+" "+db.getFolder(folderId).getName());
+            context.setTitle(db.getFolder(folderId).getName());
         }
     }
 
@@ -81,8 +81,8 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         holder.fileParent.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("fileId", thisFile.getId());
-            if(folderId==-1)
-                bundle.putBoolean("isFromAllTasks",true);
+            if (folderId == -1)
+                bundle.putBoolean("isFromAllTasks", true);
             context.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, TaskListFragment.class, bundle)
@@ -120,19 +120,25 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             return "";
         //get days different between now and startReminder (future)
         Duration dur = Duration.between(LocalDateTime.now(), thisFile.getStartReminder());
-        long days = Math.round(((double) dur.toHours()) / 24) + 1;//today days became -1 So add one. idk why
+
+        long days = Math.round(((double) dur.toHours() / 24));//today days became -1 So add one. idk why
 
         if (days < 0) {
             //startReminder has pass and no repeatEvery!
-            if (thisFile.getRepeatEvery() == -1)
+            if (thisFile.getRepeatEvery() <= 0)//repeatEvery is -1 if user chosen Never
                 return "";
-            //app will reach here if startReminder=old date and repeatDays exist
-            //startReminder= old date.
-            //repeatDays= n days.
-            // So, remain days = (now date - old date) % repeatDays
-            days = (-days) % thisFile.getRepeatEvery();//old date is negative
+            //app will reach here if startReminder is old date and repeatDays exist
+            //startReminder is old date.
+            //repeatDays is n days.
+            //So, remain days = (now date - old date) % repeatDays
+            days = days % thisFile.getRepeatEvery();
+            //days is negative
+            if (days < 0)
+                days += thisFile.getRepeatEvery();
         }
+//        Toast.makeText(context, "repeatEvery="+thisFile.getRepeatEvery(), Toast.LENGTH_SHORT).show();
         return FACTORY.toEveryDay((int) days, context);
+//        return days+" " +FACTORY.toEveryDay((int) days, context);
     }
 
     private View.OnClickListener handleOnOptionClick(File f, View optionBtn) {

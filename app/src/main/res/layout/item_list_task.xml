@@ -33,9 +33,9 @@
             android:layout_toEndOf="@+id/taskCheckBox"
             android:paddingVertical="7dp"
             android:text="Task text..."
+            android:textColor="?android:textColorSecondary"
             android:textIsSelectable="true"
-            android:textSize="20sp"
-
+            android:textSize="@dimen/text_middle_size"
             tools:ignore="HardCodedText" />
 
 

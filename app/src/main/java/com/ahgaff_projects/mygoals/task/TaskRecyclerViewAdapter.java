@@ -30,7 +30,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         this.context = context;
         this.db = db;
         this.tasks = db.getTasksOf(fileId);
-        context.setTitle(context.getString(R.string.file_title)+" "+db.getFile(fileId).getName());
+        context.setTitle(db.getFile(fileId).getName());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
