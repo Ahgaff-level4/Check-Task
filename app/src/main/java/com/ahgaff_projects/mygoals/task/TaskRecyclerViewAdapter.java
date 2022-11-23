@@ -83,9 +83,14 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      * Strike the text of the TextView if isChecked. Un-strike if not isChecked
      */
     private void setBackgroundColor (CardView cardView, boolean isChecked) {
-        if(isChecked)
+        if(isChecked){
             cardView.setCardBackgroundColor(context.getColor(R.color.LightGrey));
-        else cardView.setCardBackgroundColor(context.getColor(R.color.white));
+            cardView.setCardElevation(0);
+        }
+        else{ cardView.setCardBackgroundColor(context.getColor(R.color.white));
+            cardView.setCardElevation(20);
+        }
+
     }
     private void setStrike(TextView textView, boolean isChecked){
         if(isChecked)
