@@ -8,15 +8,6 @@
     tools:context=".folder.FolderListFragment"
     >
 
-<!--    <TextView-->
-<!--        android:id="@+id/emptyListTextview"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginTop="200dp"-->
-<!--        android:text="@string/empty_list_folder"-->
-<!--        />-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/folderListRecyclerView"
         android:layout_width="match_parent"

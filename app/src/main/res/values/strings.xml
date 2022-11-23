@@ -33,7 +33,10 @@
 
     <!--File-->
     <string name="file_title">File</string>
+    <string name="file">file</string>
     <string name="files">files</string>
+    <!--in arabic will be (ملف) for 11 and more files-->
+    <string name="arabic_files">files</string>
     <string name="files_title">Files</string>
     <string name="add_file_dialog_edittext_hint">Name</string>
     <string name="invalid_file_name">Invalid File Name</string>
@@ -46,26 +49,26 @@
     <string name="repeat_reminder_every">Repeat Reminder Every</string>
     <string name="reminder_periodic">Repeat</string>
     <string name="custom_days">Days</string>
-    <string name="custom">Custom</string>
+    <string name="custom">custom</string>
     <string name="invalid_custom_days">Invalid number of days</string>
-    <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="after_tomorrow">After Tomorrow</string>
-    <string name="after">After</string>
-    <string name="days">Days</string>
+    <string name="today">today</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="after_tomorrow">after tomorrow</string>
+    <string name="after">after</string>
+    <string name="days">days</string>
     <!--in arabic will be (يوم) for 11 and more days-->
-    <string name="arabic_days">Days</string>
+    <string name="arabic_days">days</string>
     <string name="every">Every</string>
     <string name="all_files">All Files</string>
     <string name="repeat_custom_dialog_title">Custom Repeat</string>
     <string-array name="repeat_every_options">
         <item>Never</item>
-        <item>Every Day</item>
-        <item>Every 2 Days</item>
-        <item>Every 3 Days</item>
-        <item>Every Week</item>
-        <item>Every 2 Weeks</item>
-        <item>Every Month</item>
+        <item>Every day</item>
+        <item>Every 2 days</item>
+        <item>Every 3 days</item>
+        <item>Every week</item>
+        <item>Every 2 weeks</item>
+        <item>Every month</item>
         <item>@string/custom</item>
     </string-array>
 

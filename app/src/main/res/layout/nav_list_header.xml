@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:layoutDirection="ltr"
+    android:paddingVertical="3dp"
+    android:paddingHorizontal="6dp"
     android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
         tools:ignore="UselessParent">
 
         <ImageView
@@ -18,7 +20,6 @@
             android:layout_width="@dimen/item_image_size"
             android:layout_height="@dimen/item_image_size"
             android:layout_centerVertical="true"
-            android:paddingVertical="7dp"
             android:src="@drawable/folder"
             app:tint="@color/black"
             android:contentDescription="@string/content_description_folder_image" />
@@ -28,13 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="@dimen/item_image_size"
+            android:layout_marginStart="@dimen/item_margin_image_to_text"
             android:layout_toEndOf="@+id/iconimage"
-            android:paddingVertical="12dp"
-            android:text="header menu item"
+            android:layout_toStartOf="@+id/arrowicon"
+            android:text="Header menu item"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_xmiddle_size"
+            android:textSize="@dimen/text_middle_size"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
@@ -42,9 +42,8 @@
             android:id="@+id/arrowicon"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="-40dp"
-            android:layout_toEndOf="@+id/submenu"
             android:contentDescription="@string/content_description_arrow_icon_nav"
             app:tint="@color/black_600" />
     </RelativeLayout>
