@@ -88,7 +88,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
             cardView.setCardElevation(0);
         }
         else{ cardView.setCardBackgroundColor(context.getColor(R.color.white));
-            cardView.setCardElevation(20);
+            cardView.setCardElevation(15);
         }
 
     }
