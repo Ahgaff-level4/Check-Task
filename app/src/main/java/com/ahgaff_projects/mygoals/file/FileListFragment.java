@@ -31,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class FileListFragment extends Fragment implements MainActivity.MyOnBackPressed {
     private FileRecyclerViewAdapter adapter;
@@ -94,10 +95,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
 
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main,new FolderListFragment())
-                .commit();
+        FACTORY.openFragment(requireActivity(),FolderListFragment.class,null);
         return true;
     }
 
@@ -119,7 +117,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
                     String chosenDate = yearChosen + "/" + (monthOfYear + 1) + "/" + dayOfMonth;//this date format is used every where, be careful
                     startReminderContent.setText(chosenDate);
                 }, defaultSelectedDate.getYear(), defaultSelectedDate.getMonthValue()-1, defaultSelectedDate.getDayOfMonth());
-//      todo          datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             });
         }

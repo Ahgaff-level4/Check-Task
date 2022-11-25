@@ -69,13 +69,14 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         Folder f = folders.get(position);
         holder.folderName.setText(f.getName());
         holder.filesCount.setText(numberOfFilesToString(f.getFilesCount()));
-        holder.folderParent.setOnClickListener(handleOnFolderClick(f));
+        holder.folderParent.setOnClickListener((v) -> FACTORY.openFragment(context, FileListFragment.class, "folderId", f.getId()));
         holder.optionBtn.setOnClickListener(handleOnOptionClick(f, holder.optionBtn));
     }
 
-    private String numberOfFilesToString(int n){
-        switch (n){
-            case 1:return n+" "+ context.getString(R.string.file);
+    private String numberOfFilesToString(int n) {
+        switch (n) {
+            case 1:
+                return n + " " + context.getString(R.string.file);
             case 2:
             case 3:
             case 4:
@@ -84,10 +85,13 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
             case 7:
             case 8:
             case 9:
-            case 10:return n+" "+ context.getString(R.string.files);
-            default:return n+" "+ context.getString(R.string.arabic_files);
+            case 10:
+                return n + " " + context.getString(R.string.files);
+            default:
+                return n + " " + context.getString(R.string.arabic_files);
         }
     }
+
     @Override
     public int getItemCount() {
         return folders.size();
@@ -150,17 +154,6 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
 
     }
 
-    private View.OnClickListener handleOnFolderClick(Folder f) {
-        return v -> {
-            Bundle bundle = new Bundle();
-            bundle.putInt("folderId",f.getId());
-
-            context.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main,FileListFragment.class,bundle)
-                    .commit();
-        };
-    }
 
     /**
      * assign adapter folders from database and notifyDataSetChanged()
@@ -171,6 +164,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         notifyDataSetChanged();//refresh the list
         foldersChangedCallback.onFoldersChanged(folders);
     }
+
     public static EventFoldersChanged foldersChangedCallback;
 
     /**

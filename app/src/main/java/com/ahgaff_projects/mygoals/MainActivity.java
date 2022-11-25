@@ -1,6 +1,7 @@
 package com.ahgaff_projects.mygoals;
 
-import android.annotation.SuppressLint;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,8 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,12 +21,15 @@ import androidx.fragment.app.Fragment;
 import com.ahgaff_projects.mygoals.file.FileListFragment;
 import com.ahgaff_projects.mygoals.folder.Folder;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
+import com.ahgaff_projects.mygoals.task.TaskListFragment;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class MainActivity extends AppCompatActivity implements FolderRecyclerViewAdapter.EventFoldersChanged {
 
-    private DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     private ExpandableListAdapter menuFoldersAdapter;
 
     @Override
@@ -33,9 +37,24 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupNavigationDrawer();
-        if (savedInstanceState == null) //app first open
-            openFragment(HomeFragment.class, null);
 
+//        else if (savedInstanceState == null)  //app first open
+//            FACTORY.openFragment(this, HomeFragment.class, null);//Home Page
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //to show the correct fragment if user click on the notification
+        int fileId = getIntent().getIntExtra("fileId", -1);
+        if (fileId != -1) {
+            Toast.makeText(this, "fileId= " + fileId, Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("fileId", fileId);
+            bundle.putBoolean("isFromAllTasks", true);
+            FACTORY.openFragment(this, TaskListFragment.class, bundle);
+        }
     }
 
     private void setupNavigationDrawer() {
@@ -51,16 +70,16 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         expandableList.setAdapter(menuFoldersAdapter);
         expandableList.setOnChildClickListener((parent, v, groupPosition, childPosition, folderPos) -> {
             int folderId = new DB(this).getAllFolders().get((int) folderPos).getId();
-            openFragment(FileListFragment.class, "folderId", (int) folderId);
+            FACTORY.openFragment(this, FileListFragment.class, "folderId", folderId);
             return false;
         });
         expandableList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
             if (id == 0) //home fragment item
-                openFragment(HomeFragment.class, null);
+                FACTORY.openFragment(this, HomeFragment.class, null);
             else if (id == 2)
-                openFragment(FileListFragment.class, "folderId", -1);//-1 means files of all folders(all files)
-            else if(id ==3)//todo delete me
-                createNotification();
+                FACTORY.openFragment(this, FileListFragment.class, "folderId", -1);//-1 means files of all folders(all files)
+            else if (id == 3)//todo delete me
+                FACTORY.setNotify(this,2);
             else return false;
             return true;
         });
@@ -78,35 +97,10 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         Fragment fragment = getSupportFragmentManager().getFragments().get(0);
         if (drawerLayout.isDrawerOpen(GravityCompat.START))//if drawer navigation is open then just close it
             drawerLayout.closeDrawer(GravityCompat.START);
-        else if (!(fragment instanceof MyOnBackPressed) || !((MyOnBackPressed) fragment).onBackPressed()) //if user inside a tasks than backPress will be handle in TaskListFragment
+        else if (!(fragment instanceof MyOnBackPressed) || !((MyOnBackPressed) fragment).onBackPressed()) //if user inside a tasks than backPress will be handle in TaskListFragment. So, this if condition will call the handler and result false
             super.onBackPressed();
     }
 
-    /**
-     * <ul>
-     * <li>
-     * Open a the main and only fragment panel.
-     * </li><li>
-     * Close the nav drawer.
-     * </li><li>
-     * todo Select (highlight) the drawer item that opened.
-     * </li>
-     * </ul>
-     */
-    public void openFragment(Class<? extends androidx.fragment.app.Fragment> fragmentClass, @Nullable Bundle bundle) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, fragmentClass, bundle)
-                .commit();
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START);
-    }
-
-    public void openFragment(Class<? extends androidx.fragment.app.Fragment> fragmentClass, String key, int value) {
-        Bundle b = new Bundle();
-        b.putInt(key, value);
-        openFragment(fragmentClass, b);
-    }
 
     @Override
     public void onFoldersChanged(ArrayList<Folder> folders) {
@@ -120,26 +114,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         boolean onBackPressed();
     }
 
-    public void createNotification(/*todo*/){
-        Intent notificationIntent = new Intent(this, NotificationService.class);
-        PendingIntent contentIntent = PendingIntent.getService(this, 12354, notificationIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT );
 
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        am.cancel(contentIntent);
-
-        am.setRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(),
-                60000, contentIntent);
-    }
 }
-
-
-
-
-
-
-
-
 
 

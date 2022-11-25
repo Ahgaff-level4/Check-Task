@@ -42,7 +42,7 @@ public class FolderListFragment extends Fragment {
         RecyclerView recyclerView = requireView().findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-//        if(adapter.getItemCount()<=0)
+//  todo if list empty show empty List text      if(adapter.getItemCount()<=0)
 //            getView().findViewById(R.id.emptyListTextview).setVisibility(View.INVISIBLE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

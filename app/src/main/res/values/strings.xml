@@ -19,6 +19,7 @@
     <string name="nav_close">Close</string>
     <string name="nav_header_description">TODO</string>
     <string name="home_title">Home</string>
+    <string name="check_your_tasks">CHECK YOUR TASKS!</string>
 
     <!--Folder-->
     <string name="folder_title">Folder</string>
@@ -90,4 +91,7 @@
     <string name="content_description_more_option">More option button to show edit and delete buttons</string>
     <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
     <string name="todo">TODO</string>
+    <string name="has">has</string>
+    <string name="unchecked_tasks">unchecked tasks</string>
+    <string name="notification_title">Tasks Reminder</string>
 </resources>

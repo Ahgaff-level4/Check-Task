@@ -83,12 +83,17 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             bundle.putInt("fileId", thisFile.getId());
             if (folderId == -1)
                 bundle.putBoolean("isFromAllTasks", true);
+            FACTORY.openFragment(context,TaskListFragment.class,bundle);
             context.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, TaskListFragment.class, bundle)
                     .commit();
         });
         holder.optionBtn.setOnClickListener(handleOnOptionClick(thisFile, holder.optionBtn));
+        holder.fileParent.setOnLongClickListener((v)->{
+            Toast.makeText(context, thisFile.toString(), Toast.LENGTH_SHORT).show();
+            return true;
+        });
     }
 
     @Override

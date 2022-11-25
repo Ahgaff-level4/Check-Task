@@ -48,9 +48,10 @@ public class DB extends SQLiteOpenHelper {
     public static final String TASK_CREATED = TASK_TABLE_NAME + "." + CREATED;
     public static final String TASK_REFERENCE_FILE = "fileId";
 
-
+    private final Context context;
     public DB(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.context = context;
     }
 
     @Override

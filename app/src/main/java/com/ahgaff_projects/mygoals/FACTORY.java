@@ -1,29 +1,39 @@
 package com.ahgaff_projects.mygoals;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.ahgaff_projects.mygoals.file.File;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public final class FACTORY {
     public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     /**
-     * @param date expected: yyyy/MM/dd
-     * @return date or null if there is format error
+     * @param date expected format: yyyy/MM/dd
+     * @return date object of LocalDateTime instance at specified date
      */
     public static LocalDateTime getDateFrom(String date) {
         String[] s = date.split("/");
         if (s.length == 3)
-            return LocalDateTime.of(Integer.parseInt(s[0]),Integer.parseInt(s[1]),Integer.parseInt(s[2]),1,0);
-        return null;
+            return LocalDateTime.of(Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2]), 12, 0);
+        throw new IllegalArgumentException("Expected: yyyy/MM/dd format. Got="+date);
     }
 
     public static void showErrorDialog(String message, Context context) {
@@ -73,5 +83,42 @@ public final class FACTORY {
                 .setPositiveButton(R.string.delete, listener)
                 .setIcon(android.R.drawable.ic_delete)
                 .show();
+    }
+
+    /**
+     * <ul>
+     * <li>
+     * Open a the main and only fragment panel.
+     * </li><li>
+     * Close the nav drawer.
+     * </li><li>
+     * todo Select (highlight) the drawer item that opened.
+     * </li>
+     * </ul>
+     */
+    public static void openFragment(FragmentActivity context, Class<? extends androidx.fragment.app.Fragment> fragmentClass, @Nullable Bundle bundle) {
+        context.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, fragmentClass, bundle)
+                .commit();
+        if (context instanceof MainActivity)
+            if (((MainActivity) context).drawerLayout.isDrawerOpen(GravityCompat.START))
+                ((MainActivity) context).drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public static void openFragment(FragmentActivity context,Class<? extends androidx.fragment.app.Fragment> fragmentClass, String key, int value) {
+        Bundle b = new Bundle();
+        b.putInt(key, value);
+        openFragment(context, fragmentClass, b);
+    }
+    public static void setNotify(FragmentActivity context, int fileId) {
+        Intent serviceIntent = new Intent(context, NotificationService.class);
+        serviceIntent.putExtra("fileId",fileId);
+        PendingIntent contentIntent = PendingIntent.getService(context, 12354+fileId, serviceIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT );
+
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(contentIntent);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, 0, 1000*60 * 2, contentIntent);
     }
 }

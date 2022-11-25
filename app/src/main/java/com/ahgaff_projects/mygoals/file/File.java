@@ -67,5 +67,16 @@ public class File {
     }
     public int getTasksCount(){return tasksCount;}
 
-
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", created=" + created +
+                ", startReminder=" + startReminder +
+                ", repeatEvery=" + repeatEvery +
+                ", folderId=" + folderId +
+                ", tasksCount=" + tasksCount +
+                '}';
+    }
 }
