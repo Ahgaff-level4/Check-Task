@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ahgaff_projects.mygoals.file.FileListFragment;
 import com.ahgaff_projects.mygoals.folder.Folder;
+import com.ahgaff_projects.mygoals.folder.FolderListFragment;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 import com.ahgaff_projects.mygoals.task.TaskListFragment;
 
@@ -38,24 +39,16 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         setContentView(R.layout.activity_main);
         setupNavigationDrawer();
 
-//        else if (savedInstanceState == null)  //app first open
-//            FACTORY.openFragment(this, HomeFragment.class, null);//Home Page
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //to show the correct fragment if user click on the notification
         int fileId = getIntent().getIntExtra("fileId", -1);
         if (fileId != -1) {
             Toast.makeText(this, "fileId= " + fileId, Toast.LENGTH_SHORT).show();
-            Bundle bundle = new Bundle();
-            bundle.putInt("fileId", fileId);
-            bundle.putBoolean("isFromAllTasks", true);
-            FACTORY.openFragment(this, TaskListFragment.class, bundle);
-        }
+            FACTORY.openFragment(this, TaskListFragment.class, "fileId", fileId);
+            getIntent().putExtra("fileId", -1);//if user exit the app don't reopen this fragment
+        } else if (savedInstanceState == null)  //app first open
+            FACTORY.openFragment(this, FolderListFragment.class, null);//Home Page
+
     }
+
 
     private void setupNavigationDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -75,11 +68,11 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         });
         expandableList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
             if (id == 0) //home fragment item
-                FACTORY.openFragment(this, HomeFragment.class, null);
+                FACTORY.openFragment(this, FolderListFragment.class, null);
             else if (id == 2)
                 FACTORY.openFragment(this, FileListFragment.class, "folderId", -1);//-1 means files of all folders(all files)
             else if (id == 3)//todo delete me
-                FACTORY.setNotify(this,2);
+                FACTORY.setNotify(this, 2);
             else return false;
             return true;
         });
