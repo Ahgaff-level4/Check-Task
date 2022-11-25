@@ -95,7 +95,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
 
     @Override
     public boolean onBackPressed() {
-        FACTORY.openFragment(requireActivity(),FolderListFragment.class,null);
+        FACTORY.openFragment(requireActivity(), FolderListFragment.class, null);
         return true;
     }
 
@@ -116,7 +116,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
                 DatePickerDialog datePickerDialog = new DatePickerDialog(context, (view, yearChosen, monthOfYear, dayOfMonth) -> {
                     String chosenDate = yearChosen + "/" + (monthOfYear + 1) + "/" + dayOfMonth;//this date format is used every where, be careful
                     startReminderContent.setText(chosenDate);
-                }, defaultSelectedDate.getYear(), defaultSelectedDate.getMonthValue()-1, defaultSelectedDate.getDayOfMonth());
+                }, defaultSelectedDate.getYear(), defaultSelectedDate.getMonthValue() - 1, defaultSelectedDate.getDayOfMonth());
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             });
@@ -149,7 +149,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
                         startReminder.setText(nowDate);
                     }
 
-                    if(repeatEveryStr !=null && customDay ==-1){
+                    if (repeatEveryStr != null && customDay == -1) {
                         customDay = Integer.parseInt(repeatEveryStr);
                         return;
                     }

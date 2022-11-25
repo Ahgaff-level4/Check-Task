@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.ahgaff_projects.mygoals.folder.Folder;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 
@@ -23,21 +25,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private final Context mContext;
+    private final FragmentActivity mContext;
     private final List<ExpandedMenuModel> mListDataHeader; // header titles
     public static final int FoldersPos = 1;
     // child data in format of header title, child title
     private final HashMap<ExpandedMenuModel, List<String>> mListDataChild;
     ExpandableListView expandList;
 
-    public ExpandableListAdapter(Context context, ExpandableListView mView, FolderRecyclerViewAdapter.EventFoldersChanged handler) {
+    public ExpandableListAdapter(FragmentActivity context, ExpandableListView mView, FolderRecyclerViewAdapter.EventFoldersChanged handler) {
         this.mContext = context;
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
         mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.home_title), R.drawable.home));
         mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.folders_title), R.drawable.folder));//NOTE: changing the order REQUIRE change ExpandableListAdapter.FoldersPos value!!!
         mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.all_files), R.drawable.file_description));
-        mListDataHeader.add(new ExpandedMenuModel("TEST NOTIFICATION", R.drawable.warning));
         update();
         FolderRecyclerViewAdapter.foldersChangedCallback = handler;
         this.expandList = mView;

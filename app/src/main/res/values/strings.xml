@@ -94,4 +94,6 @@
     <string name="has">has</string>
     <string name="unchecked_tasks">unchecked tasks</string>
     <string name="notification_title">Tasks Reminder</string>
+    <string name="finished">finished</string>
+    <string name="empty">empty</string>
 </resources>

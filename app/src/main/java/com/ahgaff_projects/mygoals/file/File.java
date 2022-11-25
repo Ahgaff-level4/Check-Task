@@ -1,5 +1,6 @@
 package com.ahgaff_projects.mygoals.file;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.LocalDateTime;
@@ -12,11 +13,11 @@ public class File {
     remindStart instead of remindBefore because LocalDateTime store the date not the period. So, if user enter before 3 days you should calculate when it start because LocalDateTime can't store 3 days period.
     */
      @Nullable
-    private LocalDateTime startReminder;
+    private final LocalDateTime startReminder;
     /**
      * repeat every day=1,2,3... or -1 for Never repeat
      */
-    private int repeatEvery;
+    private final int repeatEvery;
     private final int folderId;
     private final int tasksCount;
 
@@ -40,23 +41,14 @@ public class File {
         this.name = name;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
     @Nullable
     public LocalDateTime getStartReminder() {
         return startReminder;
     }
 
-    public void setStartReminder(@Nullable LocalDateTime startReminder){
-        this.startReminder = startReminder;
-    }
-
     public int getRepeatEvery() {
         return repeatEvery;
     }
-    public void setRepeatEvery(int repeatEvery){this.repeatEvery = repeatEvery;}
 
     /**
      *
@@ -67,6 +59,8 @@ public class File {
     }
     public int getTasksCount(){return tasksCount;}
 
+    public LocalDateTime getCreated(){return created;}
+    @NonNull
     @Override
     public String toString() {
         return "File{" +

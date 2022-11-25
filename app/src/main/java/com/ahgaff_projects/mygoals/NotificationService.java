@@ -31,14 +31,7 @@ public class NotificationService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // check the global background data setting
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if (!cm.getBackgroundDataSetting()) {
-            stopSelf();
-            return START_NOT_STICKY;
-        }
-        // do the actual work, in a separate thread
-        Toast.makeText(this, "onCreate Service called", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onCreate Service called", Toast.LENGTH_SHORT).show();
 
         int fileId = intent.getIntExtra("fileId", -1);
         if (fileId < 0) {
@@ -46,8 +39,9 @@ public class NotificationService extends Service {
             throw new IllegalArgumentException("Invalid fileId! expected positive integer got=" + fileId);
         }
         File file = new DB(this).getFile(fileId);
-        if (getUncheckedTasksCount(file) == 0)
-            return START_NOT_STICKY;//if all tasks are checked then exist(no notification)
+        int uncheckedCount = FACTORY.getUncheckedTasksCount(this,file.getId());
+        if (uncheckedCount == 0)
+            return START_STICKY;//if all tasks are checked then exist(no notification)
         Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.putExtra("fileId", fileId);
 
@@ -56,24 +50,17 @@ public class NotificationService extends Service {
         Notification noti = new Notification.Builder(this, "12354")
                 .setAutoCancel(true)
                 .setContentIntent(PendingIntent.getActivity(this, fileId, mainIntent,
-                        PendingIntent.FLAG_CANCEL_CURRENT))
+                        PendingIntent.FLAG_CANCEL_CURRENT+PendingIntent.FLAG_IMMUTABLE))
                 .setContentTitle(getString(R.string.check_your_tasks))
-                .setContentText(getString(R.string.file_title) + " " + file.getName() + " " + getString(R.string.has) + " " + getUncheckedTasksCount(file) + " " + getString(R.string.unchecked_tasks))
+                .setContentText(getString(R.string.file_title) + " " + file.getName() + " " + getString(R.string.has) + " " + uncheckedCount + " " + getString(R.string.unchecked_tasks))
                 .setSmallIcon(R.drawable.task_alt)
                 .setLargeIcon(Icon.createWithResource(this, R.drawable.icon))
                 .build();
-        notificationManager.notify(12354, noti);
-        return START_NOT_STICKY;
+        notificationManager.notify(12354+fileId, noti);
+        return START_STICKY;
     }
 
-    private int getUncheckedTasksCount(File file) {
-        ArrayList<Task> tasks = new DB(this).getTasksOf(file.getId());
-        int unchecked = 0;
-        for (Task t : tasks)
-            if (!t.isChecked())
-                unchecked++;
-        return unchecked;
-    }
+
 
     /**
      * Simply return null, since our Service will not be communicating with

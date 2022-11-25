@@ -1,11 +1,5 @@
 package com.ahgaff_projects.mygoals;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ExpandableListView;
@@ -25,8 +19,6 @@ import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 import com.ahgaff_projects.mygoals.task.TaskListFragment;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class MainActivity extends AppCompatActivity implements FolderRecyclerViewAdapter.EventFoldersChanged {
 
@@ -46,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             getIntent().putExtra("fileId", -1);//if user exit the app don't reopen this fragment
         } else if (savedInstanceState == null)  //app first open
             FACTORY.openFragment(this, FolderListFragment.class, null);//Home Page
-
+        FACTORY.updateAllReminders(this);
     }
 
 
@@ -71,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                 FACTORY.openFragment(this, FolderListFragment.class, null);
             else if (id == 2)
                 FACTORY.openFragment(this, FileListFragment.class, "folderId", -1);//-1 means files of all folders(all files)
-            else if (id == 3)//todo delete me
-                FACTORY.setNotify(this, 2);
             else return false;
             return true;
         });
@@ -106,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
          */
         boolean onBackPressed();
     }
-
 
 }
 

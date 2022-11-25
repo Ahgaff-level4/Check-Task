@@ -77,23 +77,32 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         File thisFile = files.get(position);
         holder.fileName.setText(thisFile.getName());
-        holder.fileStartTime.setText(nearestReminder(thisFile));
+        holder.fileStartTime.setText(smallTitle(thisFile));
         holder.fileParent.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("fileId", thisFile.getId());
             if (folderId == -1)
                 bundle.putBoolean("isFromAllTasks", true);
-            FACTORY.openFragment(context,TaskListFragment.class,bundle);
+            FACTORY.openFragment(context, TaskListFragment.class, bundle);
             context.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, TaskListFragment.class, bundle)
                     .commit();
         });
         holder.optionBtn.setOnClickListener(handleOnOptionClick(thisFile, holder.optionBtn));
-        holder.fileParent.setOnLongClickListener((v)->{
+        holder.fileParent.setOnLongClickListener((v) -> {
             Toast.makeText(context, thisFile.toString(), Toast.LENGTH_SHORT).show();
             return true;
         });
+    }
+
+    private String smallTitle(File thisFile) {
+        if(thisFile.getTasksCount() == 0)
+            return context.getString(R.string.empty);
+        int uncheckedCount = FACTORY.getUncheckedTasksCount(context, thisFile.getId());
+        if (uncheckedCount == 0)
+            return context.getString(R.string.finished);
+        return nearestReminderStr(thisFile);
     }
 
     @Override
@@ -120,30 +129,12 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         notifyDataSetChanged();//refresh the list
     }
 
-    private String nearestReminder(File thisFile) {
-        if (thisFile.getStartReminder() == null)//no startReminder means no repeatEvery because if user choose only repeatEvery then automatically startReminder will be set at that day
+    private String nearestReminderStr(File thisFile) {
+
+        int days = FACTORY.nearestReminder(context, thisFile.getId());
+        if (days == -1)
             return "";
-        //get days different between now and startReminder (future)
-        Duration dur = Duration.between(LocalDateTime.now(), thisFile.getStartReminder());
-
-        long days = Math.round(((double) dur.toHours() / 24));//today days became -1 So add one. idk why
-
-        if (days < 0) {
-            //startReminder has pass and no repeatEvery!
-            if (thisFile.getRepeatEvery() <= 0)//repeatEvery is -1 if user chosen Never
-                return "";
-            //app will reach here if startReminder is old date and repeatDays exist
-            //startReminder is old date.
-            //repeatDays is n days.
-            //So, remain days = (now date - old date) % repeatDays
-            days = days % thisFile.getRepeatEvery();
-            //days is negative
-            if (days < 0)
-                days += thisFile.getRepeatEvery();
-        }
-//        Toast.makeText(context, "repeatEvery="+thisFile.getRepeatEvery(), Toast.LENGTH_SHORT).show();
-        return FACTORY.toEveryDay((int) days, context);
-//        return days+" " +FACTORY.toEveryDay((int) days, context);
+        return FACTORY.toEveryDay(days, context);
     }
 
     private View.OnClickListener handleOnOptionClick(File f, View optionBtn) {
