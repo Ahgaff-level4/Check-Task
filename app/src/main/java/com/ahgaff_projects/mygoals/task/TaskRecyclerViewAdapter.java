@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,9 +85,12 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      * Strike the text of the TextView if isChecked. Un-strike if not isChecked
      */
     private void setBackgroundColor (CardView cardView, boolean isChecked) {
-        if(isChecked)
-            cardView.setCardBackgroundColor(context.getColor(R.color.black_33));
-        else cardView.setCardBackgroundColor(context.getColor(R.color.white));
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(isChecked?android.R.attr.shadowColor:android.R.attr.textColorPrimary, typedValue, true);
+        int color = ContextCompat.getColor(context, typedValue.resourceId);
+//        if(isChecked)
+            cardView.setCardBackgroundColor(color);
+//        else cardView.setCardBackgroundColor(context.getColor(R.color));
     }
     private void setStrike(TextView textView, boolean isChecked){
         if(isChecked)
