@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textColorPrimary">@color/white</color>
+    <color name="textColorSecondary">@color/white_bb</color>
+    <color name="textColorTertiary">@color/white_99</color>
+    <color name="cardBackgroundColor">#222222</color>
+    <color name="cardCheckedBackgroundColor">#444444</color>
+</resources>

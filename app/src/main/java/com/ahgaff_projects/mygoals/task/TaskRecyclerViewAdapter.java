@@ -70,30 +70,26 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         Task thisTask = tasks.get(position);
         holder.taskText.setText(thisTask.getText());
         holder.taskCheckBox.setChecked(thisTask.isChecked());
-        setStrike(holder.taskText,thisTask.isChecked());
-        setBackgroundColor(holder.card,thisTask.isChecked());
+        setStrike(holder.taskText, thisTask.isChecked());
+        setBackgroundColor(holder.card, thisTask.isChecked());
         holder.taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            setStrike(holder.taskText,isChecked);
+            setStrike(holder.taskText, isChecked);
             thisTask.setChecked(isChecked);
-            setBackgroundColor(holder.card,thisTask.isChecked());
+            setBackgroundColor(holder.card, thisTask.isChecked());
             if (!db.updateTask(thisTask.getId(), thisTask.getText(), isChecked))
                 FACTORY.showErrorDialog(R.string.something_went_wrong, context);
         });
     }
 
     /**
-     * Strike the text of the TextView if isChecked. Un-strike if not isChecked
+     * change card background color base on isChecked
      */
-    private void setBackgroundColor (CardView cardView, boolean isChecked) {
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(isChecked?android.R.attr.shadowColor:android.R.attr.textColorPrimary, typedValue, true);
-        int color = ContextCompat.getColor(context, typedValue.resourceId);
-//        if(isChecked)
-            cardView.setCardBackgroundColor(color);
-//        else cardView.setCardBackgroundColor(context.getColor(R.color));
+    private void setBackgroundColor(CardView cardView, boolean isChecked) {
+        cardView.setCardBackgroundColor(context.getColor(isChecked ? R.color.cardCheckedBackgroundColor : R.color.cardBackgroundColor));
     }
-    private void setStrike(TextView textView, boolean isChecked){
-        if(isChecked)
+
+    private void setStrike(TextView textView, boolean isChecked) {
+        if (isChecked)
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         else textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
     }

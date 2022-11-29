@@ -172,8 +172,8 @@ public final class FACTORY {
     public static void createNotify(Context context, int fileId) {
         File file = new DB(context).getFile(fileId);
         int nearest = nearestReminder(context, fileId);
-        if (nearest == 0 && LocalDateTime.now().getHour() > hourOfDay)
-            nearest = file.getRepeatEvery();//nearest had passed. So, set it to the repeatEvery for initial trigger notify time
+        if (nearest == 0 && file.getCreated().getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
+            nearest = file.getRepeatEvery();//created today and nearest is today. So, set it to the repeatEvery for initial trigger notify time. We don't want today notification when you just created new file
         if (nearest == -1)
             return;//no startReminder nor repeatEvery. Or nearest had passed. So, there won't be any notification for this file
         Intent serviceIntent = new Intent(context, NotificationService.class);
