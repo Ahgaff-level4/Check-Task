@@ -31,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class FileListFragment extends Fragment implements MainActivity.MyOnBackPressed {
     private FileRecyclerViewAdapter adapter;
@@ -94,10 +95,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
 
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main,new FolderListFragment())
-                .commit();
+        FACTORY.openFragment(requireActivity(), FolderListFragment.class, null);
         return true;
     }
 
@@ -118,7 +116,7 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
                 DatePickerDialog datePickerDialog = new DatePickerDialog(context, (view, yearChosen, monthOfYear, dayOfMonth) -> {
                     String chosenDate = yearChosen + "/" + (monthOfYear + 1) + "/" + dayOfMonth;//this date format is used every where, be careful
                     startReminderContent.setText(chosenDate);
-                }, defaultSelectedDate.getYear(), defaultSelectedDate.getMonthValue()-1, defaultSelectedDate.getDayOfMonth());
+                }, defaultSelectedDate.getYear(), defaultSelectedDate.getMonthValue() - 1, defaultSelectedDate.getDayOfMonth());
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             });
@@ -137,8 +135,9 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
     public static class RepeatEvery {
         public static void setUp(View dialogView, FragmentActivity context, @Nullable String repeatEveryStr) {
             Spinner spinner = dialogView.findViewById(R.id.repeatEverySpinner);
-            if (repeatEveryStr != null)
+            if (repeatEveryStr != null) {
                 spinner.setSelection(getSpinnerPosition(repeatEveryStr));
+            }
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -149,6 +148,12 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
                         String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
                         startReminder.setText(nowDate);
                     }
+
+                    if (repeatEveryStr != null && customDay == -1) {
+                        customDay = Integer.parseInt(repeatEveryStr);
+                        return;
+                    }
+
 
                     String[] arr = context.getResources().getStringArray(R.array.repeat_every_options);
                     if (context.getString(R.string.custom).equals(arr[position])) {//todo when type num of days set it into spinner

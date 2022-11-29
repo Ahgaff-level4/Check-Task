@@ -40,7 +40,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             context.setTitle(R.string.all_files);
         } else {
             this.files = db.getFilesOf(folderId);
-            context.setTitle(context.getString(R.string.folder_title)+" "+db.getFolder(folderId).getName());
+            context.setTitle(db.getFolder(folderId).getName());
         }
     }
 
@@ -77,18 +77,32 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         File thisFile = files.get(position);
         holder.fileName.setText(thisFile.getName());
-        holder.fileStartTime.setText(nearestReminder(thisFile));
+        holder.fileStartTime.setText(smallTitle(thisFile));
         holder.fileParent.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("fileId", thisFile.getId());
-            if(folderId==-1)
-                bundle.putBoolean("isFromAllTasks",true);
+            if (folderId == -1)
+                bundle.putBoolean("isFromAllTasks", true);
+            FACTORY.openFragment(context, TaskListFragment.class, bundle);
             context.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, TaskListFragment.class, bundle)
                     .commit();
         });
         holder.optionBtn.setOnClickListener(handleOnOptionClick(thisFile, holder.optionBtn));
+        holder.fileParent.setOnLongClickListener((v) -> {
+            Toast.makeText(context, thisFile.toString(), Toast.LENGTH_SHORT).show();
+            return true;
+        });
+    }
+
+    private String smallTitle(File thisFile) {
+        if(thisFile.getTasksCount() == 0)
+            return context.getString(R.string.empty);
+        int uncheckedCount = FACTORY.getUncheckedTasksCount(context, thisFile.getId());
+        if (uncheckedCount == 0)
+            return context.getString(R.string.finished);
+        return nearestReminderStr(thisFile);
     }
 
     @Override
@@ -115,24 +129,12 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         notifyDataSetChanged();//refresh the list
     }
 
-    private String nearestReminder(File thisFile) {
-        if (thisFile.getStartReminder() == null)//no startReminder means no repeatEvery because if user choose only repeatEvery then automatically startReminder will be set at that day
-            return "";
-        //get days different between now and startReminder (future)
-        Duration dur = Duration.between(LocalDateTime.now(), thisFile.getStartReminder());
-        long days = Math.round(((double) dur.toHours()) / 24) + 1;//today days became -1 So add one. idk why
+    private String nearestReminderStr(File thisFile) {
 
-        if (days < 0) {
-            //startReminder has pass and no repeatEvery!
-            if (thisFile.getRepeatEvery() == -1)
-                return "";
-            //app will reach here if startReminder=old date and repeatDays exist
-            //startReminder= old date.
-            //repeatDays= n days.
-            // So, remain days = (now date - old date) % repeatDays
-            days = (-days) % thisFile.getRepeatEvery();//old date is negative
-        }
-        return FACTORY.toEveryDay((int) days, context);
+        int days = FACTORY.nearestReminder(context, thisFile.getId());
+        if (days == -1)
+            return "";
+        return FACTORY.toEveryDay(days, context);
     }
 
     private View.OnClickListener handleOnOptionClick(File f, View optionBtn) {

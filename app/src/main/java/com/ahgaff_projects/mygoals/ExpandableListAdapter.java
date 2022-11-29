@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.ahgaff_projects.mygoals.folder.Folder;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 
@@ -23,14 +25,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private final Context mContext;
+    private final FragmentActivity mContext;
     private final List<ExpandedMenuModel> mListDataHeader; // header titles
     public static final int FoldersPos = 1;
     // child data in format of header title, child title
     private final HashMap<ExpandedMenuModel, List<String>> mListDataChild;
     ExpandableListView expandList;
 
-    public ExpandableListAdapter(Context context, ExpandableListView mView, FolderRecyclerViewAdapter.EventFoldersChanged handler) {
+    public ExpandableListAdapter(FragmentActivity context, ExpandableListView mView, FolderRecyclerViewAdapter.EventFoldersChanged handler) {
         this.mContext = context;
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
@@ -38,7 +40,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.folders_title), R.drawable.folder));//NOTE: changing the order REQUIRE change ExpandableListAdapter.FoldersPos value!!!
         mListDataHeader.add(new ExpandedMenuModel(context.getString(R.string.all_files), R.drawable.file_description));
         update();
-
         FolderRecyclerViewAdapter.foldersChangedCallback = handler;
         this.expandList = mView;
     }
@@ -59,7 +60,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     /**
      * update child of Folders with user's folders retrieved from DB
      */
-    public void update(){
+    public void update() {
         List<String> headerFolders = new ArrayList<>();
         List<Folder> folders = new DB(mContext).getAllFolders();
         for (Folder f : folders)
@@ -107,13 +108,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView headerIcon = convertView.findViewById(R.id.iconimage);
         lblListHeader.setText(headerTitle.getIconName());
         headerIcon.setImageResource(headerTitle.getIconImg());
-            ImageView arrowicon = convertView.findViewById(R.id.arrowicon);
+        ImageView arrowicon = convertView.findViewById(R.id.arrowicon);
         if (groupPosition == FoldersPos) {//hard coded second item which is the Folders item
             if (isExpanded)
                 arrowicon.setImageResource(R.drawable.expand_less);
             else arrowicon.setImageResource(R.drawable.expand_more);
         }
-        if(parent.getChildAt(0)!=null)
+        if (parent.getChildAt(0) != null)
             convertView.setSelected(false);
         return convertView;
     }
@@ -142,24 +143,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
 
+
+    private static class ExpandedMenuModel {
+        private final String iconName;
+        private final int iconImg; // menu icon resource id
+
+
+        public ExpandedMenuModel(String iconName, int iconImg) {
+            this.iconName = iconName;
+            this.iconImg = iconImg;
+        }
+
+        public String getIconName() {
+            return iconName;
+        }
+
+        public int getIconImg() {
+            return iconImg;
+        }
+    }
+
 }
-
-class ExpandedMenuModel {
-    private final String iconName;
-    private final int iconImg; // menu icon resource id
-
-
-    public ExpandedMenuModel(String iconName, int iconImg) {
-        this.iconName = iconName;
-        this.iconImg = iconImg;
-    }
-
-    public String getIconName() {
-        return iconName;
-    }
-
-    public int getIconImg() {
-        return iconImg;
-    }
-}
-

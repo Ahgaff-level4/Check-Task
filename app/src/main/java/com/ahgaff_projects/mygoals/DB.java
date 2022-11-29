@@ -6,8 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.ahgaff_projects.mygoals.file.File;
 import com.ahgaff_projects.mygoals.folder.Folder;
@@ -48,9 +46,10 @@ public class DB extends SQLiteOpenHelper {
     public static final String TASK_CREATED = TASK_TABLE_NAME + "." + CREATED;
     public static final String TASK_REFERENCE_FILE = "fileId";
 
-
+    private final Context context;
     public DB(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.context = context;
     }
 
     @Override
@@ -127,8 +126,7 @@ GROUP BY books.id;
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME, name);
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
-        db.insert(FOLDER_TABLE_NAME, null, contentValues);
-        return true;
+        return db.insert(FOLDER_TABLE_NAME, null, contentValues) >=0;
     }
 
     public boolean deleteFolder(int folderId) {
@@ -231,14 +229,19 @@ GROUP BY books.id;
         contentValues.put(REPEAT_EVERY, repeatEvery);
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
         contentValues.put(FILE_REFERENCE_FOLDER, folderId);
-        db.insert(FILE_TABLE_NAME, null, contentValues);
+        int id = (int)db.insert(FILE_TABLE_NAME, null, contentValues);
+        if(id==-1)
+            return false;
+        FACTORY.createNotify(context,id);
         return true;
     }
 
     public boolean deleteFile(int fileId) {
         SQLiteDatabase db = this.getReadableDatabase();
+        FACTORY.cancelNotify(context,fileId);
         return db.delete(FILE_TABLE_NAME, ID + "=" + fileId, null) > 0;
     }
+
 
     public boolean updateFile(int fileId, String fileName, LocalDateTime startReminder, int repeatEvery) {
         SQLiteDatabase db = getReadableDatabase();
@@ -247,6 +250,8 @@ GROUP BY books.id;
         if (startReminder != null)
             cv.put(START_REMINDER, startReminder.format(FACTORY.dateFormat));
         cv.put(REPEAT_EVERY, repeatEvery);
+        FACTORY.cancelNotify(context,fileId);
+        FACTORY.createNotify(context,fileId);
         return db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
     }
 
@@ -274,6 +279,7 @@ GROUP BY books.id;
         res.close();
         return new File(id, name, startReminder, repeatEvery, created, folderId, tasksCount);
     }
+
 
     /*********************************** Task **********************************************/
     public ArrayList<Task> getTasksOf(int fileId) {
@@ -305,8 +311,7 @@ GROUP BY books.id;
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
         contentValues.put(TASK_REFERENCE_FILE, fileId);
         contentValues.put(CHECKED, checked);
-        db.insert(TASK_TABLE_NAME, null, contentValues);
-        return true;
+        return db.insert(TASK_TABLE_NAME, null, contentValues)>=0;
     }
 
     public boolean updateTask(int taskId, String text, boolean isChecked) {

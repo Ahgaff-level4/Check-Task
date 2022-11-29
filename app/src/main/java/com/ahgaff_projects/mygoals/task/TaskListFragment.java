@@ -82,20 +82,12 @@ public class TaskListFragment extends Fragment implements MainActivity.MyOnBackP
 
     @Override
     public boolean onBackPressed() {
-        //todo when open taskList from allFiles fragment then pass bundle.put("isFromAllFiles",true)
-        // then here if isFromAllFiles == true open AllFilesFragment aka folderId=-1 when open FileListFragment
-
-        Bundle bundle = new Bundle();
         int folderId;
         if (isFromAllFiles)
             folderId = -1;//to show AllFiles
         else
             folderId = new DB(getActivity()).getFile(adapter.fileId).getFolderId();
-        bundle.putInt("folderId", folderId);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, FileListFragment.class, bundle)
-                .commit();
+        FACTORY.openFragment(getActivity(),FileListFragment.class,"folderId", folderId);
         return true;
     }
 }

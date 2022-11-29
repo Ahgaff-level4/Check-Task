@@ -6,15 +6,13 @@
     android:elevation="24dp"
     >
 
-
-
     <EditText
         android:id="@+id/folderNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:hint="@string/add_folder_dialog_edittext_hint"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="@dimen/item_text_vertical_padding"
         android:autofillHints="name" />
 
 </LinearLayout>

@@ -6,7 +6,7 @@
     android:id="@+id/taskParentCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="6dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="15dp">
 
@@ -30,11 +30,11 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toEndOf="@+id/taskCheckBox"
-            android:paddingVertical="7dp"
+            android:paddingVertical="8dp"
             android:text="Task text..."
+            android:textColor="?android:textColorSecondary"
             android:textIsSelectable="true"
-            android:textSize="20sp"
-
+            android:textSize="@dimen/text_xmiddle_size"
             tools:ignore="HardCodedText" />
 
 

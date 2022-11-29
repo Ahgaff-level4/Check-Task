@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="15dp"
-    android:elevation="24dp"
-    android:outlineSpotShadowColor="#24646A">
+    android:elevation="24dp">
 
 
     <EditText
         android:id="@+id/fileNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="8dp"
         android:autofillHints="name"
         android:hint="@string/add_file_dialog_edittext_hint"
         android:inputType="text" />
@@ -24,19 +22,19 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/fileNameEditText"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="8dp"
         android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        >
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/startReminderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
             android:text="@string/start_reminder_title"
-            android:textColor="@color/black_800"
-            android:textSize="18sp" />
+            android:textColor="?android:textColorSecondary"
+            android:textSize="@dimen/text_middle_size" />
 
         <TextView
             android:id="@+id/startReminderContent"
@@ -45,9 +43,10 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="24dp"
-            android:textColor="@color/black_700"
             android:text="@string/start_reminder_none"
-            android:textSize="18sp" />
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/text_middle_size"
+            tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/startReminderArrow"
@@ -55,29 +54,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="-9dp"
             android:text="@string/arrow"
-            android:layout_marginEnd="-8dp"
-            android:textColor="@color/black_300"
-            android:textSize="20sp" />
+            android:textColor="?android:textColorTertiary"
+            android:textSize="20sp"
+            tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/repeatEveryLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/startReminderLayout"
-        android:layout_marginHorizontal="20dp"
-        >
+        android:layout_marginHorizontal="8dp">
 
         <TextView
             android:id="@+id/repeatEveryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
             android:text="@string/reminder_periodic"
-            android:textColor="@color/black_800"
-            android:textSize="18sp"
-             />
+            android:textSize="@dimen/text_middle_size"
+            android:textColor="?android:textColorSecondary"
+            tools:ignore="RelativeOverlap" />
 
         <Spinner
             android:id="@+id/repeatEverySpinner"
@@ -87,9 +88,7 @@
             android:layout_centerVertical="true"
             android:entries="@array/repeat_every_options"
             android:spinnerMode="dropdown"
-            android:textSize="18sp" />
-
-
+            android:textSize="@dimen/text_middle_size" />
     </RelativeLayout>
 
 

@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/content_description_folder_image"
         android:src="@drawable/folder"
-        app:tint="@color/purple_500" />
+        app:tint="?attr/colorPrimary" />
 
     <TextView
         android:id="@+id/folderName"
@@ -28,6 +28,7 @@
         android:layout_toStartOf="@+id/folderItemOptionMenuBtn"
         android:layout_toEndOf="@+id/folderImageView"
         android:paddingVertical="4dp"
+        android:textColor="?android:textColorSecondary"
         android:text="Folder name asd"
         android:textSize="@dimen/text_xxmiddle_size"
         android:textStyle="bold"
@@ -44,8 +45,9 @@
         android:layout_alignParentEnd="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
+        app:tint="?android:textColorTertiary"
         android:contentDescription="@string/content_description_more_option"
-        android:paddingTop="@dimen/item_text_vertical_padding"
+        android:layout_marginTop="5dp"
         android:src="@drawable/more_vert" />
 
     <TextView
