@@ -15,5 +15,6 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white_bb</item>
         <item name="android:textColorTertiary">@color/white_99</item>
+        <item name="cardBackgroundColor">@color/white_33</item>
     </style>
 </resources>

@@ -31,8 +31,6 @@ public class NotificationService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        Toast.makeText(this, "onCreate Service called", Toast.LENGTH_SHORT).show();
-
         int fileId = intent.getIntExtra("fileId", -1);
         if (fileId < 0) {
             Toast.makeText(this, "Invalid fileId! expected positive integer got=" + fileId, Toast.LENGTH_SHORT).show();

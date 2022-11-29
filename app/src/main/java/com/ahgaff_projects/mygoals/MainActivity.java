@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             getIntent().putExtra("fileId", -1);//if user exit the app don't reopen this fragment
         } else if (savedInstanceState == null)  //app first open
             FACTORY.openFragment(this, FolderListFragment.class, null);//Home Page
-        FACTORY.updateAllReminders(this);
+        FACTORY.updateAllReminders(this);//todo when phone boot call it again
     }
 
 

@@ -129,9 +129,9 @@ public final class FACTORY {
             return -1;
 
         //get days different between now and startReminder (future)
-        Duration dur = Duration.between(LocalDateTime.now(), file.getStartReminder());
+        Duration dur = Duration.between(LocalDateTime.now().toLocalDate().atStartOfDay(),file.getStartReminder().toLocalDate().atStartOfDay());
 
-        int days = (int) Math.round(((double) dur.toHours() / 24)) + 1;
+        int days = (int) Math.round(((double) dur.toHours() / 24));
 
         if (days < 0) {
             //startReminder has pass and no repeatEvery!

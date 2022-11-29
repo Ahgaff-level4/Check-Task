@@ -84,7 +84,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      */
     private void setBackgroundColor (CardView cardView, boolean isChecked) {
         if(isChecked)
-            cardView.setCardBackgroundColor(context.getColor(R.color.LightGrey));
+            cardView.setCardBackgroundColor(context.getColor(R.color.black_33));
         else cardView.setCardBackgroundColor(context.getColor(R.color.white));
     }
     private void setStrike(TextView textView, boolean isChecked){
