@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public final class FACTORY {
+    public static final String TAG = "MyTag";
     public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     /**
      * when notification will be shown at the day. from 0 to 23 hours
@@ -179,7 +180,7 @@ public final class FACTORY {
         Intent serviceIntent = new Intent(context, NotificationService.class);
         serviceIntent.putExtra("fileId", fileId);
         PendingIntent pendingService = PendingIntent.getService(context, 12354 + fileId, serviceIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT + PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingService);
         if (file.getRepeatEvery() == -1) {//notification won't repeat. set it at File.startReminder only

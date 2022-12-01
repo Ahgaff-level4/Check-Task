@@ -40,8 +40,11 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+// Add the dependency for the Firebase Authentication library
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
 
 //    implementation "com.androidx.support:support-core-utils:28.0.0"
     testImplementation 'junit:junit:4.13.2'
