@@ -98,4 +98,6 @@
     <string name="empty">empty</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
+    <string name="sync">Sync</string>
+    <string name="import_data">Import data</string>
 </resources>
