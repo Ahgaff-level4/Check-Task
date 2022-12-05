@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public final class FACTORY {
+    public static final String TAG = "MyTag";
     public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     /**
      * when notification will be shown at the day. from 0 to 23 hours
@@ -129,9 +130,9 @@ public final class FACTORY {
             return -1;
 
         //get days different between now and startReminder (future)
-        Duration dur = Duration.between(LocalDateTime.now(), file.getStartReminder());
+        Duration dur = Duration.between(LocalDateTime.now().toLocalDate().atStartOfDay(),file.getStartReminder().toLocalDate().atStartOfDay());
 
-        int days = (int) Math.round(((double) dur.toHours() / 24)) + 1;
+        int days = (int) Math.round(((double) dur.toHours() / 24));
 
         if (days < 0) {
             //startReminder has pass and no repeatEvery!
@@ -172,14 +173,14 @@ public final class FACTORY {
     public static void createNotify(Context context, int fileId) {
         File file = new DB(context).getFile(fileId);
         int nearest = nearestReminder(context, fileId);
-        if (nearest == 0 && LocalDateTime.now().getHour() > hourOfDay)
-            nearest = file.getRepeatEvery();//nearest had passed. So, set it to the repeatEvery for initial trigger notify time
+        if (nearest == 0 && file.getCreated().getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
+            nearest = file.getRepeatEvery();//created today and nearest is today. So, set it to the repeatEvery for initial trigger notify time. We don't want today notification when you just created new file
         if (nearest == -1)
             return;//no startReminder nor repeatEvery. Or nearest had passed. So, there won't be any notification for this file
         Intent serviceIntent = new Intent(context, NotificationService.class);
         serviceIntent.putExtra("fileId", fileId);
         PendingIntent pendingService = PendingIntent.getService(context, 12354 + fileId, serviceIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT + PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingService);
         if (file.getRepeatEvery() == -1) {//notification won't repeat. set it at File.startReminder only

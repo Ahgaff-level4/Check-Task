@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1055583965531",
+    "project_id": "ahgaff-mygoals",
+    "storage_bucket": "ahgaff-mygoals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055583965531:android:ee6b463303257e8a428a7e",
+        "android_client_info": {
+          "package_name": "com.ahgaff_projects.mygoals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055583965531-n0fd0di72guc8r5oqo6nvoblssk0uafl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEtgqS8ZogdWdzzs2Q2Ek0aExS-Hv6eVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055583965531-n0fd0di72guc8r5oqo6nvoblssk0uafl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

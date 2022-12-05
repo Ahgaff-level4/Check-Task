@@ -130,7 +130,6 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     }
 
     private String nearestReminderStr(File thisFile) {
-
         int days = FACTORY.nearestReminder(context, thisFile.getId());
         if (days == -1)
             return "";
