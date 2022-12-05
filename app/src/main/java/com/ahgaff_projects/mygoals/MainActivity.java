@@ -30,9 +30,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements FolderRecyclerViewAdapter.EventFoldersChanged {
 
@@ -118,11 +124,14 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
 
     @Override
     public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().getFragments().get(0);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("Main Fragment");
         if (drawerLayout.isDrawerOpen(GravityCompat.START))//if drawer navigation is open then just close it
             drawerLayout.closeDrawer(GravityCompat.START);
-        else if (!(fragment instanceof MyOnBackPressed) || !((MyOnBackPressed) fragment).onBackPressed()) //if user inside a tasks than backPress will be handle in TaskListFragment. So, this if condition will call the handler and result false
+        else if (fragment instanceof MyOnBackPressed) { //if user inside a tasks than backPress will be handle in TaskListFragment. So, this if condition will call the handler and result false
+            ((MyOnBackPressed) fragment).onBackPressed();
+        } else
             super.onBackPressed();
+
     }
 
     @Override
@@ -130,31 +139,31 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         if (item.getItemId() == R.id.action_settings) {
 //                Intent intent = new Intent(this,SettingActivity.class);
 //                this.startActivity(intent);
-            return true;
         } else if (item.getItemId() == R.id.action_login) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 12354);
-            return true;
         } else if (item.getItemId() == R.id.action_logout) {
             mGoogleSignInClient.signOut()
                     .addOnCompleteListener(this, task -> Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_LONG).show());
             updateUI(null);
-            return true;
-        } else//todo sync, import buttons
-            return super.onOptionsItemSelected(item);
+        } else if (item.getItemId() == R.id.action_sync) {
+            sync();
+        }//todo sync, import buttons
+        else return super.onOptionsItemSelected(item);
+        return true;
     }
 
 
     @Override
-    public void onFoldersChanged(ArrayList<Folder> folders) {
+    public void onFoldersChanged() {
         menuFoldersAdapter.update();
     }
 
     public interface MyOnBackPressed {
         /**
-         * @return true if handled. false to make MainActivity handle it.
-         */
-        boolean onBackPressed();
+         * make other fragments handle the backPressed event instead of MainActivity
+         * */
+        void onBackPressed();
     }
 
 
@@ -201,10 +210,38 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText(this, "Failed to Sign-in", Toast.LENGTH_LONG).show();
-            Log.w(TAG, "signInResult:failed.", e);
+            Toast.makeText(this, "Login Failed!", Toast.LENGTH_LONG).show();
             updateUI(null);
         }
+    }
+
+
+    private void sync() {
+        if (account == null)
+            return;
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        // Create a new user with a first, middle, and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Alan");
+        user.put("middle", "Mathison");
+        user.put("last", "Turing");
+        user.put("born", 1912);
+
+// Add a new document with a generated ID
+        firestore.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 }
 

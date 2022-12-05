@@ -84,10 +84,6 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             if (folderId == -1)
                 bundle.putBoolean("isFromAllTasks", true);
             FACTORY.openFragment(context, TaskListFragment.class, bundle);
-            context.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main, TaskListFragment.class, bundle)
-                    .commit();
         });
         holder.optionBtn.setOnClickListener(handleOnOptionClick(thisFile, holder.optionBtn));
         holder.fileParent.setOnLongClickListener((v) -> {

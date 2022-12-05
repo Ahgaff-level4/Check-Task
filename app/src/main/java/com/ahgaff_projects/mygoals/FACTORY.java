@@ -108,7 +108,7 @@ public final class FACTORY {
     public static void openFragment(FragmentActivity context, Class<? extends androidx.fragment.app.Fragment> fragmentClass, @Nullable Bundle bundle) {
         context.getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, fragmentClass, bundle)
+                .replace(R.id.nav_host_fragment_content_main, fragmentClass, bundle,"Main Fragment")
                 .commit();
         if (context instanceof MainActivity)
             if (((MainActivity) context).drawerLayout.isDrawerOpen(GravityCompat.START))
