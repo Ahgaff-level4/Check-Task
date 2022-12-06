@@ -94,9 +94,8 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
     }
 
     @Override
-    public boolean onBackPressed() {
+    public void onBackPressed() {
         FACTORY.openFragment(requireActivity(), FolderListFragment.class, null);
-        return true;
     }
 
 

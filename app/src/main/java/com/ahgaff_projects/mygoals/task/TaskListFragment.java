@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -81,13 +82,12 @@ public class TaskListFragment extends Fragment implements MainActivity.MyOnBackP
 
 
     @Override
-    public boolean onBackPressed() {
+    public void onBackPressed() {
         int folderId;
         if (isFromAllFiles)
             folderId = -1;//to show AllFiles
         else
             folderId = new DB(getActivity()).getFile(adapter.fileId).getFolderId();
         FACTORY.openFragment(getActivity(),FileListFragment.class,"folderId", folderId);
-        return true;
     }
 }

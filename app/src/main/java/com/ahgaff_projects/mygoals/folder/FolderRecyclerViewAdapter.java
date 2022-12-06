@@ -162,7 +162,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
     public void updateFolders() {
         this.folders = db.getAllFolders();
         notifyDataSetChanged();//refresh the list
-        foldersChangedCallback.onFoldersChanged(folders);
+        foldersChangedCallback.onFoldersChanged();
     }
 
     public static EventFoldersChanged foldersChangedCallback;
@@ -174,7 +174,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         /**
          * called when updateFolders() in FolderRecyclerViewAdapter called
          */
-        void onFoldersChanged(ArrayList<Folder> folders);
+        void onFoldersChanged();
     }
 
     public ArrayList<String> getAllFolderNames() {
