@@ -28,6 +28,18 @@
     <string name="logout">Logout</string>
     <string name="sync">Sync</string>
     <string name="import_data">Import data</string>
+    <string name="empty_list">Empty List</string>
+    <string name="founded">Founded</string>
+    <string name="are_you_sure_reset_all_data">Are you sure you want to reset all folders, files and tasks?</string>
+    <string name="reset">Reset</string>
+    <string name="sync_finish_successfully">Sync finished successfully</string>
+    <string name="sync_failed">Sync failed! Try again later</string>
+    <string name="error_try_relogin">Something Went Wrong! Try re-login</string>
+    <string name="import_success">Data retrieved successfully</string>
+    <string name="import_failed">Import Failed!</string>
+    <string name="login_failed">Login Failed!</string>
+    <string name="welcome">Welcome</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!--Folder-->
     <string name="folder_title">Folder</string>
@@ -102,16 +114,21 @@
     <string name="content_description_folder_image">Folder image</string>
     <string name="content_description_more_option">More option button to show edit and delete buttons</string>
     <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
-    <string name="empty_list">Empty List</string>
-    <string name="founded">Founded</string>
-    <string name="are_you_sure_reset_all_data">Are you sure you want to reset all folders, files and tasks?</string>
-    <string name="reset">Reset</string>
-    <string name="sync_finish_successfully">Sync finished successfully</string>
-    <string name="sync_failed">Sync failed! Try again later</string>
-    <string name="error_try_relogin">Something Went Wrong! Try re-login</string>
-    <string name="import_success">Data retrived successfully</string>
-    <string name="import_failed">Import Failed!</string>
-    <string name="login_failed">Login Failed!</string>
-    <string name="welcome">Welcome</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 </resources>

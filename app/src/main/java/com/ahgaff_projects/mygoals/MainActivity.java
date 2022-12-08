@@ -2,7 +2,6 @@ package com.ahgaff_projects.mygoals;
 
 import static com.ahgaff_projects.mygoals.FACTORY.TAG;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +18,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.ahgaff_projects.mygoals.file.File;
 import com.ahgaff_projects.mygoals.file.FileListFragment;
-import com.ahgaff_projects.mygoals.folder.Folder;
 import com.ahgaff_projects.mygoals.folder.FolderListFragment;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 import com.ahgaff_projects.mygoals.task.TaskListFragment;
@@ -31,19 +27,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements FolderRecyclerViewAdapter.EventFoldersChanged {
 
@@ -144,8 +133,8 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-//                Intent intent = new Intent(this,SettingActivity.class);
-//                this.startActivity(intent);
+                Intent intent = new Intent(this,SettingsActivity.class);
+                this.startActivity(intent);
         } else if (item.getItemId() == R.id.action_login) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 12354);
