@@ -33,6 +33,9 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         this.folders = db.getAllFolders();
         this.db = db;
         context.setTitle(R.string.folders_title);
+        if (this.folders.size() <= 0)
+            context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -112,7 +115,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
                 }
                 if (item.getItemId() == R.id.delete_item) {
                     //handle menu2 click
-                    FACTORY.showAreYouSureDialog(context.getString(R.string.folder_title) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context, (_dialog, which) -> {
+                    FACTORY.showAreYouSureDialog(context.getString(R.string.folder_title) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getFilesCount() + " " + context.getString(R.string.files), context,R.string.delete, (_dialog, which) -> {
                         if (!db.deleteFolder(f.getId()))
                             FACTORY.showErrorDialog(R.string.something_went_wrong, context);
                         else {
@@ -163,6 +166,9 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<FolderRecycl
         this.folders = db.getAllFolders();
         notifyDataSetChanged();//refresh the list
         foldersChangedCallback.onFoldersChanged();
+        if (this.folders.size() <= 0)
+            context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
     }
 
     public static EventFoldersChanged foldersChangedCallback;

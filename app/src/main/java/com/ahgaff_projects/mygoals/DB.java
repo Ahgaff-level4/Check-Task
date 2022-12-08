@@ -13,6 +13,7 @@ import com.ahgaff_projects.mygoals.task.Task;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DB extends SQLiteOpenHelper {
 
@@ -47,6 +48,7 @@ public class DB extends SQLiteOpenHelper {
     public static final String TASK_REFERENCE_FILE = "fileId";
 
     private final Context context;
+
     public DB(Context context) {
         super(context, DATABASE_NAME, null, 1);
         this.context = context;
@@ -121,16 +123,52 @@ GROUP BY books.id;
         return arr;
     }
 
+    public ArrayList<Folder> firebaseFolders() {
+        ArrayList<Folder> arr = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * from " + FOLDER_TABLE_NAME, null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
+            @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
+            @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+
+            arr.add(new Folder(id, name, createdStr));
+
+            res.moveToNext();
+        }
+        res.close();
+        return arr;
+    }
+
+    public void firebaseFolders(ArrayList<Folder> folders) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        if (folders == null)
+            return;
+        db.delete(FOLDER_TABLE_NAME, "", null);
+        for (Folder f : folders) {
+            contentValues.put(ID, f.getId());
+            contentValues.put(NAME, f.getName());
+            contentValues.put(CREATED, f.createdStr);
+            db.insert(FOLDER_TABLE_NAME, null, contentValues);
+        }
+    }
+
     public boolean insertFolder(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME, name);
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
-        return db.insert(FOLDER_TABLE_NAME, null, contentValues) >=0;
+        return db.insert(FOLDER_TABLE_NAME, null, contentValues) >= 0;
     }
 
     public boolean deleteFolder(int folderId) {
         SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<File> files = getAllFiles();
+        for(File f : files)
+            if(f.getFolderId() == folderId)
+                deleteFile(f.getId());
         return db.delete(FOLDER_TABLE_NAME, ID + "=" + folderId, null) > 0;
     }
 
@@ -166,7 +204,7 @@ GROUP BY books.id;
         ArrayList<File> arr = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT " + FILE_ID + "," + FILE_NAME + "," + FILE_START_REMINDER + "," +
-                FILE_REPEAT_EVERY + "," + FILE_CREATED+","+FILE_REFERENCE_FOLDER + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
+                FILE_REPEAT_EVERY + "," + FILE_CREATED + "," + FILE_REFERENCE_FOLDER + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
                 " FROM " + FILE_TABLE_NAME + " LEFT JOIN " + TASK_TABLE_NAME + " ON " + FILE_ID + " = " + TASK_REFERENCE_FILE +
                 " GROUP BY " + FILE_ID, null);
         res.moveToFirst();
@@ -189,6 +227,47 @@ GROUP BY books.id;
         }
         res.close();
         return arr;
+    }
+
+    public ArrayList<File> firebaseFiles() {
+        ArrayList<File> arr = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * from " + FILE_TABLE_NAME, null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
+            @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
+            @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+            @SuppressLint("Range") String startReminderStr = res.getString(res.getColumnIndex(START_REMINDER));
+            @SuppressLint("Range") int repeatEvery = res.getInt(res.getColumnIndex(DB.REPEAT_EVERY));
+            @SuppressLint("Range") int folderId = res.getInt(res.getColumnIndex(DB.FILE_REFERENCE_FOLDER));
+
+            arr.add(new File(id, name, startReminderStr, repeatEvery, createdStr, folderId));
+            res.moveToNext();
+        }
+        res.close();
+        return arr;
+    }
+
+    public void firebaseFiles(ArrayList<File> files) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        if (files == null)
+            return;
+        db.delete(FILE_TABLE_NAME, "", null);
+        for (File f : files) {
+            contentValues.put(ID, f.getId());
+            contentValues.put(NAME, f.getName());
+            contentValues.put(CREATED, f.createdStr);
+            contentValues.put(FILE_REFERENCE_FOLDER, f.getFolderId());
+            contentValues.put(START_REMINDER, f.startReminderStr);
+            contentValues.put(REPEAT_EVERY, f.getRepeatEvery());
+
+            int id = (int) db.insert(FILE_TABLE_NAME, null, contentValues);
+            if (id == -1)
+                continue;
+            FACTORY.createNotify(context, id);
+        }
     }
 
     public ArrayList<File> getFilesOf(int folderId) {
@@ -229,16 +308,17 @@ GROUP BY books.id;
         contentValues.put(REPEAT_EVERY, repeatEvery);
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
         contentValues.put(FILE_REFERENCE_FOLDER, folderId);
-        int id = (int)db.insert(FILE_TABLE_NAME, null, contentValues);
-        if(id==-1)
+        int id = (int) db.insert(FILE_TABLE_NAME, null, contentValues);
+        if (id == -1)
             return false;
-        FACTORY.createNotify(context,id);
+        FACTORY.createNotify(context, id);
         return true;
     }
 
     public boolean deleteFile(int fileId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        FACTORY.cancelNotify(context,fileId);
+        FACTORY.cancelNotify(context, fileId);
+        db.delete(TASK_TABLE_NAME,TASK_REFERENCE_FILE+"="+fileId,null);
         return db.delete(FILE_TABLE_NAME, ID + "=" + fileId, null) > 0;
     }
 
@@ -250,19 +330,22 @@ GROUP BY books.id;
         if (startReminder != null)
             cv.put(START_REMINDER, startReminder.format(FACTORY.dateFormat));
         cv.put(REPEAT_EVERY, repeatEvery);
-        FACTORY.cancelNotify(context,fileId);
-        FACTORY.createNotify(context,fileId);
-        return db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
+        FACTORY.cancelNotify(context, fileId);
+        boolean r = db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
+        FACTORY.createNotify(context, fileId);
+        return r;
     }
 
     public File getFile(int fileId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT " + FILE_ID + "," + FILE_NAME + "," + FILE_START_REMINDER + "," +
-                FILE_REPEAT_EVERY + "," + FILE_CREATED+","+FILE_REFERENCE_FOLDER + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
+                FILE_REPEAT_EVERY + "," + FILE_CREATED + "," + FILE_REFERENCE_FOLDER + ", COUNT(" + TASK_REFERENCE_FILE + ") AS tasksCount" +
                 " FROM " + FILE_TABLE_NAME + " LEFT JOIN " + TASK_TABLE_NAME + " ON " + FILE_ID + " = " + TASK_REFERENCE_FILE +
                 " WHERE " + FILE_ID + " = " + fileId +
                 " GROUP BY " + FILE_ID, null);
         res.moveToFirst();
+        if(res.getColumnCount() ==0)
+            return null;
         @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(DB.ID));
         @SuppressLint("Range") String name = res.getString(res.getColumnIndex(DB.NAME));
         @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
@@ -311,7 +394,7 @@ GROUP BY books.id;
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
         contentValues.put(TASK_REFERENCE_FILE, fileId);
         contentValues.put(CHECKED, checked);
-        return db.insert(TASK_TABLE_NAME, null, contentValues)>=0;
+        return db.insert(TASK_TABLE_NAME, null, contentValues) >= 0;
     }
 
     public boolean updateTask(int taskId, String text, boolean isChecked) {
@@ -322,6 +405,41 @@ GROUP BY books.id;
         return db.update(TASK_TABLE_NAME, cv, ID + "=" + taskId, null) > 0;
     }
 
+    public ArrayList<Task> firebaseTasks() {
+        ArrayList<Task> arr = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TASK_TABLE_NAME, null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(ID));
+            @SuppressLint("Range") String text = res.getString(res.getColumnIndex(TEXT));
+            @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+            @SuppressLint("Range") String checkedStr = res.getString(res.getColumnIndex(CHECKED));
+            @SuppressLint("Range") int fileId = res.getInt(res.getColumnIndex(TASK_REFERENCE_FILE));
+
+            boolean checked = checkedStr.equals("1");//"1"->true, "0"->false
+            arr.add(new Task(id, text, checked, createdStr, fileId));
+            res.moveToNext();
+        }
+        res.close();
+        return arr;
+    }
+
+    public void firebaseTasks(ArrayList<Task> tasks) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        if (tasks == null)
+            return;
+        db.delete(TASK_TABLE_NAME, "", null);
+        for (Task t : tasks) {
+            contentValues.put(ID, t.getId());
+            contentValues.put(TEXT, t.getText());
+            contentValues.put(CREATED, t.createdStr);
+            contentValues.put(TASK_REFERENCE_FILE, t.fileId);
+            contentValues.put(CHECKED, t.isChecked());
+            db.insert(TASK_TABLE_NAME, null, contentValues);
+        }
+    }
 }
 
 
