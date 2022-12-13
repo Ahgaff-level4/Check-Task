@@ -22,7 +22,7 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             startActivity(new Intent(Splash.this,MainActivity.class));
             finish();
-        },1200);
+        },1100);
 
 
     }

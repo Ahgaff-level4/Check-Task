@@ -3,6 +3,7 @@ package com.ahgaff_projects.mygoals;
 import static com.ahgaff_projects.mygoals.FACTORY.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.ahgaff_projects.mygoals.file.FileListFragment;
 import com.ahgaff_projects.mygoals.folder.FolderListFragment;
@@ -40,21 +42,24 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     private ExpandableListAdapter menuFoldersAdapter;
     private GoogleSignInAccount account;
     private GoogleSignInClient mGoogleSignInClient;
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupNavigationDrawer();
-
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         int fileId = getIntent().getIntExtra("fileId", -1);
         if (fileId != -1) {
             Toast.makeText(this, "fileId= " + fileId, Toast.LENGTH_SHORT).show();
             FACTORY.openFragment(this, TaskListFragment.class, "fileId", fileId);
             getIntent().putExtra("fileId", -1);//if user exit the app don't reopen this fragment
-        } else if (savedInstanceState == null)  //app first open
+        } else if (savedInstanceState == null) {  //app first open
             FACTORY.openFragment(this, FolderListFragment.class, null);//Home Page
-//        FACTORY.updateAllReminders(this);
+            FACTORY.updateAllReminders(this);
+        }
+
 
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -64,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         // Check for existing Google Sign In account, if the user is already signed in
 // the GoogleSignInAccount will be non-null.
         updateUI(GoogleSignIn.getLastSignedInAccount(this));
+
+//        Toast.makeText(this, pref.getString("language","def"), Toast.LENGTH_SHORT).show();
+        if (pref.getBoolean("sync", false))//check sync periodically enabled.
+            sync(true);
+
     }
 
 
@@ -133,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-                Intent intent = new Intent(this,SettingsActivity.class);
-                this.startActivity(intent);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
         } else if (item.getItemId() == R.id.action_login) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 12354);
@@ -142,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show());
             updateUI(null);
         } else if (item.getItemId() == R.id.action_sync) {
-            sync();
+            sync(false);
         } else if (item.getItemId() == R.id.action_import) {
             importData();
         } else return super.onOptionsItemSelected(item);
@@ -200,20 +210,21 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-            Toast.makeText(this, getString(R.string.welcome)+" " + account.getGivenName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.welcome) + " " + account.getGivenName(), Toast.LENGTH_SHORT).show();
             updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText(this, getString(R.string.login_failed)+"\n" + e, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.login_failed) + "\n" + e, Toast.LENGTH_SHORT).show();
             updateUI(null);
         }
     }
 
 
-    private void sync() {
+    private void sync(boolean silent) {
         if (account == null || account.getId() == null) {
-            Toast.makeText(this, getString(R.string.error_try_relogin), Toast.LENGTH_LONG).show();
+            if (!silent)
+                Toast.makeText(this, getString(R.string.error_try_relogin), Toast.LENGTH_LONG).show();
             return;
         }
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -240,13 +251,15 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                     @Override
                     public void onSuccess(Object o) {
                         Log.d(TAG, "success with object(don't ask me what's this) o=" + o);
-                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_finish_successfully), Toast.LENGTH_LONG).show();
+                        if (!silent)
+                            Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_finish_successfully), Toast.LENGTH_LONG).show();
                         syncInProgress = false;
                         invalidateOptionsMenu();
                     }
                 }).addOnFailureListener(e -> {
                     Log.w(TAG, "Error adding document", e);
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_failed)+"\n" + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    if (!silent)
+                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_failed) + "\n" + e.getMessage(), Toast.LENGTH_LONG).show();
                     syncInProgress = false;
                     invalidateOptionsMenu();
                 });
@@ -272,26 +285,26 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                             DB db = new DB(this);
                             FirebaseData data = doc.toObject(FirebaseData.class);
                             if (data != null) {
-                            Log.d(TAG, "firebaseData= " + data);
-                            FACTORY.showAreYouSureDialog(getString(R.string.founded)+":\n"
-                                    +data.folders.size()+" "+getString(R.string.folders_title)+"\n"
-                                    +data.file.size()+" "+getString(R.string.files_title)+"\n"
-                                    +data.task.size()+" "+getString(R.string.tasks_title)+"\n"
-                                    +getString(R.string.are_you_sure_reset_all_data), this,R.string.reset, (dialog, which) -> {
-                                db.firebaseFiles(data.file);
-                                db.firebaseFolders(data.folders);
-                                db.firebaseTasks(data.task);
-                                startActivity(new Intent(this,MainActivity.class));
-                                finish();
-                            });
+                                Log.d(TAG, "firebaseData= " + data);
+                                FACTORY.showAreYouSureDialog(getString(R.string.founded) + ":\n"
+                                        + data.folders.size() + " " + getString(R.string.folders_title) + "\n"
+                                        + data.file.size() + " " + getString(R.string.files_title) + "\n"
+                                        + data.task.size() + " " + getString(R.string.tasks_title) + "\n"
+                                        + getString(R.string.are_you_sure_reset_all_data), this, R.string.reset, (dialog, which) -> {
+                                    db.firebaseFiles(data.file);
+                                    db.firebaseFolders(data.folders);
+                                    db.firebaseTasks(data.task);
+                                    startActivity(new Intent(this, MainActivity.class));
+                                    finish();
+                                });
 
-                            }else Log.d(TAG,"data is null");
+                            } else Log.d(TAG, "data is null");
                         }
                     } else
                         Log.d(TAG, "doc doesn't exists!");
                 }).addOnFailureListener(e -> {
                     Log.w(TAG, "Error getting document", e);
-                    Toast.makeText(MainActivity.this, getString(R.string.import_failed)+"\n" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.import_failed) + "\n" + e.getMessage(), Toast.LENGTH_LONG).show();
                     syncInProgress = false;
                     invalidateOptionsMenu();
                 });

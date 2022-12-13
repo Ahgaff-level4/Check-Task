@@ -8,7 +8,7 @@
     <string name="delete">Delete</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>
-    <string name="arrow">\u3009</string>
+    <string name="arrow" translatable="false">\u3009</string>
     <string name="set">Set</string>
     <string name="will_be_deleted">will be deleted!</string>
     <string name="it_has">It has</string>
@@ -33,7 +33,7 @@
     <string name="are_you_sure_reset_all_data">Are you sure you want to reset all folders, files and tasks?</string>
     <string name="reset">Reset</string>
     <string name="sync_finish_successfully">Sync finished successfully</string>
-    <string name="sync_failed">Sync failed! Try again later</string>
+    <string name="sync_failed">Sync failed!</string>
     <string name="error_try_relogin">Something Went Wrong! Try re-login</string>
     <string name="import_success">Data retrieved successfully</string>
     <string name="import_failed">Import Failed!</string>
@@ -99,7 +99,7 @@
     <string name="task_title">Task</string>
     <string name="tasks">tasks</string>
     <string name="tasks_title">Tasks</string>
-    <string name="add_task_dialog_edittext_hint">…</string>
+    <string name="add_task_dialog_edittext_hint" translatable="false">…</string>
     <string name="add_task_title">Add Task</string>
     <string name="edit_task_title">Edit Task</string>
     <string name="delete_task_title">Delete Task</string>
@@ -116,19 +116,11 @@
     <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
 
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
+    <!-- Settings -->
     <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="sync_title">Sync to cloud periodically</string>
+    <string name="languages_title">Language</string>
+    <string name="app_language">App language</string>
+    <string name="system_language">System language</string>
 
 </resources>

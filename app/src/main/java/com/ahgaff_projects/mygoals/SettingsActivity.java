@@ -26,33 +26,32 @@ public class SettingsActivity extends AppCompatActivity {
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+        if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     private void setupActionBar() {
-        ViewGroup rootView = (ViewGroup)findViewById(R.id.action_bar_root); //id from appcompat
+        ViewGroup rootView = (ViewGroup) findViewById(R.id.action_bar_root); //id from appcompat
 
         if (rootView != null) {
             View view = getLayoutInflater().inflate(R.layout.bar_layout, rootView, false);
             rootView.addView(view, 0);
 
-            Toolbar toolbar = (Toolbar)findViewById(R.id.bar_layout_toolbar);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.bar_layout_toolbar);
 
             setSupportActionBar(toolbar);
-        }else Toast.makeText(this, "rootView is null", Toast.LENGTH_SHORT).show();
+        }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }else Toast.makeText(this, "actionBar is null", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
         }
