@@ -34,6 +34,9 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         this.db = db;
         this.tasks = db.getTasksOf(fileId);
         context.setTitle(db.getFile(fileId).getName());
+        if (this.tasks.size() <= 0)
+            context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -102,5 +105,8 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     public void updateTasks() {
         this.tasks = db.getTasksOf(fileId);
         notifyDataSetChanged();//refresh the list
+        if (this.tasks.size() <= 0)
+            context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
     }
 }

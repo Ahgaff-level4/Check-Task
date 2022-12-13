@@ -5,13 +5,23 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".folder.FolderListFragment"
-    >
+    tools:context=".folder.FolderListFragment">
+    <TextView
+        android:id="@+id/emptyList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:textStyle="italic"
+        android:textSize="@dimen/text_xxmiddle_size"
+        android:text="@string/empty_list" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/folderListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -20,7 +30,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/add"
+        android:contentDescription="@string/content_description_fab_folder"
         app:maxImageSize="@dimen/fab_size"
-        android:contentDescription="@string/content_description_fab_folder"/>
+        app:srcCompat="@drawable/add" />
 </RelativeLayout>

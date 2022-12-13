@@ -24,7 +24,7 @@ public class FolderListFragment extends Fragment {
     private FolderRecyclerViewAdapter adapter;
     private DB db;
 
-    public FolderListFragment(){
+    public FolderListFragment() {
         super(R.layout.fragment_folder_list);
     }
 
@@ -42,8 +42,6 @@ public class FolderListFragment extends Fragment {
         RecyclerView recyclerView = requireView().findViewById(R.id.folderListRecyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-//  todo if list empty show empty List text      if(adapter.getItemCount()<=0)
-//            getView().findViewById(R.id.emptyListTextview).setVisibility(View.INVISIBLE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);

@@ -17,9 +17,29 @@
     <string name="something_went_wrong">Something Went Wrong!</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
-    <string name="nav_header_description">TODO</string>
+    <string name="nav_header_description">header of drawer menu. image is the same image of the app. which is decorated text of the app name (Check Task)</string>
     <string name="home_title">Home</string>
     <string name="check_your_tasks">CHECK YOUR TASKS!</string>
+    <string name="todo">TODO</string>
+    <string name="has">has</string>
+    <string name="finished">finished</string>
+    <string name="empty">empty</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="sync">Sync</string>
+    <string name="import_data">Import data</string>
+    <string name="empty_list">Empty List</string>
+    <string name="founded">Founded</string>
+    <string name="are_you_sure_reset_all_data">Are you sure you want to reset all folders, files and tasks?</string>
+    <string name="reset">Reset</string>
+    <string name="sync_finish_successfully">Sync finished successfully</string>
+    <string name="sync_failed">Sync failed! Try again later</string>
+    <string name="error_try_relogin">Something Went Wrong! Try re-login</string>
+    <string name="import_success">Data retrieved successfully</string>
+    <string name="import_failed">Import Failed!</string>
+    <string name="login_failed">Login Failed!</string>
+    <string name="welcome">Welcome</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!--Folder-->
     <string name="folder_title">Folder</string>
@@ -30,7 +50,7 @@
     <string name="add_folder_title">Add Folder</string>
     <string name="edit_folder_title">Edit Folder</string>
     <string name="delete_folder_title">Delete Folder</string>
-    <string name="empty_folder_list">Empty Folder List</string>
+    <string name="empty_folder_list">Folder List is Empty</string>
 
     <!--File-->
     <string name="file_title">File</string>
@@ -62,6 +82,8 @@
     <string name="every">Every</string>
     <string name="all_files">All Files</string>
     <string name="repeat_custom_dialog_title">Custom Repeat</string>
+    <string name="notification_title">Tasks Reminder</string>
+    <string name="empty_file_list">File List is Empty</string>
     <string-array name="repeat_every_options">
         <item>Never</item>
         <item>Every day</item>
@@ -81,6 +103,8 @@
     <string name="add_task_title">Add Task</string>
     <string name="edit_task_title">Edit Task</string>
     <string name="delete_task_title">Delete Task</string>
+    <string name="unchecked_tasks">unchecked tasks</string>
+
 
     <!--Content Description-->
     <string name="content_description_fab_folder">Add Folder Button</string>
@@ -90,14 +114,21 @@
     <string name="content_description_folder_image">Folder image</string>
     <string name="content_description_more_option">More option button to show edit and delete buttons</string>
     <string name="content_description_arrow_icon_nav">arrow image to indicate whether the list is open or close</string>
-    <string name="todo">TODO</string>
-    <string name="has">has</string>
-    <string name="unchecked_tasks">unchecked tasks</string>
-    <string name="notification_title">Tasks Reminder</string>
-    <string name="finished">finished</string>
-    <string name="empty">empty</string>
-    <string name="login">Login</string>
-    <string name="logout">Logout</string>
-    <string name="sync">Sync</string>
-    <string name="import_data">Import data</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
 </resources>

@@ -53,7 +53,6 @@ public class TaskListFragment extends Fragment implements MainActivity.MyOnBackP
         adapter = new TaskRecyclerViewAdapter(fileId, requireActivity(), db);
         RecyclerView recyclerView = requireView().findViewById(R.id.taskListRecyclerView);
         recyclerView.setAdapter(adapter);
-
         //set up how each task will be arrange
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
