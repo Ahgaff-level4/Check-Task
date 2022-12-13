@@ -31,7 +31,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class FileListFragment extends Fragment implements MainActivity.MyOnBackPressed {
     private FileRecyclerViewAdapter adapter;
@@ -66,31 +65,35 @@ public class FileListFragment extends Fragment implements MainActivity.MyOnBackP
 
     private void setUpFabButton() {
         FloatingActionButton fab = requireView().findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
-            dialog.setTitle(R.string.add_file_title);
-            dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
-            View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
-            StartReminder.setUp(inflater, getActivity(), null);
-            RepeatEvery.setUp(inflater, getActivity(), null);
-            dialog.setView(inflater);
-            dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
-                EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
-                String newFileName = input.getText().toString().trim();
-                if (newFileName.equals(""))
-                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name), getActivity());
-                else if (adapter.getFilesNames().contains(newFileName))
-                    FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist), getActivity());
-                else {
-                    LocalDateTime startReminder = StartReminder.getChosen(inflater);
-                    int repeatEvery = RepeatEvery.getChosen(inflater);
-                    if (!db.insertFile(adapter.folderId, newFileName, startReminder, repeatEvery))
-                        FACTORY.showErrorDialog(R.string.error, getActivity());
-                    adapter.updateFiles();
-                }
+        int folderId = requireArguments().getInt("folderId");
+        if (folderId == -1)
+            fab.setVisibility(View.INVISIBLE);
+        else
+            fab.setOnClickListener(v -> {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
+                dialog.setTitle(R.string.add_file_title);
+                dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
+                View inflater = getLayoutInflater().inflate(R.layout.dialog_add_edit_file, null);
+                StartReminder.setUp(inflater, getActivity(), null);
+                RepeatEvery.setUp(inflater, getActivity(), null);
+                dialog.setView(inflater);
+                dialog.setPositiveButton(R.string.add, (_dialog, blah) -> {
+                    EditText input = inflater.findViewById(R.id.fileNameEditText);//input from dialog
+                    String newFileName = input.getText().toString().trim();
+                    if (newFileName.equals(""))
+                        FACTORY.showErrorDialog(getString(R.string.invalid_file_name), getActivity());
+                    else if (adapter.getFilesNames().contains(newFileName))
+                        FACTORY.showErrorDialog(getString(R.string.invalid_file_name_exist), getActivity());
+                    else {
+                        LocalDateTime startReminder = StartReminder.getChosen(inflater);
+                        int repeatEvery = RepeatEvery.getChosen(inflater);
+                        if (!db.insertFile(adapter.folderId, newFileName, startReminder, repeatEvery))
+                            FACTORY.showErrorDialog(R.string.error, getActivity());
+                        adapter.updateFiles();
+                    }
+                });
+                dialog.show();
             });
-            dialog.show();
-        });
     }
 
     @Override

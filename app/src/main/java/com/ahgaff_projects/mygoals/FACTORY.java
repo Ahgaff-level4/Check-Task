@@ -84,13 +84,19 @@ public final class FACTORY {
         }
     }
 
-    public static void showAreYouSureDialog(String message, Context context, DialogInterface.OnClickListener listener) {
+    /**
+     *
+     * @param message message that will be shown to the user
+     * @param context context
+     * @param listener the positive button click listener, negative button won't call the listener
+     */
+    public static void showAreYouSureDialog(String message, Context context,@StringRes int positiveText, DialogInterface.OnClickListener listener) {
         new AlertDialog.Builder(context)//show error dialog
                 .setTitle(R.string.are_you_sure)
                 .setMessage(message)
                 .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.delete, listener)
-                .setIcon(android.R.drawable.ic_delete)
+                .setPositiveButton(positiveText, listener)
+                .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 
@@ -132,7 +138,7 @@ public final class FACTORY {
         //get days different between now and startReminder (future)
         Duration dur = Duration.between(LocalDateTime.now().toLocalDate().atStartOfDay(),file.getStartReminder().toLocalDate().atStartOfDay());
 
-        int days = (int) Math.round(((double) dur.toHours() / 24));
+        int days = (int) Math.round(((double) dur.toMinutes()/60 / 24));
 
         if (days < 0) {
             //startReminder has pass and no repeatEvery!
@@ -173,7 +179,7 @@ public final class FACTORY {
     public static void createNotify(Context context, int fileId) {
         File file = new DB(context).getFile(fileId);
         int nearest = nearestReminder(context, fileId);
-        if (nearest == 0 && file.getCreated().getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
+        if (nearest == 0 && file.getCreated().getDayOfYear() == LocalDateTime.now().getDayOfYear())
             nearest = file.getRepeatEvery();//created today and nearest is today. So, set it to the repeatEvery for initial trigger notify time. We don't want today notification when you just created new file
         if (nearest == -1)
             return;//no startReminder nor repeatEvery. Or nearest had passed. So, there won't be any notification for this file
@@ -184,9 +190,9 @@ public final class FACTORY {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingService);
         if (file.getRepeatEvery() == -1) {//notification won't repeat. set it at File.startReminder only
-            am.set(AlarmManager.RTC_WAKEUP, LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_DAY * nearest+ INTERVAL_HOUR * hourOfDay, pendingService);
+            am.setExact(AlarmManager.RTC_WAKEUP, /*LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_HOUR * hourOfDay +*/ INTERVAL_DAY * nearest, pendingService);
         } else {
-            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_DAY * nearest + INTERVAL_HOUR * hourOfDay, INTERVAL_DAY * file.getRepeatEvery() + INTERVAL_HOUR * hourOfDay, pendingService);
+            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, /*LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_HOUR * hourOfDay +*/ INTERVAL_DAY * nearest , INTERVAL_DAY * file.getRepeatEvery()/* + INTERVAL_HOUR * hourOfDay*/, pendingService);
         }
     }
 
@@ -200,8 +206,9 @@ public final class FACTORY {
     }
 
     /**
-     * it will iterate to all files and cancel current notifications and recreate it again. won't affect current notification it just will rebuild it with same properties
-     */
+     * it will iterate to all files and cancel current notifications and recreate it again.
+     * NOTE: if there is a today notification it will be triggered and if it triggered and you call this it will trigger again!
+     * */
     public static void updateAllReminders(Context context) {
         ArrayList<File> files = new DB(context).getAllFiles();
         for (File f : files)

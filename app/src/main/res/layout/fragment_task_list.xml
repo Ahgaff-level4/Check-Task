@@ -15,7 +15,17 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:textSize="32sp"/>
-
+    <TextView
+        android:id="@+id/emptyList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:textStyle="italic"
+        android:textSize="@dimen/text_xxmiddle_size"
+        android:text="@string/empty_list" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskListRecyclerView"
         android:layout_width="match_parent"

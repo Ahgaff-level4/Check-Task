@@ -42,6 +42,9 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             this.files = db.getFilesOf(folderId);
             context.setTitle(db.getFolder(folderId).getName());
         }
+        if (this.files.size() <= 0)
+            context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -93,7 +96,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     }
 
     private String smallTitle(File thisFile) {
-        if(thisFile.getTasksCount() == 0)
+        if (thisFile.getTasksCount() == 0)
             return context.getString(R.string.empty);
         int uncheckedCount = FACTORY.getUncheckedTasksCount(context, thisFile.getId());
         if (uncheckedCount == 0)
@@ -122,6 +125,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             this.files = db.getAllFiles();
         else
             this.files = db.getFilesOf(folderId);
+        if (this.files.size() <= 0)
+            context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
+
         notifyDataSetChanged();//refresh the list
     }
 
@@ -147,7 +154,7 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
                 }
                 if (item.getItemId() == R.id.delete_item) {
                     //handle menu2 click
-                    FACTORY.showAreYouSureDialog(context.getString(R.string.file_title) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getTasksCount() + " " + context.getString(R.string.tasks), context, (_dialog, which) -> {
+                    FACTORY.showAreYouSureDialog(context.getString(R.string.file_title) + " " + f.getName() + " " + context.getString(R.string.will_be_deleted) + "\n" + context.getString(R.string.it_has) + " " + f.getTasksCount() + " " + context.getString(R.string.tasks), context,R.string.delete, (_dialog, which) -> {
                         if (!db.deleteFile(f.getId()))
                             FACTORY.showErrorDialog(R.string.something_went_wrong, context);
                         else {
