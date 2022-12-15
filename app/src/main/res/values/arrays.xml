@@ -1,14 +1,14 @@
 <resources>
     <!-- Languages Preference -->
     <string-array name="lang_entries">
-        <item>@string/system_language</item>
-        <item>عربي</item>
+<!--        <item>@string/system_language</item>-->
         <item>English</item>
+        <item>عربي</item>
     </string-array>
 
     <string-array name="lang_values">
-        <item>system</item>
-        <item>arabic</item>
+<!--        <item>system</item>-->
         <item>english</item>
+        <item>arabic</item>
     </string-array>
 </resources>

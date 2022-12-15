@@ -50,7 +50,7 @@ public class NotificationService extends Service {
                 .setContentIntent(PendingIntent.getActivity(this, fileId, mainIntent,
                         PendingIntent.FLAG_CANCEL_CURRENT+PendingIntent.FLAG_IMMUTABLE))
                 .setContentTitle(getString(R.string.check_your_tasks))
-                .setContentText(getString(R.string.file_title) + " " + file.getName() + " " + getString(R.string.has) + " " + uncheckedCount + " " + getString(R.string.unchecked_tasks))
+                .setContentText( file.getName() + " " + getString(R.string.has) + " " + uncheckedCount + " " + getString(R.string.unchecked_tasks))
                 .setSmallIcon(R.drawable.task_alt)
                 .setLargeIcon(Icon.createWithResource(this, R.drawable.icon))
                 .build();

@@ -2,9 +2,12 @@ package com.ahgaff_projects.mygoals;
 
 import static com.ahgaff_projects.mygoals.FACTORY.TAG;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements FolderRecyclerViewAdapter.EventFoldersChanged {
@@ -45,14 +49,14 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     private ExpandableListAdapter menuFoldersAdapter;
     private GoogleSignInAccount account;
     private GoogleSignInClient mGoogleSignInClient;
-    SharedPreferences pref;
+    public static SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupNavigationDrawer();
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
         int fileId = getIntent().getIntExtra("fileId", -1);
         if (fileId != -1) {
             Toast.makeText(this, "fileId= " + fileId, Toast.LENGTH_SHORT).show();
@@ -296,8 +300,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                                         db.firebaseFiles(data.file);
                                         db.firebaseFolders(data.folders);
                                         db.firebaseTasks(data.task);
-                                        startActivity(new Intent(this, MainActivity.class));
-                                        finish();
+                                        recreate();
                                     });
                                 } else
                                     Toast.makeText(this, getString(R.string.cloud_same_local), Toast.LENGTH_SHORT).show();
@@ -336,6 +339,40 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                 return false;
         return true;
     }
+    /*+********************* Set Default Language Base On User Preference *********************/
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(updateBaseContextLocale(base));
+    }
+
+    private Context updateBaseContextLocale(Context context) {
+        if(pref == null)
+            return context;
+        String language = pref.getString("language", "null");// Helper method to get saved language from SharedPreferences
+        if(language.equals("null"))
+            return context;
+        Locale locale;
+        switch (language) {
+            case "arabic":
+                locale = new Locale("ar");
+                break;
+            case "english":
+                locale = new Locale("en");
+                break;
+            default:
+                locale = LocaleList.getDefault().get(0);
+                break;
+        }
+        Locale.setDefault(locale);
+        return updateResourcesLocale(context, locale);
+    }
+
+    private Context updateResourcesLocale(Context context, Locale locale) {
+        Configuration configuration = new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(locale);
+        return context.createConfigurationContext(configuration);
+    }
+
 }
 
 

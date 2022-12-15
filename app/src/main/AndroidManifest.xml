@@ -17,18 +17,14 @@
         android:theme="@style/Theme.MyGoals.NoActionBar"
         tools:targetApi="31">
 <!--        android:localeConfig="@xml/locales_config"-->
+<!--            android:enabled="false"-->
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:enabled="false"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-            <meta-data
-                android:name="autoStoreLocales"
-                android:value="true" />
-
         </activity>
 
         <receiver
@@ -44,6 +40,15 @@
             android:name=".NotificationService"
             android:enabled="true"
             android:exported="false" />
+<!--        <service-->
+<!--            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"-->
+<!--            android:enabled="false"-->
+<!--            android:exported="false">-->
+<!--            <meta-data-->
+<!--                android:name="autoStoreLocales"-->
+<!--                android:value="true" />-->
+<!--        </service>-->
+
 
         <activity
             android:name=".Splash"
