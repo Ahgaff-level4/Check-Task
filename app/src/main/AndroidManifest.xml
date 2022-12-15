@@ -20,10 +20,15 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
+            android:enabled="false"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+
         </activity>
 
         <receiver

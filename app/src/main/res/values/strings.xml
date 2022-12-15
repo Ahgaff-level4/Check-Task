@@ -122,5 +122,7 @@
     <string name="languages_title">Language</string>
     <string name="app_language">App language</string>
     <string name="system_language">System language</string>
+    <string name="sync_successed">Sync successed</string>
+    <string name="cloud_same_local">Import successed</string>
 
 </resources>

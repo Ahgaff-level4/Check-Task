@@ -92,4 +92,30 @@ public File(){}//for firebase
                 ", tasksCount=" + tasksCount +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        File file = (File) o;
+
+        if (id != file.id) return false;
+        if (repeatEvery != file.repeatEvery) return false;
+        if (folderId != file.folderId) return false;
+        if (!name.equals(file.name)) return false;
+        if (created != null ? !created.equals(file.created) : file.created != null) return false;
+        return startReminder != null ? startReminder.equals(file.startReminder) : file.startReminder == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (created != null ? created.hashCode() : 0);
+        result = 31 * result + (startReminder != null ? startReminder.hashCode() : 0);
+        result = 31 * result + repeatEvery;
+        result = 31 * result + folderId;
+        return result;
+    }
 }

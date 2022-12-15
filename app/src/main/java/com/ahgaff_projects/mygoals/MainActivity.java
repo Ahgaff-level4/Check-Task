@@ -20,7 +20,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+import com.ahgaff_projects.mygoals.file.File;
 import com.ahgaff_projects.mygoals.file.FileListFragment;
+import com.ahgaff_projects.mygoals.folder.Folder;
 import com.ahgaff_projects.mygoals.folder.FolderListFragment;
 import com.ahgaff_projects.mygoals.folder.FolderRecyclerViewAdapter;
 import com.ahgaff_projects.mygoals.task.TaskListFragment;
@@ -33,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -251,15 +254,13 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                     @Override
                     public void onSuccess(Object o) {
                         Log.d(TAG, "success with object(don't ask me what's this) o=" + o);
-                        if (!silent)
-                            Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_finish_successfully), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, silent ? MainActivity.this.getString(R.string.sync_successed) : MainActivity.this.getString(R.string.sync_finish_successfully), silent ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
                         syncInProgress = false;
                         invalidateOptionsMenu();
                     }
                 }).addOnFailureListener(e -> {
                     Log.w(TAG, "Error adding document", e);
-//                    if (!silent)
-                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_failed) + "\n" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_failed) + (silent ? "" : "\n" + e.getMessage()), silent ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
                     syncInProgress = false;
                     invalidateOptionsMenu();
                 });
@@ -286,18 +287,20 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                             FirebaseData data = doc.toObject(FirebaseData.class);
                             if (data != null) {
                                 Log.d(TAG, "firebaseData= " + data);
-                                FACTORY.showAreYouSureDialog(getString(R.string.founded) + ":\n"
-                                        + data.folders.size() + " " + getString(R.string.folders_title) + "\n"
-                                        + data.file.size() + " " + getString(R.string.files_title) + "\n"
-                                        + data.task.size() + " " + getString(R.string.tasks_title) + "\n"
-                                        + getString(R.string.are_you_sure_reset_all_data), this, R.string.reset, (dialog, which) -> {
-                                    db.firebaseFiles(data.file);
-                                    db.firebaseFolders(data.folders);
-                                    db.firebaseTasks(data.task);
-                                    startActivity(new Intent(this, MainActivity.class));
-                                    finish();
-                                });
-
+                                if (isCloudSameLocal(data.folders, data.file, data.task)) {
+                                    FACTORY.showAreYouSureDialog(getString(R.string.founded) + ":\n"
+                                            + data.folders.size() + " " + getString(R.string.folders_title) + "\n"
+                                            + data.file.size() + " " + getString(R.string.files_title) + "\n"
+                                            + data.task.size() + " " + getString(R.string.tasks_title) + "\n"
+                                            + getString(R.string.are_you_sure_reset_all_data), this, R.string.reset, (dialog, which) -> {
+                                        db.firebaseFiles(data.file);
+                                        db.firebaseFolders(data.folders);
+                                        db.firebaseTasks(data.task);
+                                        startActivity(new Intent(this, MainActivity.class));
+                                        finish();
+                                    });
+                                } else
+                                    Toast.makeText(this, getString(R.string.cloud_same_local), Toast.LENGTH_SHORT).show();
                             } else Log.d(TAG, "data is null");
                         }
                     } else
@@ -308,6 +311,30 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                     syncInProgress = false;
                     invalidateOptionsMenu();
                 });
+    }
+
+    private boolean isCloudSameLocal(ArrayList<Folder> folders, ArrayList<File> files, ArrayList<com.ahgaff_projects.mygoals.task.Task> tasks) {
+        DB db = new DB(this);
+        ArrayList<Folder> dbFolders = db.getAllFolders();
+        if (dbFolders.size() != folders.size())
+            return false;
+        ArrayList<File> dbFiles = db.getAllFiles();
+        if (dbFiles.size() != files.size())
+            return false;
+        ArrayList<com.ahgaff_projects.mygoals.task.Task> dbTasks = db.firebaseTasks();
+        if (dbTasks.size() != tasks.size())
+            return false;
+
+        for (int i = 0; i < folders.size(); i++)
+            if (!dbFolders.get(i).equals(folders.get(i)))
+                return false;
+        for(int i=0;i<files.size();i++)
+            if(!dbFiles.get(i).equals(files.get(i)))
+                return false;
+        for(int i=0;i<dbTasks.size();i++)
+            if(!dbTasks.get(i).equals(tasks.get(i)))
+                return false;
+        return true;
     }
 }
 

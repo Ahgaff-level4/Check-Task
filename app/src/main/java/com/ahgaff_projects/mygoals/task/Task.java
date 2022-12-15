@@ -64,4 +64,27 @@ public class Task {
 
     public LocalDateTime getCreated(){return created;}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (id != task.id) return false;
+        if (checked != task.checked) return false;
+        if (fileId != task.fileId) return false;
+        if (!text.equals(task.text)) return false;
+        return created.equals(task.created);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + text.hashCode();
+        result = 31 * result + (checked ? 1 : 0);
+        result = 31 * result + created.hashCode();
+        result = 31 * result + fileId;
+        return result;
+    }
 }

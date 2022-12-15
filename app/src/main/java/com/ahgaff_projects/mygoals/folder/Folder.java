@@ -1,6 +1,9 @@
 package com.ahgaff_projects.mygoals.folder;
 
+import com.ahgaff_projects.mygoals.FACTORY;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Folder {
     private int id;
@@ -45,5 +48,25 @@ public class Folder {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Folder folder = (Folder) o;
+
+        if (id != folder.id) return false;
+        if (name != null ? !name.equals(folder.name) : folder.name != null) return false;
+        return created != null ? created.equals(folder.created) : folder.created == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (created != null ? created.hashCode() : 0);
+        return result;
     }
 }

@@ -96,4 +96,6 @@
     <string name="app_language">لغة التطبيق</string>
     <string name="system_language">لغة النظام</string>
     <string name="delete">حذف</string>
+    <string name="sync_successed">Sync successed</string>
+    <string name="cloud_same_local">Import successed</string>
 </resources>
