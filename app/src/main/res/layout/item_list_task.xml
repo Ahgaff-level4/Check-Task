@@ -8,11 +8,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="15dp">
+    app:cardElevation="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="79dp">
+        android:layout_height="wrap_content"
+        android:minHeight="70dp">
 
         <CheckBox
             android:id="@+id/taskCheckBox"
@@ -30,10 +31,9 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toEndOf="@+id/taskCheckBox"
-            android:paddingVertical="8dp"
-            android:text="Task text..."
+            android:layout_marginVertical="8dp"
+            android:text=" lsdkjf ls.."
             android:textColor="?android:textColorSecondary"
-            android:textIsSelectable="true"
             android:textSize="@dimen/text_xmiddle_size"
             tools:ignore="HardCodedText" />
 

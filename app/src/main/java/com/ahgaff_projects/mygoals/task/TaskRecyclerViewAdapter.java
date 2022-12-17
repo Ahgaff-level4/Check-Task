@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder> {
     private final FragmentActivity context;
@@ -33,6 +36,16 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         this.context = context;
         this.db = db;
         this.tasks = db.getTasksOf(fileId);
+        this.tasks.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                if ((o1.isChecked() && o1.isChecked()) || (!o1.isChecked() && !o2.isChecked()))
+                    return o1.getCreated().compareTo(o2.getCreated());
+                else if(o1.isChecked())
+                    return -1;
+                else return 1;
+            }
+        });
         context.setTitle(db.getFile(fileId).getName());
         if (this.tasks.size() <= 0)
             context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
@@ -79,6 +92,26 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
             setBackgroundColor(holder.card, thisTask.isChecked());
             if (!db.updateTask(thisTask.getId(), thisTask.getText(), isChecked))
                 FACTORY.showErrorDialog(R.string.something_went_wrong, context);
+        });
+        holder.card.setOnLongClickListener(v -> {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+            dialog.setTitle(R.string.edit_task_title);
+            dialog.setNegativeButton(R.string.cancel, (_dialog, blah) -> _dialog.cancel());
+            View inflater = context.getLayoutInflater().inflate(R.layout.dialog_add_edit_task, null);
+            EditText input = inflater.findViewById(R.id.taskTextEditText);
+            input.setText(thisTask.getText());
+            dialog.setView(inflater);
+            dialog.setPositiveButton(R.string.edit, (_dialog, blah) -> {
+                String newTaskName = input.getText().toString().trim();
+                if (newTaskName.equals(thisTask.getText()))
+                    return;
+                if (!db.updateTask(thisTask.getId(), newTaskName, thisTask.isChecked()))
+                    FACTORY.showErrorDialog(R.string.something_went_wrong, context);
+                updateTasks();
+
+            });
+            dialog.show();
+            return true;
         });
     }
 

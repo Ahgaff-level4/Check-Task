@@ -151,7 +151,8 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
-            this.startActivity(intent);
+            startActivity(intent);
+            finish();
         } else if (item.getItemId() == R.id.action_login) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 12354);
@@ -258,13 +259,15 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                     @Override
                     public void onSuccess(Object o) {
                         Log.d(TAG, "success with object(don't ask me what's this) o=" + o);
-                        Toast.makeText(MainActivity.this, silent ? MainActivity.this.getString(R.string.sync_successed) : MainActivity.this.getString(R.string.sync_finish_successfully), silent ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
+                        if (!silent)
+                            Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_finish_successfully), Toast.LENGTH_LONG).show();
                         syncInProgress = false;
                         invalidateOptionsMenu();
                     }
                 }).addOnFailureListener(e -> {
                     Log.w(TAG, "Error adding document", e);
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_failed) + (silent ? "" : "\n" + e.getMessage()), silent ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
+                    if (!silent)
+                        Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.sync_failed) + "\n" + e.getMessage(), Toast.LENGTH_LONG).show();
                     syncInProgress = false;
                     invalidateOptionsMenu();
                 });
@@ -291,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
                             FirebaseData data = doc.toObject(FirebaseData.class);
                             if (data != null) {
                                 Log.d(TAG, "firebaseData= " + data);
-                                if (isCloudSameLocal(data.folders, data.file, data.task)) {
+                                if (!isCloudSameLocal(data.folders, data.file, data.task)) {
                                     FACTORY.showAreYouSureDialog(getString(R.string.founded) + ":\n"
                                             + data.folders.size() + " " + getString(R.string.folders_title) + "\n"
                                             + data.file.size() + " " + getString(R.string.files_title) + "\n"
@@ -331,25 +334,27 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         for (int i = 0; i < folders.size(); i++)
             if (!dbFolders.get(i).equals(folders.get(i)))
                 return false;
-        for(int i=0;i<files.size();i++)
-            if(!dbFiles.get(i).equals(files.get(i)))
+        for (int i = 0; i < files.size(); i++)
+            if (!dbFiles.get(i).equals(files.get(i)))
                 return false;
-        for(int i=0;i<dbTasks.size();i++)
-            if(!dbTasks.get(i).equals(tasks.get(i)))
+        for (int i = 0; i < dbTasks.size(); i++)
+            if (!dbTasks.get(i).equals(tasks.get(i)))
                 return false;
         return true;
     }
+
     /*+********************* Set Default Language Base On User Preference *********************/
     @Override
     protected void attachBaseContext(Context base) {
+        pref = PreferenceManager.getDefaultSharedPreferences(base);
         super.attachBaseContext(updateBaseContextLocale(base));
     }
 
     private Context updateBaseContextLocale(Context context) {
-        if(pref == null)
+        if (pref == null)
             return context;
         String language = pref.getString("language", "null");// Helper method to get saved language from SharedPreferences
-        if(language.equals("null"))
+        if (language.equals("null"))
             return context;
         Locale locale;
         switch (language) {
