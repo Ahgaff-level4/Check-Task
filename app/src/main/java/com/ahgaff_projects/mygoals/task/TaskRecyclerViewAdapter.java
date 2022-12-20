@@ -90,7 +90,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
             setStrike(holder.taskText, isChecked);
             thisTask.setChecked(isChecked);
             setBackgroundColor(holder.card, thisTask.isChecked());
-            if (!db.updateTask(thisTask.getId(), thisTask.getText(), isChecked))
+            if (!db.updateTask(thisTask.getId(), thisTask.getText(), thisTask.isChecked()))
                 FACTORY.showErrorDialog(R.string.something_went_wrong, context);
         });
         holder.card.setOnLongClickListener(v -> {

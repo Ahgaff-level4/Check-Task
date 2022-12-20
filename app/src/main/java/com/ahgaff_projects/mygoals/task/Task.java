@@ -2,6 +2,8 @@ package com.ahgaff_projects.mygoals.task;
 
 import androidx.annotation.NonNull;
 
+import com.ahgaff_projects.mygoals.FACTORY;
+
 import java.time.LocalDateTime;
 
 public class Task {
@@ -13,11 +15,12 @@ public class Task {
     public int fileId;
 
 
-    public Task(int id, String text, boolean checked,LocalDateTime created){
+    public Task(int id, String text, boolean checked,LocalDateTime created, int fileId){
         this.id = id;//get max id +1
         this.text = text;
         this.checked = checked;
         this.created = created;
+        this.fileId = fileId;
     }
     public Task(){}//firebase
     //firebase constructor
@@ -75,7 +78,9 @@ public class Task {
         if (checked != task.checked) return false;
         if (fileId != task.fileId) return false;
         if (!text.equals(task.text)) return false;
-        return created.equals(task.created);
+        if(task.createdStr != null && task.createdStr.equals(""))
+            task.createdStr = null;
+        return created.format(FACTORY.dateFormat).equals(task.createdStr);
     }
 
     @Override

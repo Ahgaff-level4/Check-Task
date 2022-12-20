@@ -59,14 +59,19 @@ public class Folder {
 
         if (id != folder.id) return false;
         if (name != null ? !name.equals(folder.name) : folder.name != null) return false;
-        return created != null ? created.equals(folder.created) : folder.created == null;
+
+        if(created.format(FACTORY.dateFormat).equals(folder.createdStr))
+            return true;
+        if(folder.createdStr != null && folder.createdStr.equals(""))
+            folder.createdStr = null;
+        return created.format(FACTORY.dateFormat).equals(folder.createdStr);
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (created != null ? created.hashCode() : 0);
+        result = 31 * result + (created != null ? created.format(FACTORY.dateFormat).hashCode() : 0);
         return result;
     }
 }

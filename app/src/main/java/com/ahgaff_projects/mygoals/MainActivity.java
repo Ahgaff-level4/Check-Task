@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         ArrayList<File> dbFiles = db.getAllFiles();
         if (dbFiles.size() != files.size())
             return false;
-        ArrayList<com.ahgaff_projects.mygoals.task.Task> dbTasks = db.firebaseTasks();
+        ArrayList<com.ahgaff_projects.mygoals.task.Task> dbTasks = db.getAllTasks();
         if (dbTasks.size() != tasks.size())
             return false;
 

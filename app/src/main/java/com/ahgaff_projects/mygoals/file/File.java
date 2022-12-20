@@ -3,7 +3,10 @@ package com.ahgaff_projects.mygoals.file;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ahgaff_projects.mygoals.FACTORY;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class File {
     private int id;
@@ -104,16 +107,21 @@ public File(){}//for firebase
         if (repeatEvery != file.repeatEvery) return false;
         if (folderId != file.folderId) return false;
         if (!name.equals(file.name)) return false;
-        if (created != null ? !created.equals(file.created) : file.created != null) return false;
-        return startReminder != null ? startReminder.equals(file.startReminder) : file.startReminder == null;
+        if(!created.format(FACTORY.dateFormat).equals(file.createdStr))
+            return false;
+        if(file.startReminderStr != null && file.startReminderStr.equals(""))
+            file.startReminderStr = null;
+        if(startReminder != null && file.startReminderStr != null)
+            return startReminder.format(FACTORY.dateFormat).equals(file.startReminderStr);
+        return startReminder == null && file.startReminderStr == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + name.hashCode();
-        result = 31 * result + (created != null ? created.hashCode() : 0);
-        result = 31 * result + (startReminder != null ? startReminder.hashCode() : 0);
+        result = 31 * result + (created.format(FACTORY.dateFormat) != null ? created.format(FACTORY.dateFormat).hashCode() : 0);
+        result = 31 * result + (startReminder != null ? startReminder.format(FACTORY.dateFormat).hashCode() : 0);
         result = 31 * result + repeatEvery;
         result = 31 * result + folderId;
         return result;

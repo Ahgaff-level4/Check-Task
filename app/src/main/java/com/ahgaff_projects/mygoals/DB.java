@@ -380,7 +380,7 @@ GROUP BY books.id;
             if (createdStr.contains("/"))
                 created = FACTORY.getDateFrom(createdStr);
             boolean checked = checkedStr.equals("1");//"1"->true, "0"->false
-            arr.add(new Task(id, text, checked, created));
+            arr.add(new Task(id, text, checked, created, fileId));
             res.moveToNext();
         }
         res.close();
@@ -419,6 +419,27 @@ GROUP BY books.id;
 
             boolean checked = checkedStr.equals("1");//"1"->true, "0"->false
             arr.add(new Task(id, text, checked, createdStr, fileId));
+            res.moveToNext();
+        }
+        res.close();
+        return arr;
+    }
+    public ArrayList<Task> getAllTasks(){
+        ArrayList<Task> arr = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TASK_TABLE_NAME, null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            @SuppressLint("Range") int id = res.getInt(res.getColumnIndex(ID));
+            @SuppressLint("Range") String text = res.getString(res.getColumnIndex(TEXT));
+            @SuppressLint("Range") String createdStr = res.getString(res.getColumnIndex(CREATED));
+            @SuppressLint("Range") String checkedStr = res.getString(res.getColumnIndex(CHECKED));
+            @SuppressLint("Range") int fileId = res.getInt(res.getColumnIndex(TASK_REFERENCE_FILE));
+            LocalDateTime created = null;
+            if (createdStr.contains("/"))
+                created = FACTORY.getDateFrom(createdStr);
+            boolean checked = checkedStr.equals("1");//"1"->true, "0"->false
+            arr.add(new Task(id, text, checked, created, fileId));
             res.moveToNext();
         }
         res.close();
