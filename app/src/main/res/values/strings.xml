@@ -84,14 +84,21 @@
     <string name="repeat_custom_dialog_title">Custom Repeat</string>
     <string name="notification_title">Tasks Reminder</string>
     <string name="empty_file_list">File List is Empty</string>
+    <string name="never">Never</string>
+    <string name="every_day">Every day</string>
+    <string name="every2_day">Every 2 days</string>
+    <string name="every3_day">Every 3 days</string>
+    <string name="every_week">Every week</string>
+    <string name="every2_week">Every 2 week</string>
+    <string name="every_month">Every month</string>
     <string-array name="repeat_every_options">
-        <item>Never</item>
-        <item>Every day</item>
-        <item>Every 2 days</item>
-        <item>Every 3 days</item>
-        <item>Every week</item>
-        <item>Every 2 weeks</item>
-        <item>Every month</item>
+        <item>@string/never</item>
+        <item>@string/every_day</item>
+        <item>@string/every2_day</item>
+        <item>@string/every3_day</item>
+        <item>@string/every_week</item>
+        <item>@string/every2_week</item>
+        <item>@string/every_month</item>
         <item>@string/custom</item>
     </string-array>
 
