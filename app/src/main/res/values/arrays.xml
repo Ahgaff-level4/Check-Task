@@ -1,14 +1,27 @@
 <resources>
     <!-- Languages Preference -->
     <string-array name="lang_entries">
-<!--        <item>@string/system_language</item>-->
+        <!--        <item>@string/system_language</item>-->
         <item>English</item>
         <item>عربي</item>
     </string-array>
 
     <string-array name="lang_values">
-<!--        <item>system</item>-->
+        <!--        <item>system</item>-->
         <item>english</item>
         <item>arabic</item>
+    </string-array>
+
+    <!-- Theme Preference -->
+    <string-array name="theme_entries">
+        <!--        <item>@string/system_Theme</item>-->
+        <item>Teal</item>
+        <item>Yellow</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <!--        <item>system</item>-->
+        <item>teal</item>
+        <item>yellow</item>
     </string-array>
 </resources>

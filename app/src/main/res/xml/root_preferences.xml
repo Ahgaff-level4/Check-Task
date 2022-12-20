@@ -24,6 +24,8 @@
             app:defaultValue="false"
             app:title="@string/sync_title" />
 
+
+
 <!--        <SwitchPreferenceCompat-->
 <!--            app:dependency="sync"-->
 <!--            app:key="attachment"-->
@@ -32,5 +34,20 @@
 <!--            app:title="@string/attachment_title" />-->
 
     </PreferenceCategory>
+    <PreferenceCategory app:title="@string/languages_title">
 
+        <!--        <EditTextPreference-->
+        <!--            app:key="signature"-->
+        <!--            app:title="@string/signature_title"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
+
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:key="Theme"
+            app:title="@string/app_theme"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

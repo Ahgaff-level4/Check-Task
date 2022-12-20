@@ -124,5 +124,6 @@
     <string name="system_language">System language</string>
     <string name="sync_successed">Sync successed</string>
     <string name="cloud_same_local">Import successed</string>
+    <string name="app_theme">Theme</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.ahgaff_projects.mygoals;
 
+import static com.ahgaff_projects.mygoals.MainActivity.pref;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(FACTORY.getTheme(pref));
         setContentView(R.layout.settings_activity);
         setTitle(R.string.title_activity_settings);
         setupActionBar();
@@ -66,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        SettingsFragment.callBack = locale -> recreate();
+        SettingsFragment.restart = () -> recreate();
     }
 
     @Override
@@ -85,9 +88,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private Context updateBaseContextLocale(Context context) {
-        if (MainActivity.pref == null)
+        if (pref == null)
             return context;
-        String language = MainActivity.pref.getString("language", "null");// Helper method to get saved language from SharedPreferences
+        String language = pref.getString("language", "null");// Helper method to get saved language from SharedPreferences
         if (language.equals("null"))
             return context;
         Locale locale;
@@ -134,37 +137,20 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
-        public static MyOnLanguageChanged callBack;
+        public static MyOnMustRestart restart;
 
-        public interface MyOnLanguageChanged {
-            void onLanguageChanged(Locale locale);
+        public interface MyOnMustRestart {
+            void onMustRestart();
         }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals("language")) {
-                String langValue = sharedPreferences.getString("language", "en");
-//            Toast.makeText(getActivity(), "lang="+langStr, Toast.LENGTH_SHORT).show();
-//                 <item>system</item>
-//        <item>arabic</item>
-//        <item>english</item>
-                Locale locale;
-                switch (langValue) {
-                    case "system":
-                        locale = LocaleList.getDefault().get(0);
-                        break;
-                    case "arabic":
-                        locale = new Locale("ar");
-                        break;
-                    case "english":
-                        locale = new Locale("en");
-                        break;
-                    default:
-                        return;
-                }
-                if (callBack != null)
-                    callBack.onLanguageChanged(locale);
-//
+                if (restart != null)
+                    restart.onMustRestart();
+            }else if(key.equals("Theme")){
+                if (restart != null)
+                    restart.onMustRestart();
             }
         }
 

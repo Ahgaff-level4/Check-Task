@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -214,6 +215,16 @@ public final class FACTORY {
         for (File f : files)
             createNotify(context, f.getId());
 
+    }
+
+    public static int getTheme(SharedPreferences sharedPreferences) {
+        String themeValue = sharedPreferences.getString("Theme", "teal");
+        switch (themeValue){
+            case "teal":
+                return R.style.Teal;
+
+            default: return R.style.Theme_MyGoals;
+        }
     }
 }
 

@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     protected void onCreate(Bundle savedInstanceState) {
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
+        setTheme(FACTORY.getTheme(pref));
         setContentView(R.layout.activity_main);
         setupNavigationDrawer();
         int fileId = getIntent().getIntExtra("fileId", -1);
