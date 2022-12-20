@@ -218,10 +218,23 @@ public final class FACTORY {
     }
 
     public static int getTheme(SharedPreferences sharedPreferences) {
-        String themeValue = sharedPreferences.getString("Theme", "teal");
+        String themeValue = sharedPreferences.getString("Theme", "Theme_MyGoals");
         switch (themeValue){
+            //gray is default theme
             case "teal":
                 return R.style.Teal;
+            case "yellow":
+                return R.style.Yellow;
+            case "indigo":
+                return R.style.Indigo;
+            case "brown":
+                return R.style.Brown;
+            case "red":
+                return R.style.Red;
+            case "purple":
+                return R.style.Purple;
+
+
 
             default: return R.style.Theme_MyGoals;
         }

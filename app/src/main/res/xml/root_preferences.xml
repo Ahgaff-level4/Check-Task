@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/languages_title">
 
@@ -34,7 +35,7 @@
 <!--            app:title="@string/attachment_title" />-->
 
     </PreferenceCategory>
-    <PreferenceCategory app:title="@string/languages_title">
+    <PreferenceCategory app:title="@string/app_theme">
 
         <!--        <EditTextPreference-->
         <!--            app:key="signature"-->
@@ -46,6 +47,7 @@
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="Theme"
+            android:defaultValue="gray"
             app:title="@string/app_theme"
             app:useSimpleSummaryProvider="true" />
 

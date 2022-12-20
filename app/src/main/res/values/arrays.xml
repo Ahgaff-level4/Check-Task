@@ -15,13 +15,23 @@
     <!-- Theme Preference -->
     <string-array name="theme_entries">
         <!--        <item>@string/system_Theme</item>-->
-        <item>Teal</item>
-        <item>Yellow</item>
+        <item>@string/gray</item>
+        <item>@string/teal</item>
+        <item>@string/yellow</item>
+        <item>@string/Indigo</item>
+        <item>@string/brown</item>
+        <item>@string/red</item>
+        <item>@string/purple</item>
     </string-array>
 
     <string-array name="theme_values">
         <!--        <item>system</item>-->
+        <item>gray</item>
         <item>teal</item>
         <item>yellow</item>
+        <item>indigo</item>
+        <item>brown</item>
+        <item>red</item>
+        <item>purple</item>
     </string-array>
 </resources>

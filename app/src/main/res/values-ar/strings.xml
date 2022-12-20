@@ -25,7 +25,7 @@
     <string name="login">" "</string>
     <string name="logout">" "</string>
     <string name="sync">تزامن</string>
-    <string name="import_data">" "</string>
+    <string name="import_data">جلب البيانات</string>
     <string name="empty_list">القائمة خالية</string>
     <string name="founded">" "</string>
     <string name="are_you_sure_reset_all_data">" "</string>
@@ -98,5 +98,13 @@
     <string name="delete">حذف</string>
     <string name="sync_successed">Sync successed</string>
     <string name="cloud_same_local">Import successed</string>
-    <string name="app_theme">السمات</string>
+    <string name="app_theme">سمات التطبيق</string>
+    <string name="Theme_title">السمات</string>
+    <string name="yellow">أصفر</string>
+    <string name="gray">رمادي</string>
+    <string name="teal">تركواز</string>
+    <string name="Indigo">اورق</string>
+    <string name="brown">بني</string>
+    <string name="red">أحمر</string>
+    <string name="purple">بنفسجي</string>
 </resources>

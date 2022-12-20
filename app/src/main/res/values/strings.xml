@@ -124,6 +124,13 @@
     <string name="system_language">System language</string>
     <string name="sync_successed">Sync successed</string>
     <string name="cloud_same_local">Import successed</string>
-    <string name="app_theme">Theme</string>
-
+    <string name="Theme_title">Theme</string>
+    <string name="app_theme">Themes</string>
+    <string name="yellow">Yellow</string>
+    <string name="gray">Gray</string>
+    <string name="teal">Teal</string>
+    <string name="Indigo">Indigo</string>
+    <string name="brown">Brown</string>
+    <string name="red">Red</string>
+    <string name="purple">Purple</string>
 </resources>
