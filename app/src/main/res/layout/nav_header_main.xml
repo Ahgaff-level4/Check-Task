@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/nav_header_description"
         android:paddingTop="20dp"
-        app:srcCompat="@drawable/icon" />
+        app:srcCompat="@drawable/icon5" />
 
     </LinearLayout>

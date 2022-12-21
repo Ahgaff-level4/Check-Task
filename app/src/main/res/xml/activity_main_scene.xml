@@ -60,8 +60,8 @@
         <Constraint
             android:id="@+id/blueTwitter"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="318dp"
-            android:layout_height="283dp"
+            android:layout_width="228dp"
+            android:layout_height="186dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
