@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/content_description_folder_image"
             android:src="@drawable/folder"
-            app:tint="?android:textColorPrimary" />
+            app:tint="?colorPrimary" />
 
         <TextView
             android:id="@+id/submenu"

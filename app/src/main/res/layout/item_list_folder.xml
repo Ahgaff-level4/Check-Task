@@ -45,7 +45,7 @@
         android:layout_alignParentEnd="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        app:tint="?android:textColorTertiary"
+        app:tint="?android:textColorPrimary"
         android:contentDescription="@string/content_description_more_option"
         android:layout_marginTop="5dp"
         android:src="@drawable/more_vert" />

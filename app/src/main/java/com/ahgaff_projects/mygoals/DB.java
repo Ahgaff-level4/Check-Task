@@ -390,6 +390,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.reverse(arr);
         Collections.sort(arr);
         return arr;
     }
@@ -429,6 +430,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.reverse(arr);
         Collections.sort(arr);
         return arr;
     }
@@ -451,6 +453,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.reverse(arr);
         Collections.sort(arr);
         return arr;
     }
