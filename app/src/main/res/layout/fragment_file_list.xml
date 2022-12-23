@@ -30,5 +30,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/add"
         app:maxImageSize="@dimen/fab_size"
+        app:tint="?attr/colorOnPrimary"
         android:contentDescription="@string/content_description_fab_file" />
 </RelativeLayout>

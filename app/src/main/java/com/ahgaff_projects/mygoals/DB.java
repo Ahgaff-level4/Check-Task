@@ -461,6 +461,22 @@ GROUP BY books.id;
             db.insert(TASK_TABLE_NAME, null, contentValues);
         }
     }
+
+    public boolean deleteTask(int id) {
+            SQLiteDatabase db = this.getReadableDatabase();
+            return db.delete(TASK_TABLE_NAME, ID + "=" + id, null) > 0;
+    }
+
+    public boolean insertTaskUndoDelete(Task task) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+//        contentValues.put(ID, task.getText()); error if id is assigned!
+        contentValues.put(TEXT, task.getText());
+        contentValues.put(CREATED, task.getCreated().format(FACTORY.dateFormat));
+        contentValues.put(TASK_REFERENCE_FILE, task.fileId);
+        contentValues.put(CHECKED, task.isChecked());
+        return db.insert(TASK_TABLE_NAME, null, contentValues) >= 0;
+    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.ahgaff_projects.mygoals.task;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,12 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahgaff_projects.mygoals.DB;
 import com.ahgaff_projects.mygoals.FACTORY;
 import com.ahgaff_projects.mygoals.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder> {
-    private final FragmentActivity context;
+    public final FragmentActivity context;
     public final int fileId;
     private ArrayList<Task> tasks;
     private final DB db;
@@ -36,22 +38,40 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         this.context = context;
         this.db = db;
         this.tasks = db.getTasksOf(fileId);
-        this.tasks.sort(new Comparator<Task>() {
-            @Override
-            public int compare(Task o1, Task o2) {
-                if ((o1.isChecked() && o1.isChecked()) || (!o1.isChecked() && !o2.isChecked()))
-                    return o1.getCreated().compareTo(o2.getCreated());
-                else if(o1.isChecked())
-                    return -1;
-                else return 1;
-            }
-        });
         context.setTitle(db.getFile(fileId).getName());
         if (this.tasks.size() <= 0)
             context.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
         else context.findViewById(R.id.emptyList).setVisibility(View.INVISIBLE);
     }
 
+    private Task recentlyDeletedItem;
+    private int recentlyDeletedItemPosition;
+    public void deleteItem(int position) {
+        recentlyDeletedItem = tasks.get(position);
+        recentlyDeletedItemPosition = position;
+        db.deleteTask(recentlyDeletedItem.getId());
+        updateTasks();
+//        tasks.remove(position);
+//        notifyItemRemoved(position);
+        showUndoSnackBar();
+    }
+    private void showUndoSnackBar() {
+        View view = context.findViewById(R.id.coordinator);
+        Snackbar snackbar = Snackbar.make(view, R.string.deleted_successfully,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.undo, v -> undoDelete());
+        snackbar.setAnchorView(R.id.fab);
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        if(!db.insertTaskUndoDelete(recentlyDeletedItem))
+            Toast.makeText(context, "error occur", Toast.LENGTH_SHORT).show();
+//        tasks.add(recentlyDeletedItemPosition,
+//                recentlyDeletedItem);
+//        notifyItemInserted(recentlyDeletedItemPosition);
+        updateTasks();
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView taskText;
         private final CheckBox taskCheckBox;

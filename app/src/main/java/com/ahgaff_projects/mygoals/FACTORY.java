@@ -187,11 +187,11 @@ public final class FACTORY {
         Intent serviceIntent = new Intent(context, NotificationService.class);
         serviceIntent.putExtra("fileId", fileId);
         PendingIntent pendingService = PendingIntent.getService(context, 12354 + fileId, serviceIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingService);
         if (file.getRepeatEvery() == -1) {//notification won't repeat. set it at File.startReminder only
-            am.setExact(AlarmManager.RTC_WAKEUP, /*LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_HOUR * hourOfDay +*/ INTERVAL_DAY * nearest, pendingService);
+            am.set(AlarmManager.RTC_WAKEUP, /*LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_HOUR * hourOfDay +*/ INTERVAL_DAY * nearest, pendingService);
         } else {
             am.setInexactRepeating(AlarmManager.RTC_WAKEUP, /*LocalDateTime.now().toLocalDate().atStartOfDay().atZone(ZoneId.of("GMT+3")).toInstant().toEpochMilli() + INTERVAL_HOUR * hourOfDay +*/ INTERVAL_DAY * nearest , INTERVAL_DAY * file.getRepeatEvery()/* + INTERVAL_HOUR * hourOfDay*/, pendingService);
         }

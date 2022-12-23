@@ -59,7 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
             View view = getLayoutInflater().inflate(R.layout.bar_layout, rootView, false);
             rootView.addView(view, 0);
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.bar_layout_toolbar);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
             setSupportActionBar(toolbar);
         }

@@ -113,4 +113,5 @@
     <string name="every_week">كل اسبوع</string>
     <string name="every2_week">كل اسبوعين</string>
     <string name="every_month">كل شهر</string>
+    <string name="undo">إسترجاع</string>
 </resources>
