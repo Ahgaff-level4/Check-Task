@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="32dp"
+            android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/arrowicon"
             android:layout_toEndOf="@+id/iconimage"
             android:text="Header menu item"

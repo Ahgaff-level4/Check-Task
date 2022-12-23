@@ -73,6 +73,12 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             startActivity(new Intent(this, MainActivity.class));
@@ -120,18 +126,6 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-
-//            ListPreference lang = (ListPreference) findPreference("language");
-//            if(lang == null)
-//                Toast.makeText(getActivity(), "lang == null", Toast.LENGTH_SHORT).show();
-//            else
-//            lang.setOnPreferenceChangeListener((preference, newValue) -> {
-//                LocaleList localeList = LocaleList.getDefault();
-//                Toast.makeText(getActivity(), "0="+localeList.get(0).getCountry(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), "-1="+localeList.get(localeList.size()-1).getCountry(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getActivity(), newValue.toString(), Toast.LENGTH_SHORT).show();
-//                return true;
-//            });
             if (getPreferenceScreen() != null && getPreferenceScreen().getSharedPreferences() != null)
                 getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
@@ -148,33 +142,11 @@ public class SettingsActivity extends AppCompatActivity {
             if (key.equals("language")) {
                 if (restart != null)
                     restart.onMustRestart();
-            }else if(key.equals("Theme")){
+            } else if (key.equals("Theme")) {
                 if (restart != null)
                     restart.onMustRestart();
             }
         }
 
     }
-
-//    public void mySetLocale(Locale locale) {
-//            Resources resources = getResources();
-//            Configuration configuration = resources.getConfiguration();
-//            configuration.setLocale(locale);
-//            requireActivity().createConfigurationContext(configuration);
-    ///////////////
-
-//        Locale.setDefault(locale);
-//        Configuration config = getBaseContext().getResources().getConfiguration();
-//        config.locale = locale;
-//        config.setLocale(locale);
-
-    //        getBaseContext().getResources().updateConfiguration(config,
-//                getBaseContext().getResources().getDisplayMetrics());
-//        Toast.makeText(getBaseContext(), "setLocale called", Toast.LENGTH_SHORT).show();
-//    recreate();
-    /////////////////
-//            LocaleListCompat appLocale = LocaleListCompat.forLanguageTags("xx-YY");
-//// Call this on the main thread as it may require Activity.restart()
-//            AppCompatDelegate.setApplicationLocales(appLocale)
-//    }
 }

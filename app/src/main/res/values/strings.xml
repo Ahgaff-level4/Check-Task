@@ -20,7 +20,7 @@
     <string name="nav_header_description">header of drawer menu. image is the same image of the app. which is decorated text of the app name (Check Task)</string>
     <string name="home_title">Home</string>
     <string name="check_your_tasks">CHECK YOUR TASKS!</string>
-    <string name="todo">TODO</string>
+    <string name="todo" translatable="false">TODO</string>
     <string name="has">has</string>
     <string name="finished">finished</string>
     <string name="empty">empty</string>

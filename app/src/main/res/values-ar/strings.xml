@@ -15,8 +15,7 @@
     <string name="nav_close">إغلاق</string>
     <string name="nav_header_description">" "</string>
     <string name="check_your_tasks">"تفقد مهماتك "</string>
-    <string name="home_title">" "</string>
-    <string name="todo">" "</string>
+    <string name="home_title">الصفحة الرئيسية</string>
     <string name="has">يحتوي</string>
     <string name="finished">مكتمل</string>
     <string name="empty">خالي</string>
@@ -93,8 +92,8 @@
     <string name="app_language">لغة التطبيق</string>
     <string name="system_language">لغة النظام</string>
     <string name="delete">حذف</string>
-    <string name="sync_successed">Sync successed</string>
-    <string name="cloud_same_local">Import successed</string>
+    <string name="sync_successed">تم التزامن بنجاح</string>
+    <string name="cloud_same_local">تم جلب البيانات بنجاح</string>
     <string name="app_theme">سمات التطبيق</string>
     <string name="Theme_title">السمات</string>
     <string name="yellow">أصفر</string>
