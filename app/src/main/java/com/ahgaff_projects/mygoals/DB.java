@@ -13,6 +13,7 @@ import com.ahgaff_projects.mygoals.task.Task;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class DB extends SQLiteOpenHelper {
@@ -120,6 +121,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 
@@ -138,6 +140,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 
@@ -226,6 +229,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 
@@ -246,6 +250,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 
@@ -296,6 +301,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 
@@ -384,6 +390,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 
@@ -422,6 +429,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
     public ArrayList<Task> getAllTasks(){
@@ -443,6 +451,7 @@ GROUP BY books.id;
             res.moveToNext();
         }
         res.close();
+        Collections.sort(arr);
         return arr;
     }
 

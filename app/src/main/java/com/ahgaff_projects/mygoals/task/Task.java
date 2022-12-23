@@ -6,7 +6,7 @@ import com.ahgaff_projects.mygoals.FACTORY;
 
 import java.time.LocalDateTime;
 
-public class Task {
+public class Task implements Comparable<Task>{
     private  int id;
     private String text;
     private boolean checked;
@@ -91,5 +91,14 @@ public class Task {
         result = 31 * result + created.hashCode();
         result = 31 * result + fileId;
         return result;
+    }
+
+    @Override
+    public int compareTo(Task t) {
+        if(isChecked() && !t.isChecked())
+            return 1;
+        else if(!isChecked() && t.isChecked())
+            return -1;
+        else return 0;
     }
 }

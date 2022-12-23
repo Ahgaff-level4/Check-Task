@@ -5,7 +5,7 @@ import com.ahgaff_projects.mygoals.FACTORY;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Folder {
+public class Folder implements Comparable<Folder>{
     private int id;
     private String name;
     private LocalDateTime created;
@@ -73,5 +73,14 @@ public class Folder {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (created != null ? created.format(FACTORY.dateFormat).hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(Folder f) {
+        if(f.filesCount > filesCount)
+            return 1;
+        else if(filesCount > f.filesCount)
+            return -1;
+        return 0;
     }
 }

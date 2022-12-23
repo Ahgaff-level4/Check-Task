@@ -8,7 +8,7 @@ import com.ahgaff_projects.mygoals.FACTORY;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class File {
+public class File implements Comparable<File>{
     private int id;
     private String name;
     private LocalDateTime created;
@@ -125,5 +125,14 @@ public File(){}//for firebase
         result = 31 * result + repeatEvery;
         result = 31 * result + folderId;
         return result;
+    }
+
+    @Override
+    public int compareTo(File f) {
+        if(f.tasksCount>tasksCount)
+            return 1;
+        else if(tasksCount > f.tasksCount)
+            return -1;
+        return 0;
     }
 }
