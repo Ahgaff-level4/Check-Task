@@ -77,13 +77,14 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         // Check for existing Google Sign In account, if the user is already signed in
 // the GoogleSignInAccount will be non-null.
         updateUI(GoogleSignIn.getLastSignedInAccount(this));
-
-//        Toast.makeText(this, pref.getString("language","def"), Toast.LENGTH_SHORT).show();
-        if (pref.getBoolean("sync", false))//check sync periodically enabled.
-            sync(true);
-
     }
 
+    @Override
+    protected void onDestroy() {
+        if (pref.getBoolean("sync", false))//check sync periodically enabled.
+            sync(true);
+        super.onDestroy();
+    }
 
     private void setupNavigationDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -145,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         else if (fragment instanceof MyOnBackPressed) { //if user inside a tasks than backPress will be handle in TaskListFragment. So, this if condition will call the handler and result false
             ((MyOnBackPressed) fragment).onBackPressed();
         } else super.onBackPressed();
-
     }
 
     @Override

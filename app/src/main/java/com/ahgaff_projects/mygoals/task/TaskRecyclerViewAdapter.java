@@ -45,14 +45,10 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     }
 
     private Task recentlyDeletedItem;
-    private int recentlyDeletedItemPosition;
     public void deleteItem(int position) {
         recentlyDeletedItem = tasks.get(position);
-        recentlyDeletedItemPosition = position;
         db.deleteTask(recentlyDeletedItem.getId());
         updateTasks();
-//        tasks.remove(position);
-//        notifyItemRemoved(position);
         showUndoSnackBar();
     }
     private void showUndoSnackBar() {
@@ -60,7 +56,6 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         Snackbar snackbar = Snackbar.make(view, R.string.deleted_successfully,
                 Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, v -> undoDelete());
-        snackbar.setAnchorView(R.id.fab);
         snackbar.show();
     }
 
