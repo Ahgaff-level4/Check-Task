@@ -36,7 +36,8 @@ public class SwipeToDelete extends ItemTouchHelper.SimpleCallback {
         return false;
     }
 
-    @Override //Next, we need to override onSwiped(). This is called when an item is swiped off the screen. You also need to override onMove() , but you can leave it as is.
+    @Override
+    //Next, we need to override onSwiped(). This is called when an item is swiped off the screen. You also need to override onMove() , but you can leave it as is.
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAbsoluteAdapterPosition();
         mAdapter.deleteItem(position);//The deleteItem() method does not exist, but we implement it later in the adapter.
@@ -52,21 +53,19 @@ public class SwipeToDelete extends ItemTouchHelper.SimpleCallback {
         int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
         int iconBottom = iconTop + icon.getIntrinsicHeight();
 
-       /* if (dX > 0) { // Swiping to the right
-            int iconLeft = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
-            int iconRight = itemView.getLeft() + iconMargin;
+        if (dX > 0) { // Swiping to the right for arabic
+            int iconLeft = itemView.getLeft() + iconMargin ;
+            int iconRight = itemView.getLeft() + iconMargin+ icon.getIntrinsicWidth();
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-            background.setBounds(itemView.getLeft(), itemView.getTop(),
+            background.setBounds(itemView.getLeft() + 20, itemView.getTop() + 14,
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
-                    itemView.getBottom());
-        } else */if (dX < 0) { // Swiping to the left
+                    itemView.getBottom() - 14);
+        } else if (dX < 0) { // Swiping to the left
             int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
             background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-                    itemView.getTop()+14, itemView.getRight()-20, itemView.getBottom()-14);//we here add and subtract 14 to make the red background fit the cardView height
+                    itemView.getTop() + 14, itemView.getRight() - 20, itemView.getBottom() - 14);//we here add and subtract 14 to make the red background fit the cardView height
         } else { // view is unSwiped
             background.setBounds(0, 0, 0, 0);
         }
