@@ -196,13 +196,13 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             // The account's ID, unique to the Firebase project. Do NOT use this value to
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
-            String uid = account.getId();
-            Log.d("MyTag", "ID:" + uid);
-            Log.d("MyTag", "DisplayName:" + account.getDisplayName());
-            Log.d("MyTag", "Email:" + account.getEmail());
-            Log.d("MyTag", "GivenName:" + account.getGivenName());
-            Log.d("MyTag", "FamilyName:" + account.getFamilyName());
-            Log.d("MyTag", "photo:" + account.getPhotoUrl());
+//            String uid = account.getId();
+//            Log.d("MyTag", "ID:" + uid);
+//            Log.d("MyTag", "DisplayName:" + account.getDisplayName());
+//            Log.d("MyTag", "Email:" + account.getEmail());
+//            Log.d("MyTag", "GivenName:" + account.getGivenName());
+//            Log.d("MyTag", "FamilyName:" + account.getFamilyName());
+//            Log.d("MyTag", "photo:" + account.getPhotoUrl());
         }
     }
 

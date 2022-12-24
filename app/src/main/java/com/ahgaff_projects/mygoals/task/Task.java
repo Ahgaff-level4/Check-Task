@@ -36,7 +36,6 @@ public class Task implements Comparable<Task>{
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
                 ", name='" + text + '\'' +
                 ", completed=" + checked +
                 '}';
@@ -74,7 +73,7 @@ public class Task implements Comparable<Task>{
 
         Task task = (Task) o;
 
-        if (id != task.id) return false;
+//        if (id != task.id) return false;
         if (checked != task.checked) return false;
         if (fileId != task.fileId) return false;
         if (!text.equals(task.text)) return false;
@@ -85,7 +84,7 @@ public class Task implements Comparable<Task>{
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result=0;
         result = 31 * result + text.hashCode();
         result = 31 * result + (checked ? 1 : 0);
         result = 31 * result + created.hashCode();
