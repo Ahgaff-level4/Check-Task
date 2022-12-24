@@ -236,7 +236,7 @@ public final class FACTORY {
 
 
 
-            default: return R.style.Theme_MyGoals;
+            default: return R.style.Teal;
         }
     }
 }
