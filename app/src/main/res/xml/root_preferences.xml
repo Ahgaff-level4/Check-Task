@@ -9,7 +9,7 @@
 <!--            app:useSimpleSummaryProvider="true" />-->
 
         <ListPreference
-            app:defaultValue="system"
+            app:defaultValue="english"
             app:entries="@array/lang_entries"
             app:entryValues="@array/lang_values"
             app:key="language"
@@ -43,7 +43,7 @@
         <!--            app:useSimpleSummaryProvider="true" />-->
 
         <ListPreference
-            app:defaultValue="system"
+            app:defaultValue="teal"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="Theme"
