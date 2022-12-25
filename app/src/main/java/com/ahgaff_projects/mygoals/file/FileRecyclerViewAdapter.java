@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,13 +53,16 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         private final TextView fileName;
         private final TextView fileStartTime;
         private final View optionBtn;
+        private final ImageView fileIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             fileParent = itemView.findViewById(R.id.fileItemParent);
             fileName = itemView.findViewById(R.id.fileName);
             fileStartTime = itemView.findViewById(R.id.fileStartReminder);
             optionBtn = itemView.findViewById(R.id.fileItemOptionMenuBtn);
+            fileIcon = itemView.findViewById(R.id.fileImageView);
         }
     }
 
@@ -80,7 +84,9 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         File thisFile = files.get(position);
         holder.fileName.setText(thisFile.getName());
-        holder.fileStartTime.setText(smallTitle(thisFile));
+        int uncheckedTasks = FACTORY.getUncheckedTasksCount(context,thisFile.getId());
+        holder.fileStartTime.setText(smallTitle(thisFile,uncheckedTasks));
+        holder.fileIcon.setImageResource(fileIcon(thisFile,uncheckedTasks));
         holder.fileParent.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("fileId", thisFile.getId());
@@ -95,13 +101,19 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
         });
     }
 
-    private String smallTitle(File thisFile) {
+    private String smallTitle(File thisFile,int uncheckedTasks) {
         if (thisFile.getTasksCount() == 0)
             return context.getString(R.string.empty);
-        int uncheckedCount = FACTORY.getUncheckedTasksCount(context, thisFile.getId());
-        if (uncheckedCount == 0)
+        if (uncheckedTasks == 0)
             return context.getString(R.string.finished);
         return nearestReminderStr(thisFile);
+    }
+    private int fileIcon(File thisFile,int uncheckedTasks){
+        if(thisFile.getTasksCount()==0)
+            return R.drawable.draft;
+        if(uncheckedTasks == 0)
+            return R.drawable.task;
+        return R.drawable.file_description;
     }
 
     @Override
