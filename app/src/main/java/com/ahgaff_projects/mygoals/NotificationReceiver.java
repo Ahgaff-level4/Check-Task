@@ -13,7 +13,6 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "NotificationReceiver", Toast.LENGTH_SHORT).show();
         if (intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             FACTORY.resetAlarmManager(context);
             return;

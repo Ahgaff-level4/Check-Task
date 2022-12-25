@@ -163,9 +163,7 @@ public final class FACTORY {
         PendingIntent pendingService = PendingIntent.getBroadcast(context, 212488, new Intent(context, NotificationReceiver.class),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingService);
-        Toast.makeText(context, "trigger after:" + getRemainingMillisGoOff() / 1000, Toast.LENGTH_SHORT).show();
         am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + getRemainingMillisGoOff(), pendingService);
-//        Toast.makeText(context, "resetAlarmManager", Toast.LENGTH_SHORT).show();
     }
 
     /**
