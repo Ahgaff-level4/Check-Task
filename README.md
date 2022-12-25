@@ -1,6 +1,6 @@
 # Check Task Application
 
-This is a project for Mobile Application Development subject, in *Al-Ahgaff University*.
+This is a project for Mobile Application Development subject, in **Al-Ahgaff University**.
 
 ### Description
 Check Task is an Android application that help you to track your tasks and goals by writing them in a catograies. And make a reminder in that catorgray. Catograies aim to help you orgnize your tasks, and make notifications about your tasks to remind you achive them.
