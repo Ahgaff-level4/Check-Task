@@ -157,24 +157,10 @@ public final class FACTORY {
     }
 
     /**
-     * to stop send notification of a file
-     */
-//    public static void cancelNotify(Context context, int fileId) {
-//        Intent serviceIntent = new Intent(context, NotificationService.class);
-//        serviceIntent.putExtra("fileId", fileId);
-//        PendingIntent contentIntent = PendingIntent.getService(context, 12354 + fileId, serviceIntent,
-//                PendingIntent.FLAG_CANCEL_CURRENT + PendingIntent.FLAG_IMMUTABLE);
-//
-//        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        am.cancel(contentIntent);
-//    }
-
-    /**
      * reset alarm that run today and reschedule tomorrow... so on so forth; to notify all files that nearest reminder is the today.
      */
     public static void resetAlarmManager(Context context) {
-        PendingIntent pendingService = PendingIntent.getService(context, 212488, new Intent(context, NotificationService.class),
-                PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingService = PendingIntent.getBroadcast(context, 212488, new Intent(context, NotificationReceiver.class),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingService);
         Toast.makeText(context, "trigger after:" + getRemainingMillisGoOff() / 1000, Toast.LENGTH_SHORT).show();

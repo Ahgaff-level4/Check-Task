@@ -39,12 +39,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".NotificationService"
-            android:enabled="true"
-            android:exported="false" />
-        <service android:name=".JobScheduler"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity
             android:name=".Splash"
             android:exported="true"
