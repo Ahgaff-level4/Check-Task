@@ -22,7 +22,7 @@
         android:id="@+id/blueTwitter"
         android:layout_width="500dp"
         android:layout_height="500dp"
-        android:src="@drawable/icon5"
+        android:src="@drawable/check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -224,7 +224,7 @@ public final class FACTORY {
                 .setContentTitle(context.getString(R.string.check_your_tasks))
                 .setContentText(file.getName() + " " + context.getString(R.string.has) + " " + uncheckedCount + " " + context.getString(R.string.unchecked_tasks))
                 .setSmallIcon(R.drawable.task_alt)
-                .setLargeIcon(Icon.createWithResource(context, R.drawable.icon))
+                .setLargeIcon(Icon.createWithResource(context, R.mipmap.icon_foreground))
                 .build();
         notificationManager.notify(12354 + fileId, noti);
         return true;
