@@ -95,10 +95,10 @@ public class FileRecyclerViewAdapter extends RecyclerView.Adapter<FileRecyclerVi
             FACTORY.openFragment(context, TaskListFragment.class, bundle);
         });
         holder.optionBtn.setOnClickListener(handleOnOptionClick(thisFile, holder.optionBtn));
-        holder.fileParent.setOnLongClickListener((v) -> {
-            Toast.makeText(context, thisFile.toString(), Toast.LENGTH_SHORT).show();
-            return true;
-        });
+//        holder.fileParent.setOnLongClickListener((v) -> {
+//            Toast.makeText(context, thisFile.toString(), Toast.LENGTH_SHORT).show();
+//            return true;
+//        });
     }
 
     private String smallTitle(File thisFile,int uncheckedTasks) {
