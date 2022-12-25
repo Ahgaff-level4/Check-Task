@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             getIntent().putExtra("fileId", -1);//if user exit the app don't reopen this fragment
         } else if (savedInstanceState == null) {  //app first open
             FACTORY.openFragment(this, FolderListFragment.class, null);//Home Page
-            FACTORY.updateAllReminders(this);
+            FACTORY.resetAlarmManager(this);
         }
+
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -80,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
+        super.onStop();
         if (pref.getBoolean("sync", false))//check sync periodically enabled.
             sync(true);
-        super.onDestroy();
     }
 
     private void setupNavigationDrawer() {

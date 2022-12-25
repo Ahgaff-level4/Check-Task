@@ -32,7 +32,7 @@
     <string name="founded">Founded</string>
     <string name="are_you_sure_reset_all_data">Are you sure you want to reset all folders, files and tasks?</string>
     <string name="reset">Reset</string>
-    <string name="sync_finish_successfully">Sync finished successfully</string>
+    <string name="sync_finish_successfully">Synced successfully</string>
     <string name="sync_failed">Sync failed!</string>
     <string name="error_try_relogin">Something Went Wrong! Try re-login</string>
     <string name="import_success">Data retrieved successfully</string>

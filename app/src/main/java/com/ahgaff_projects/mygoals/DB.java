@@ -268,10 +268,10 @@ GROUP BY books.id;
             contentValues.put(START_REMINDER, f.startReminderStr);
             contentValues.put(REPEAT_EVERY, f.getRepeatEvery());
 
-            int id = (int) db.insert(FILE_TABLE_NAME, null, contentValues);
-            if (id == -1)
-                continue;
-            FACTORY.createNotify(context, id);
+//            int id = (int)
+                    db.insert(FILE_TABLE_NAME, null, contentValues);
+//            if (id == -1)
+//                continue;
         }
     }
 
@@ -314,16 +314,14 @@ GROUP BY books.id;
         contentValues.put(REPEAT_EVERY, repeatEvery);
         contentValues.put(CREATED, LocalDateTime.now().format(FACTORY.dateFormat));
         contentValues.put(FILE_REFERENCE_FOLDER, folderId);
-        int id = (int) db.insert(FILE_TABLE_NAME, null, contentValues);
-        if (id == -1)
-            return false;
-        FACTORY.createNotify(context, id);
-        return true;
+        return db.insert(FILE_TABLE_NAME, null, contentValues) != -1;
+//        return id != -1;
+//        FACTORY.createNotify(context, id);
     }
 
     public boolean deleteFile(int fileId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        FACTORY.cancelNotify(context, fileId);
+//        FACTORY.cancelNotify(context, fileId);
         db.delete(TASK_TABLE_NAME,TASK_REFERENCE_FILE+"="+fileId,null);
         return db.delete(FILE_TABLE_NAME, ID + "=" + fileId, null) > 0;
     }
@@ -336,10 +334,9 @@ GROUP BY books.id;
         if (startReminder != null)
             cv.put(START_REMINDER, startReminder.format(FACTORY.dateFormat));
         cv.put(REPEAT_EVERY, repeatEvery);
-        FACTORY.cancelNotify(context, fileId);
-        boolean r = db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
-        FACTORY.createNotify(context, fileId);
-        return r;
+//        FACTORY.cancelNotify(context, fileId);
+        //        FACTORY.createNotify(context, fileId);
+        return db.update(FILE_TABLE_NAME, cv, ID + "=" + fileId, null) > 0;
     }
 
     public File getFile(int fileId) {

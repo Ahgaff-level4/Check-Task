@@ -31,30 +31,13 @@ public class NotificationService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int fileId = intent.getIntExtra("fileId", -1);
-        if (fileId < 0) {
-            Toast.makeText(this, "Invalid fileId! expected positive integer got=" + fileId, Toast.LENGTH_SHORT).show();
-            throw new IllegalArgumentException("Invalid fileId! expected positive integer got=" + fileId);
-        }
-        File file = new DB(this).getFile(fileId);
-        int uncheckedCount = FACTORY.getUncheckedTasksCount(this,file.getId());
-        if (uncheckedCount == 0)
-            return START_STICKY;//if all tasks are checked then exist(no notification)
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        mainIntent.putExtra("fileId", fileId);
+//        FACTORY.notifyNowIfToday(fileId,this);
+//        Toast.makeText(this, "NotificationService", Toast.LENGTH_SHORT).show();
+        ArrayList<File> files = new DB(this).getAllFiles();
+        for(File f:files)
+            FACTORY.notifyNowIfToday(f.getId(),this);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(new NotificationChannel("Check Tasks", getString(R.string.notification_title), NotificationManager.IMPORTANCE_HIGH));
-        Notification noti = new Notification.Builder(this, "12354")
-                .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(this, fileId, mainIntent,
-                        PendingIntent.FLAG_CANCEL_CURRENT+PendingIntent.FLAG_IMMUTABLE))
-                .setContentTitle(getString(R.string.check_your_tasks))
-                .setContentText( file.getName() + " " + getString(R.string.has) + " " + uncheckedCount + " " + getString(R.string.unchecked_tasks))
-                .setSmallIcon(R.drawable.task_alt)
-                .setLargeIcon(Icon.createWithResource(this, R.drawable.icon))
-                .build();
-        notificationManager.notify(12354+fileId, noti);
+        FACTORY.resetAlarmManager(this);
         return START_STICKY;
     }
 
