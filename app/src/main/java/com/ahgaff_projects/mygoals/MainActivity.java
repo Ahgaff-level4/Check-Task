@@ -14,6 +14,10 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             FACTORY.openFragment(this, FolderListFragment.class, null);//Home Page
             FACTORY.resetAlarmManager(this);
         }
-
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -157,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
             finish();
         } else if (item.getItemId() == R.id.action_login) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, 12354);
+            signInLauncher.launch(signInIntent);
         } else if (item.getItemId() == R.id.action_logout) {
             mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show());
             updateUI(null);
@@ -207,12 +210,15 @@ public class MainActivity extends AppCompatActivity implements FolderRecyclerVie
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode != 12354)//not the expected result
-            return;
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            this::onSignIn);
 
+    private void onSignIn(ActivityResult result) {
+        if (result.getResultCode() != RESULT_OK) {
+            return;
+        }
+        Intent data = result.getData();
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         // The Task returned from this call is always completed, no need to attach
         // a listener.

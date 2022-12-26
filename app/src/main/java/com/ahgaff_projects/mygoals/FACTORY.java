@@ -107,7 +107,6 @@ public final class FACTORY {
      * </li><li>
      * Close the nav drawer.
      * </li><li>
-     * todo Select (highlight) the drawer item that opened.
      * </li>
      * </ul>
      */
@@ -252,7 +251,7 @@ public final class FACTORY {
     public static int getTheme(SharedPreferences sharedPreferences) {
         String themeValue = sharedPreferences.getString("Theme", "Theme_MyGoals");
         switch (themeValue) {
-            //gray is default theme
+            //teal is default theme
             case "teal":
                 return R.style.Teal;
             case "yellow":
